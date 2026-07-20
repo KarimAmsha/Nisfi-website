@@ -1,0 +1,50 @@
+# Nisfi — Decision Register
+
+## Purpose and status
+
+This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It distinguishes the architecture and product constraints already mandated by the master specification from matters that remain deliberately undecided and require explicit owner approval.
+
+**Rule:** a deferred item below is not permission to infer, implement, or silently choose it. Once the owner approves a material decision, record the decision, date, rationale, and affected work unit here before implementation.
+
+## A. Decisions already mandated by the master specification
+
+| ID | Decision | Status | Source / implementation boundary |
+|---|---|---|---|
+| A-001 | Nisfi is a privacy-first, verification-first platform for serious marriage-intent matchmaking, not a casual dating app or social network. | Mandated | Product vision and V1 scope in the master specification. |
+| A-002 | V1 is a responsive web application with Arabic as the default RTL locale and English and Turkish as additional locales. | Mandated | All user-facing copy is localized; URLs use `/ar`, `/en`, and `/tr`. |
+| A-003 | Runtime policy is Node.js 22 LTS with pnpm 11. | Mandated | Exact pnpm/package versions are intentionally not pinned until Unit 0.1. |
+| A-004 | The repository will become a pnpm monorepo containing `apps/web`, `functions`, and `packages/shared`. | Mandated | Creation is deferred to Unit 0.1; these directories do not exist in Unit 0.0. |
+| A-005 | The web stack is Next.js 16.x (App Router), strict TypeScript, Tailwind CSS, shadcn/ui, next-intl, TanStack Query, react-hook-form, and Zod. | Mandated | Dependencies are not installed in Unit 0.0. |
+| A-006 | Firebase Authentication, Firestore, Storage, 2nd-gen Cloud Functions on Node 22, FCM, and App Check are the V1 service stack. | Mandated | No Firebase project, configuration, credentials, or wiring is created until an approved later unit. |
+| A-007 | Product logic must be backend-replaceable through domain/ports/infrastructure layering; Firebase imports in the web app are allowed only under `infrastructure/firebase/**`. | Mandated | Lint enforcement is scheduled for Unit 0.5. |
+| A-008 | Authentication, authorization, sensitive state changes, moderation, audit writes, matching, photo reveal, and sanctions require server-side enforcement; UI visibility is never authorization. | Mandated | Firestore/Storage rules and emulator tests will be introduced in their approved units. |
+| A-009 | The role model is `user`, `moderator`, `admin`, and `superAdmin`; Firebase custom claims are authoritative. | Mandated | The mirrored user-document role is not an authorization source. |
+| A-010 | Photos are blurred by default and original photos/selfies are never publicly readable. | Mandated | Reveal and moderation access must be server-authorized and short-lived where specified. |
+| A-011 | The initial visual direction is not final. Premium, privacy-led, Arabic-first UX is mandatory; two polished directions require owner selection in Unit 0.3. | Mandated process | Do not invent a final logo or visual direction before that selection. |
+| A-012 | Development is one approved work unit at a time, with owner review before the next unit. | Mandated process | This register and `docs/PHASE_STATUS.md` are the official continuity records. |
+
+## B. Deferred owner decisions and external inputs
+
+| ID | Decision or input required | Needed by | Current status / consequence |
+|---|---|---|---|
+| D-001 | Approved visual direction, logo/wordmark status, and whether a temporary text mark is acceptable. | Units 0.3–0.4 | Pending owner decision. No final branding or visual system may be assumed. |
+| D-002 | Firebase development, staging, and production project IDs; web configuration; VAPID key; and server credentials through secure channels. | Unit 0.5 for real wiring | Pending owner input. Emulators can be prepared earlier; no secrets or identifiers are stored here. |
+| D-003 | Firebase/Functions billing plan, budget alerts, and acceptable monthly guardrails. | Before paid staging resources or functions | Pending owner decision. No paid resource enablement or deployment is implied. |
+| D-004 | Firestore, Storage, and Functions primary region plus data-residency choice. | Before permanent Firebase provisioning in Unit 0.5 | Pending owner decision after latency and legal review; the choice may be expensive to change. |
+| D-005 | Domain/DNS and trademark or name review. | Units 7.5–7.7 | Pending owner input. No launch metadata should assume `nisfi.app` or another domain. |
+| D-006 | Qualified legal review of terms, privacy, consent, retention, sensitive-data handling, and moderation policies for KVKK/GDPR and target markets. | Draft shells in Unit 1.2; approval before staging/launch | Pending legal/owner input. Any future legal page remains visibly draft until reviewed. |
+| D-007 | Initial moderator/admin/superAdmin identities and secure bootstrap procedure. | Units 5.2 and 5.6 | Pending owner decision. Staff identities must never be hardcoded or granted client-side. |
+| D-008 | Starter compatibility-question wording, cultural fit, answer types, and ordering in all three locales. | Review in Unit 2.3; seed in Unit 7.3 | Pending owner approval. |
+| D-009 | Support/contact channels and response expectations. | Unit 1.2 and config seed | Pending owner input. Public support promises must match actual operations. |
+| D-010 | Analytics/error-monitoring consent requirements and provider choice. | Unit 7.5 | Pending owner decision. No unapproved tracker or sensitive event payload may be introduced. |
+| D-011 | Canonical handling of JPEG/PNG uploads when the specified final storage paths use `.webp`. | Unit 2.4 | Pending implementation decision. The owner should approve whether conversion happens client-side, server-side, or through an approved hybrid with byte validation. |
+| D-012 | Truthful, cost-bounded calculation strategy for admin dashboard metrics and trends. | Unit 5.2 | Pending architecture decision. Production must not show placeholder metrics. |
+
+## C. Decisions made in Unit 0.0
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U0-001 | Do not create a package manifest, runtime file, monorepo scaffold, dependency installation, Firebase config, or application directory in Unit 0.0. | Implemented under owner-approved scope | Keeps the preflight/documentation unit isolated from Unit 0.1 and later work. |
+| U0-002 | Document Node.js 22 LTS and pnpm 11 in prose only; defer exact version pinning and `packageManager` to Unit 0.1. | Implemented under owner-approved scope | This matches the requested boundary and avoids creating `package.json` early. |
+| U0-003 | Use `.env.example` as an empty-name template only. | Implemented under owner-approved scope | It communicates expected configuration without inventing or exposing values, IDs, keys, or credentials. |
+| U0-004 | The owner approved and closed Phase 0 / Unit 0.0. | Owner-approved and closed on 2026-07-20 | Unit 0.1 remains proposed and requires separate explicit owner approval before it can begin. |
