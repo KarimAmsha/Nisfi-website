@@ -47,3 +47,12 @@ export {
   type PhotoModeration,
   type PhotoValidationError,
 } from "./photo";
+
+export {
+  VERIFICATION_REQUEST_STATUSES,
+  VERIFICATION_TYPES,
+  canSubmitVerification,
+  type VerificationRequest,
+  type VerificationRequestStatus,
+  type VerificationType,
+} from "./verification";

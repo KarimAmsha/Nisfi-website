@@ -9,12 +9,22 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 2 — Profile, onboarding, photos, and identity verification |
-| Current unit | Unit 2.4 — photo upload/reorder/delete, moderation states, on Cloudinary (preview/mock) (delivered to `main`) |
+| Current unit | Unit 2.5 — verification submission and status experience (delivered to `main`) |
 | Implementation state | Delivered to `main`. Building Phase 2 on emulators/mocks; real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 2.5 — completed (delivered to `main`)
+
+Identity-verification submission and the user status experience (retry/rejection UX).
+
+- **Shared:** `VerificationRequest` types + statuses (`pending`/`approved`/`rejected`), `canSubmitVerification()`.
+- **Port + adapter:** `core/ports/verification.ts` (`VerificationRepository`) and `infrastructure/firebase/verification.repository.ts` (submit a strictly-shaped `pending` request; read own latest via an equality-only query — no composite index).
+- **UI:** `/[locale]/app/verification` `VerificationFlow` — submission form (ID + selfie pickers) with a strong privacy note (selfie/ID private, never shown to members), and status states: pending (in review), approved (verified), rejected (reason + resubmit). Honest local preview when unconfigured.
+- **Rules + tests:** `firebase/tests/verification.rules.test.ts` covers active-owner create-pending, non-pending create denied, cross-user create denied, owner read, other-member read denied, staff read, and client-update denied. `pnpm test:rules` now runs **24 tests** across rules + auth + profile + verification.
+- **Verified:** `pnpm check` + `next build` (71 routes) green.
 
 ## Unit 2.4 — completed (delivered to `main`; real Cloudinary deferred per O-001)
 
@@ -189,7 +199,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 2 / Unit 2.5: verification submission and user status experience** — the private selfie path/rules (kept off the public image platform), and the retry/rejection UX, on emulators (O-001).
+**Phase 2 / Unit 2.6: own-profile review/edit and completion gates** — reuse the builder steps for editing, surface `computeProfileCompletion`, and gate `/app` on completion end-to-end. Closes Phase 2 (gate G2, pending the deferred real wiring).
 
 ### Deferred to the final "production wiring" step (O-001)
 
