@@ -115,6 +115,17 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // connectionRequests: the two participants + staff may read; ALL writes are
+    // server-only (CF6 sendConnectionRequest / CF7 respond/withdraw via the Admin
+    // SDK, which bypasses these rules). Clients never create or transition a
+    // request — this is where dedupe, cooldown, and the pending/daily limits are
+    // atomically enforced (master spec Sections F5, 11.4, 12).
+    match /connectionRequests/{id} {
+      allow read: if isStaff()
+        || (signedIn() && (resource.data.fromUid == uid() || resource.data.toUid == uid()));
+      allow create, update, delete: if false;
+    }
+
     // notifications: owner reads; owner may only flip `read`; no create/delete.
     match /notifications/{u}/items/{id} {
       allow read: if isSelf(u);

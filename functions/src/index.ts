@@ -13,3 +13,7 @@ import { DEFAULT_LOCALE, type Locale } from "@nisfi/shared";
 export function serviceDefaultLocale(): Locale {
   return DEFAULT_LOCALE;
 }
+
+// CF6 send-request enforcement core (the deployed callable wraps it in a
+// transaction; SDK wiring is deferred to the production step, O-001).
+export { evaluateSendRequest, type SendRequestReadState } from "./connection-requests";

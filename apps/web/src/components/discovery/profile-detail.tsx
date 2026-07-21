@@ -1,6 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
 import { computeAge, localized, STARTER_QUESTIONS } from "@nisfi/shared";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { LockIcon, ShieldCheckIcon, CompassIcon } from "@/components/ui/icon";
 import { Link } from "@/i18n/navigation";
 import { useCandidateProfile } from "@/lib/use-candidate-profile";
+import { RequestComposer } from "@/components/discovery/request-composer";
 
 const MARITAL_KEY = {
   single: "maritalSingle",
@@ -51,6 +53,7 @@ export function ProfileDetail({ uid }: { uid: string }) {
   const o = (key: string) => oRaw(key as Parameters<typeof oRaw>[0]);
   const locale = useLocale();
   const { profile, photoCount, loading, notFound } = useCandidateProfile(uid);
+  const [composerOpen, setComposerOpen] = useState(false);
 
   const backLink = (
     <Link href="/app/discover" className="text-sm font-semibold text-primary-700 hover:underline">
@@ -190,13 +193,21 @@ export function ProfileDetail({ uid }: { uid: string }) {
         </Card>
       ) : null}
 
-      {/* Connection request — the composer + enforcement is Unit 3.4. */}
+      {/* Connection request — a written request; server enforces limits (CF6). */}
       <div className="sticky bottom-4 flex flex-col gap-2 rounded-lg border border-border bg-surface/95 p-4 shadow-card backdrop-blur">
-        <Button block disabled aria-disabled title={t("requestComingSoon")}>
+        <Button block onClick={() => setComposerOpen(true)}>
           {c("sendRequest")}
         </Button>
         <p className="text-center text-xs text-ink-600">{t("requestNote")}</p>
       </div>
+
+      {composerOpen ? (
+        <RequestComposer
+          recipientUid={uid}
+          recipientName={profile.displayName}
+          onClose={() => setComposerOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }

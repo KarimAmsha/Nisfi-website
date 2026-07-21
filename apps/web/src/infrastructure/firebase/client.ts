@@ -2,6 +2,7 @@ import { getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { connectAuthEmulator, getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
+import { connectFunctionsEmulator, getFunctions, type Functions } from "firebase/functions";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { appCheckSiteKey, AUTH_EMULATOR_URL, firebaseConfig, useEmulator } from "./env";
 
@@ -55,4 +56,15 @@ export function firebaseFirestore(): Firestore {
 
 export function firebaseStorage(): FirebaseStorage {
   return getStorage(getFirebaseApp());
+}
+
+let functionsEmulatorConnected = false;
+
+export function firebaseFunctions(): Functions {
+  const functions = getFunctions(getFirebaseApp());
+  if (useEmulator() && !functionsEmulatorConnected) {
+    connectFunctionsEmulator(functions, "127.0.0.1", 5001);
+    functionsEmulatorConnected = true;
+  }
+  return functions;
 }

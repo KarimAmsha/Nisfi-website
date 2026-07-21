@@ -132,3 +132,12 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U33-001 | Profile detail reuses `PublicProfile` (via `ProfileRepository.getPublic`) rather than a new port method; eligibility is enforced by the tightened `profiles/{uid}` read rule, so an ineligible/absent read surfaces as an "unavailable" state. | Implemented under owner-authorized scope | Avoids a redundant port; keeps authorization server-side (A-008). |
 | U33-002 | Protected media is shown as lock placeholders whose count comes from approved photo metadata; originals are never fetched client-side. In preview a fixed per-member count is used. | Implemented (real counts + Cloudinary deferred, O-001) | Satisfies "only public data and blurred assets are reachable" (3.3 acceptance) without exposing originals. |
 | U33-003 | Preview profiles synthesise a `birthDate` from the seed's `age` so the detail derives age the same way real profiles do. | Implemented | Display parity between preview and production; no separate age path. |
+
+### Unit 3.4 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U34-001 | The send decision (`canSendRequest`) lives in `@nisfi/shared` and is consumed by BOTH the client preflight and the CF6 transaction core (`functions/src/connection-requests.ts`), so the two can never drift. | Implemented under owner-authorized scope | Single source of truth for eligibility/dedupe/cooldown/limits; server stays authoritative. |
+| U34-002 | `connectionRequests/{id}` is **read-only to clients** (participants + staff read; no client create/update/delete). All creation and transitions go through Cloud Functions (CF6/CF7) via the Admin SDK. | Implemented under owner-authorized scope | Master spec F5/11.4/12: limits, dedupe, cooldown, and match creation must be atomic and unforgeable. |
+| U34-003 | The CF6 callable + counter writes (`pendingSent`/`sentToday`) and the scheduled expiry (CF14) are written as SDK-free logic now; the `firebase-functions`/`firebase-admin` wiring + deploy is deferred to the production step (O-001). | Implemented (SDK wiring deferred) | Keeps enforcement reviewable and unit-tested without installing/serving the Functions runtime here. |
+| U34-004 | The composer sends via the CF6 callable in configured mode and simulates an honest outcome in preview; a shared-decision preflight surfaces localized denial reasons before a doomed send. | Implemented under owner-authorized scope | Good UX without duplicating server logic; preview stays truthful (no fake network send). |

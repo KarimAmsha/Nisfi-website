@@ -327,7 +327,28 @@
   },
   "Requests": {
     "emptyTitle": "No requests yet",
-    "emptyDesc": "When you send or receive a request, it appears here with a clear status. Start by browsing verified members."
+    "emptyDesc": "When you send or receive a request, it appears here with its clear status. Start by browsing verified members.",
+    "composerTitle": "Connection request to {name}",
+    "composerHint": "Start with an honest, respectful note introducing yourself and your intent.",
+    "messagePlaceholder": "Assalamu alaikum, I'd like to get to know you with marriage in mind…",
+    "noContactShared": "Don't share phone numbers or handles — contact stays on the platform.",
+    "sendCta": "Send request",
+    "close": "Close",
+    "done": "Done",
+    "sentTitle": "Request sent",
+    "sentBody": "Your request will reach {name}; you'll be notified when they respond.",
+    "sentPreview": "In this preview nothing is actually sent — it connects to the server later.",
+    "errorBody": "Couldn't send the request. Please try again.",
+    "deny": {
+      "self": "You can't send a request to yourself.",
+      "senderNotEligible": "Your account must be verified before sending requests.",
+      "recipientNotEligible": "This member isn't available to receive requests right now.",
+      "duplicatePending": "You already have a pending request with this member.",
+      "alreadyConnected": "You're already connected with this member.",
+      "declineCooldown": "You can't re-send to this member right now.",
+      "pendingLimit": "You've reached the pending-request limit ({count}). Wait for a reply or withdraw one.",
+      "dailyLimit": "You've reached today's send limit. Try again tomorrow."
+    }
   },
   "Matches": {
     "emptyTitle": "No matches yet",

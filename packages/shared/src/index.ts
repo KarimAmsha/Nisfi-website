@@ -77,3 +77,20 @@ export {
   type VerificationRequestStatus,
   type VerificationType,
 } from "./verification";
+
+export {
+  CONNECTION_REQUEST_STATUSES,
+  REQUEST_LIMITS_FALLBACK,
+  DECLINE_COOLDOWN_DAYS,
+  REQUEST_EXPIRY_DAYS,
+  MESSAGE_MIN,
+  MESSAGE_MAX,
+  connectionMessageSchema,
+  makePairKey,
+  canSendRequest,
+  type ConnectionRequest,
+  type ConnectionRequestStatus,
+  type RequestLimits,
+  type SendRequestDecision,
+  type SendRequestContext,
+} from "./connection-request";

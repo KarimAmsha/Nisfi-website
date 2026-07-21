@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 3 — Discovery and intentional connection requests |
-| Current unit | Unit 3.3 — profile detail and privacy-preserving media presentation (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 3 on emulators/mocks; next is Unit 3.4 (connection-request composer + server enforcement). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 3.4 — connection-request composer, limits, dedupe, cooldown, server enforcement (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 3 on emulators/mocks; next is Unit 3.5 (received/sent request center; accept/decline/withdraw/expire). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 3.4 — completed (delivered to `main`; CF6 callable deployed in the wiring step, O-001)
+
+Written connection-request composer with the send limits, dedupe, cooldown, and server-only enforcement.
+
+- **Shared (`connection-request.ts`):** `ConnectionRequest` + statuses, `makePairKey`, `connectionMessageSchema`, the limits/cooldown constants, and `canSendRequest` — the authoritative send decision (self, sender/recipient eligibility, one-live-pending dedupe, already-connected, 90-day decline cooldown, pending & daily limits). **16 unit tests** cover every reason and the cooldown/limit boundaries and a race-at-cap case (shared suite now **46**).
+- **Server enforcement:** `functions/src/connection-requests.ts` `evaluateSendRequest` is the CF6 transaction core (re-uses `canSendRequest`, emits the strictly-shaped `pending` document) — SDK-free and unit-tested (functions suite now **3**). The deployed callable wraps it in a Firestore transaction at wiring time.
+- **Rules:** new `connectionRequests/{id}` block — the two participants + staff may **read**; **all writes are denied** to clients (server-only via CF6/CF7). **7 emulator tests** (sender/recipient/staff read, non-participant + unauth deny, client-create deny, client-transition deny) — rules suite now **34**, stable.
+- **Port + adapter:** `ConnectionRequestRepository` (`send` via the CF6 callable; `countPendingSent` + `getLatestForPair` for the client preflight) and its Firestore/Functions adapter; `firebaseFunctions()` added to the client (with emulator wiring).
+- **Composer UI (`request-composer.tsx`):** opened from the profile detail's now-active CTA — message textarea (validated + counted), on-platform privacy note, shared-decision preflight with localized denial messages, and honest sent/error states (a simulated outcome in preview).
+- **Verified:** `pnpm check` + `next build` (72 routes) + `pnpm test:rules` (34) green; RTL composer screenshot.
 
 ## Unit 3.3 — completed (delivered to `main`)
 
@@ -239,7 +250,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 3 / Unit 3.4: connection-request composer, limits, dedupe, cooldown, server enforcement** — a written connection-request composer wired from the discovery card and profile detail, with client + server-enforced limits (max pending sent, daily sends), duplicate/pair dedupe (`pairKey`), and cooldown. Backed by a `ConnectionRequestRepository` port, `connectionRequests/{id}` rules, and race/duplicate/limit tests.
+**Phase 3 / Unit 3.5: received/sent request center; accept/decline/withdraw/expire** — the `/app/requests` center with Received | Sent tabs showing each request with the counterparty's profile + message and status, wired to the server transitions (CF7 accept/decline/withdraw; scheduled expire). Accept atomically creates the match (Unit 4.1). Transition permissions/state tested with two users.
 
 ### Deferred to the final "production wiring" step (O-001)
 

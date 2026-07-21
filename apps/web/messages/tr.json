@@ -327,7 +327,28 @@
   },
   "Requests": {
     "emptyTitle": "Henüz istek yok",
-    "emptyDesc": "Bir istek gönderdiğinizde veya aldığınızda, net durumuyla burada görünür. Doğrulanmış üyelere göz atarak başlayın."
+    "emptyDesc": "Bir istek gönderdiğinde veya aldığında, durumu net olarak burada görünür. Doğrulanmış üyelere göz atarak başla.",
+    "composerTitle": "{name} kişisine bağlantı isteği",
+    "composerHint": "Kendinizi ve niyetinizi tanıtan dürüst, saygılı bir notla başlayın.",
+    "messagePlaceholder": "Selamünaleyküm, evlilik niyetiyle tanışmak isterim…",
+    "noContactShared": "Telefon veya hesap paylaşmayın — iletişim platformda kalır.",
+    "sendCta": "İstek gönder",
+    "close": "Kapat",
+    "done": "Tamam",
+    "sentTitle": "İstek gönderildi",
+    "sentBody": "İsteğin {name} kişisine ulaşacak; yanıt verdiğinde bilgilendirileceksin.",
+    "sentPreview": "Bu önizlemede gerçekte gönderilmez — sonradan sunucuya bağlanır.",
+    "errorBody": "İstek gönderilemedi. Lütfen tekrar deneyin.",
+    "deny": {
+      "self": "Kendine istek gönderemezsin.",
+      "senderNotEligible": "İstek göndermeden önce hesabın doğrulanmalı.",
+      "recipientNotEligible": "Bu üye şu anda istek alamıyor.",
+      "duplicatePending": "Bu üyeyle zaten bekleyen bir isteğin var.",
+      "alreadyConnected": "Bu üyeyle zaten bağlısın.",
+      "declineCooldown": "Bu üyeye şu anda yeniden gönderemezsin.",
+      "pendingLimit": "Bekleyen istek sınırına ({count}) ulaştın. Yanıt bekle ya da birini geri çek.",
+      "dailyLimit": "Bugünkü gönderme sınırına ulaştın. Yarın tekrar dene."
+    }
   },
   "Matches": {
     "emptyTitle": "Henüz eşleşme yok",
