@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 3 — Discovery and intentional connection requests |
-| Current unit | Unit 3.1 — discovery query model, exclusion/block strategy, repository tests (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 3 on emulators/mocks; next is Unit 3.2 (discovery cards + filter sheet). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 3.2 — discovery cards, filters, responsive filter sheet, saved filter state (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 3 on emulators/mocks; next is Unit 3.3 (profile detail + privacy-preserving media). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 3.2 — completed (delivered to `main`)
+
+The real discovery surface on the `DiscoveryRepository` port from 3.1 — privacy-first cards, a responsive filter sheet, active-filter chips, saved filter state, and full result states.
+
+- **Browser (`components/discovery/discovery-browser.tsx`):** header, a **Filters** button with an active-facet count, an active-chips row (each removable) + clear-all, the results grid, and honest states — loading skeleton grid, error (retry), empty (clear-filters), and a **Load more** cursor button. No fabricated total count.
+- **Card (`discovery-card.tsx`):** protected-photo treatment (a real placeholder, never a CSS-blurred photo), verified badge, and meaningful compatibility signals (city·country, practice, timeline). The connection-request CTA is a disabled affordance — the composer lands in Unit 3.4.
+- **Filter sheet (`filter-sheet.tsx`):** responsive bottom-sheet (mobile) / side panel (desktop) driven by `discoveryFiltersSchema` — sort, age range, country, city, and toggle-chip facets (languages, marital, children, practice, timeline), reusing the onboarding option labels.
+- **Data (`use-discovery.ts` + `discovery-preview.ts`):** accumulates pages and threads the stable cursor via `DiscoveryRepository.fetchPage`; in preview it runs an 8-member seed through the same `selectDiscoveryPage` logic, so filters and pagination are genuinely exercised. A visible preview badge marks demo data.
+- **Saved filters:** persisted to `localStorage` and restored on load (real per-user persistence to `users.settings.discoveryFilters` deferred, O-001).
+- **Verified:** `pnpm check` + `next build` (71 routes) green; RTL desktop grid + mobile single-column screenshots (no page horizontal scroll).
 
 ## Unit 3.1 — completed (delivered to `main`)
 
@@ -219,7 +230,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 3 / Unit 3.2: discovery cards, filters, responsive filter sheet, saved filter state** — build the real discovery surface on the `DiscoveryRepository` port from 3.1: privacy-first candidate cards (blurred photo treatment), a responsive filter drawer/sheet driven by `discoveryFiltersSchema` with active chips + clear-all, results loading/empty/error states, and per-user saved filters. No swipe mechanics; mobile RTL/LTR verified.
+**Phase 3 / Unit 3.3: profile detail and privacy-preserving media presentation** — a member-facing profile detail route reachable from a discovery card, showing only public data and protected/blurred assets (originals never reachable), with the connection-request affordance leading into Unit 3.4. Reuses the discovery eligibility gate and the tightened `profiles` read rule.
 
 ### Deferred to the final "production wiring" step (O-001)
 
