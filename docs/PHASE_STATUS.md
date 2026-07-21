@@ -8,13 +8,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 
 | Field | Value |
 |---|---|
-| Current phase | Phase 2 — Profile, onboarding, photos, and identity verification (complete; gate G2 met pending deferred wiring) |
-| Current unit | Unit 2.6 — own-profile review/edit and completion gate (delivered to `main`) |
-| Implementation state | Delivered to `main`. Phase 2 complete on emulators/mocks; next is Phase 3 (discovery & connection requests). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current phase | Phase 3 — Discovery and intentional connection requests |
+| Current unit | Unit 3.1 — discovery query model, exclusion/block strategy, repository tests (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 3 on emulators/mocks; next is Unit 3.2 (discovery cards + filter sheet). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 3.1 — completed (delivered to `main`)
+
+Discovery query model, eligibility/exclusion strategy, and repository, with pagination and exclusion demonstrated on seeded users.
+
+- **Shared (`packages/shared/src/discovery.ts`):** `DiscoveryCandidate`/`DiscoveryViewer` projections, `isEligibleCandidate` (opposite gender, visible, verified, active, not self, not blocked either direction, not matched), the persisted `discoveryFiltersSchema` (age range, countries, city substring, languages, marital/children/religiousness/timeline, sort), `matchesFilters`, `computeAge`, and the deterministic `selectDiscoveryPage` (Section 10.15 post-filter half): stable `{sortKey, uid}` cursor, `scanCap` read bound, and an honest `exhausted` signal — never a fabricated total count.
+- **Port + adapter:** `core/ports/discovery.ts` (`DiscoveryRepository.fetchPage`) and `infrastructure/firebase/discovery.repository.ts` implementing the deterministic query plan — mandatory eligibility + sort pushed into the indexed Firestore query (the existing `profiles` composite indexes), bounded batch scan, then `selectDiscoveryPage` for facets + per-viewer exclusions. Returns an empty page in preview; real query wiring deferred (O-001).
+- **Rules:** `profiles/{uid}` non-owner reads tightened to **visible AND verified** (owner/staff unchanged). Fixed a pre-existing `role()` claim-read that threw for claimless members (`keys().hasAny(['role'])`), and made the rules vitest run files sequentially so they stop clearing each other's seed data.
+- **Tests:** 16 new shared unit tests (eligibility, facets, cursor pagination, sort orders, scan cap, exhaustion) — shared suite now **34**. Emulator rules suite now **27** (added hidden/unverified read denials + owner/staff still-read), green and stable.
+- **Verified:** `pnpm check` + `next build` (71 routes) + `pnpm test:rules` all green.
 
 ## Unit 2.6 — completed (delivered to `main`; closes Phase 2 / gate G2, pending deferred wiring)
 
@@ -209,7 +219,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 3 / Unit 3.1: discovery feed and eligibility filtering** — begin Phase 3 (discovery & connection requests): surface eligible, verified, completed profiles with photo-privacy treatment, honoring blocks/visibility, behind a backend-agnostic discovery port (real query wiring deferred per O-001). Then connection requests (3.2+).
+**Phase 3 / Unit 3.2: discovery cards, filters, responsive filter sheet, saved filter state** — build the real discovery surface on the `DiscoveryRepository` port from 3.1: privacy-first candidate cards (blurred photo treatment), a responsive filter drawer/sheet driven by `discoveryFiltersSchema` with active chips + clear-all, results loading/empty/error states, and per-user saved filters. No swipe mechanics; mobile RTL/LTR verified.
 
 ### Deferred to the final "production wiring" step (O-001)
 

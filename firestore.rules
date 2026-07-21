@@ -18,7 +18,7 @@ service cloud.firestore {
       return signedIn() && uid() == u;
     }
     function role() {
-      return signedIn() && request.auth.token.role != null ? request.auth.token.role : 'user';
+      return signedIn() && request.auth.token.keys().hasAny(['role']) ? request.auth.token.role : 'user';
     }
     function isStaff() {
       return role() in ['moderator', 'admin', 'superAdmin'];
@@ -73,13 +73,20 @@ service cloud.firestore {
       }
     }
 
-    // profiles/{uid}: owner + staff always; active members may read (full
-    // eligibility/visibility gating lands in Unit 3.1). Writes are field-locked
-    // to the owner-editable public keys; system/moderation/photo fields and
-    // client-set timestamps are rejected. createdAt/updatedAt must be the server
-    // time (Unit 2.1).
+    // profiles/{uid}: owner + staff always; a non-owner active member may read
+    // only an eligible/visible profile — visible AND server-verified (Unit 3.1,
+    // master spec Section 11.4). Gender/block/match exclusions are applied by the
+    // discovery query and Cloud Functions, not per-doc rules; block-based read
+    // denial arrives with the block foundation (Unit 3.6). Writes stay
+    // field-locked to the owner-editable public keys; system/moderation/photo
+    // fields and client-set timestamps are rejected, and createdAt/updatedAt must
+    // be the server time (Unit 2.1).
     match /profiles/{u} {
-      allow read: if isSelf(u) || isStaff() || isActive();
+      allow read: if isSelf(u)
+        || isStaff()
+        || (isActive()
+            && resource.data.visibility == 'visible'
+            && resource.data.verificationStatus == 'verified');
       allow create: if isSelf(u)
         && request.resource.data.keys().hasOnly(profileCreateKeys())
         && request.resource.data.displayName is string

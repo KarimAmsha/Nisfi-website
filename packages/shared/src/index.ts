@@ -20,11 +20,32 @@ export {
   EDITABLE_PROFILE_KEYS,
   privateProfileSchema,
   type Gender,
+  type MaritalStatus,
+  type ChildrenStatus,
+  type Religiousness,
+  type MarriageTimeline,
+  type ProfileVisibility,
   type VerificationStatus,
   type EditableProfile,
   type PublicProfile,
   type PrivateProfile,
 } from "./profile";
+
+export {
+  DISCOVERY_SORTS,
+  discoveryFiltersSchema,
+  isEligibleCandidate,
+  matchesFilters,
+  computeAge,
+  selectDiscoveryPage,
+  type DiscoverySort,
+  type DiscoveryCandidate,
+  type DiscoveryViewer,
+  type DiscoveryFilters,
+  type DiscoveryCursor,
+  type DiscoveryPage,
+  type SelectPageOptions,
+} from "./discovery";
 
 export {
   localizedTextSchema,

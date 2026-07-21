@@ -8,5 +8,9 @@ export default defineConfig({
     environment: "node",
     testTimeout: 20000,
     hookTimeout: 30000,
+    // All files share one emulator and one demo project, and each clears
+    // Firestore in `beforeEach`. Parallel files would wipe each other's seeded
+    // data mid-test, so run them sequentially in a single worker.
+    fileParallelism: false,
   },
 });

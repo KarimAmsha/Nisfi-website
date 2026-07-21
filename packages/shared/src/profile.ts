@@ -16,6 +16,11 @@ export const PROFILE_VISIBILITY = ["visible", "hidden"] as const;
 export const VERIFICATION_STATUSES = ["unverified", "pending", "verified", "rejected"] as const;
 
 export type Gender = (typeof GENDERS)[number];
+export type MaritalStatus = (typeof MARITAL_STATUSES)[number];
+export type ChildrenStatus = (typeof CHILDREN_STATUSES)[number];
+export type Religiousness = (typeof RELIGIOUSNESS)[number];
+export type MarriageTimeline = (typeof MARRIAGE_TIMELINES)[number];
+export type ProfileVisibility = (typeof PROFILE_VISIBILITY)[number];
 export type VerificationStatus = (typeof VERIFICATION_STATUSES)[number];
 
 /** Owner-editable public profile fields. */

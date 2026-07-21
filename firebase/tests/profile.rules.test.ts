@@ -32,11 +32,14 @@ async function seedActive(uid: string): Promise<void> {
   });
 }
 
-async function seedProfile(uid: string): Promise<void> {
+async function seedProfile(uid: string, over: Record<string, unknown> = {}): Promise<void> {
   await testEnv.withSecurityRulesDisabled(async (ctx) => {
     await setDoc(doc(ctx.firestore(), `profiles/${uid}`), {
       displayName: "Seed",
       gender: "female",
+      visibility: "visible",
+      verificationStatus: "verified",
+      ...over,
     });
   });
 }
@@ -74,10 +77,30 @@ describe("profile rules — Unit 2.1", () => {
     );
   });
 
-  it("lets another active member read a profile", async () => {
+  it("lets another active member read an eligible (visible + verified) profile", async () => {
     await seedActive("bob");
     await seedProfile("alice");
     const db = testEnv.authenticatedContext("bob").firestore();
+    await assertSucceeds(getDoc(doc(db, "profiles/alice")));
+  });
+
+  it("denies another member reading a hidden profile", async () => {
+    await seedActive("bob");
+    await seedProfile("alice", { visibility: "hidden" });
+    const db = testEnv.authenticatedContext("bob").firestore();
+    await assertFails(getDoc(doc(db, "profiles/alice")));
+  });
+
+  it("denies another member reading an unverified profile", async () => {
+    await seedActive("bob");
+    await seedProfile("alice", { verificationStatus: "unverified" });
+    const db = testEnv.authenticatedContext("bob").firestore();
+    await assertFails(getDoc(doc(db, "profiles/alice")));
+  });
+
+  it("still lets the owner read their own not-yet-eligible profile", async () => {
+    await seedProfile("alice", { visibility: "hidden", verificationStatus: "unverified" });
+    const db = testEnv.authenticatedContext("alice").firestore();
     await assertSucceeds(getDoc(doc(db, "profiles/alice")));
   });
 
@@ -87,8 +110,8 @@ describe("profile rules — Unit 2.1", () => {
     await assertFails(getDoc(doc(db, "profiles/alice")));
   });
 
-  it("lets a moderator read any profile", async () => {
-    await seedProfile("alice");
+  it("lets a moderator read any profile, even hidden/unverified", async () => {
+    await seedProfile("alice", { visibility: "hidden", verificationStatus: "unverified" });
     const db = testEnv.authenticatedContext("mod", { role: "moderator" }).firestore();
     await assertSucceeds(getDoc(doc(db, "profiles/alice")));
   });
