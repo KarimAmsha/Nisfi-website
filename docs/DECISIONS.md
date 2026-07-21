@@ -124,3 +124,11 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U32-002 | Persist filters to `localStorage`; real per-user persistence to `users.settings.discoveryFilters` is deferred to wiring. | Implemented (persistence to Firestore deferred, O-001) | Same pattern as the resumable onboarding draft; keeps the feature usable offline/preview. |
 | U32-003 | The connection-request CTA on a card is a **disabled affordance** (with an explanatory title) in 3.2; the request composer + server enforcement is Unit 3.4. | Implemented under owner-authorized scope | Honest UI — no non-functional button that appears to send; matches the phase plan. |
 | U32-004 | Country filter is a single text field mapping to the multi-valued `countries` facet for v1; a full multi-country add/remove widget can follow if the owner wants it. | Implemented under owner-authorized scope | Keeps the filter sheet simple while the schema already supports multiple; low-risk to extend later. |
+
+### Unit 3.3 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U33-001 | Profile detail reuses `PublicProfile` (via `ProfileRepository.getPublic`) rather than a new port method; eligibility is enforced by the tightened `profiles/{uid}` read rule, so an ineligible/absent read surfaces as an "unavailable" state. | Implemented under owner-authorized scope | Avoids a redundant port; keeps authorization server-side (A-008). |
+| U33-002 | Protected media is shown as lock placeholders whose count comes from approved photo metadata; originals are never fetched client-side. In preview a fixed per-member count is used. | Implemented (real counts + Cloudinary deferred, O-001) | Satisfies "only public data and blurred assets are reachable" (3.3 acceptance) without exposing originals. |
+| U33-003 | Preview profiles synthesise a `birthDate` from the seed's `age` so the detail derives age the same way real profiles do. | Implemented | Display parity between preview and production; no separate age path. |

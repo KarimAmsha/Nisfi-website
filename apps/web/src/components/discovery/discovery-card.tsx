@@ -2,8 +2,9 @@
 
 import { useTranslations } from "next-intl";
 import type { DiscoveryCandidate } from "@nisfi/shared";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { LockIcon, ShieldCheckIcon } from "@/components/ui/icon";
+import { Link } from "@/i18n/navigation";
 
 /** A privacy-first discovery card (master spec Section 14 «Discovery»): the
  * photo is a protected placeholder — never a CSS-blurred real image — with
@@ -59,10 +60,16 @@ export function DiscoveryCard({ candidate }: { candidate: DiscoveryCandidate }) 
             </span>
           ))}
         </div>
-        <div className="mt-auto flex flex-col gap-1.5 pt-1">
+        <div className="mt-auto flex gap-2 pt-1">
           <Button size="sm" block disabled aria-disabled title={t("ctaComingSoon")}>
             {c("sendRequest")}
           </Button>
+          <Link
+            href={`/app/discover/${candidate.uid}`}
+            className={buttonVariants({ variant: "ghost", size: "sm" })}
+          >
+            {c("viewProfile")}
+          </Link>
         </div>
       </div>
     </li>

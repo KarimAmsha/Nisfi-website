@@ -9,12 +9,21 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 3 — Discovery and intentional connection requests |
-| Current unit | Unit 3.2 — discovery cards, filters, responsive filter sheet, saved filter state (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 3 on emulators/mocks; next is Unit 3.3 (profile detail + privacy-preserving media). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 3.3 — profile detail and privacy-preserving media presentation (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 3 on emulators/mocks; next is Unit 3.4 (connection-request composer + server enforcement). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 3.3 — completed (delivered to `main`)
+
+Member-facing profile detail reachable from a discovery card, showing only public data and protected media (originals never reachable).
+
+- **Route:** `/[locale]/app/discover/[uid]` (noindex) → `ProfileDetail`. The discovery card now offers a **View profile** link alongside the (disabled) request affordance.
+- **Detail (`components/discovery/profile-detail.tsx`):** protected photo grid (lock placeholders — never a real image) with a privacy note, verified identity header (name · age · city · country), about, a details grid (marital/children/practice/timeline/languages/education/occupation), and localized compatibility answers rendered from `STARTER_QUESTIONS` + the profile's `answers`. A sticky connection-request CTA is a disabled affordance until the composer (Unit 3.4).
+- **Data (`use-candidate-profile.ts`):** configured mode reads via `ProfileRepository.getPublic`, so the tightened `profiles/{uid}` rule (visible + verified for eligible members) turns an ineligible read into an `unavailable` state; preview serves the discovery seed (enriched with narrative + a photo count). Photo metadata/counts arrive with Cloudinary (O-001).
+- **Verified:** `pnpm check` + `next build` (72 routes) green; RTL detail screenshot — protected media, public-only data, honest unavailable/loading states.
 
 ## Unit 3.2 — completed (delivered to `main`)
 
@@ -230,7 +239,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 3 / Unit 3.3: profile detail and privacy-preserving media presentation** — a member-facing profile detail route reachable from a discovery card, showing only public data and protected/blurred assets (originals never reachable), with the connection-request affordance leading into Unit 3.4. Reuses the discovery eligibility gate and the tightened `profiles` read rule.
+**Phase 3 / Unit 3.4: connection-request composer, limits, dedupe, cooldown, server enforcement** — a written connection-request composer wired from the discovery card and profile detail, with client + server-enforced limits (max pending sent, daily sends), duplicate/pair dedupe (`pairKey`), and cooldown. Backed by a `ConnectionRequestRepository` port, `connectionRequests/{id}` rules, and race/duplicate/limit tests.
 
 ### Deferred to the final "production wiring" step (O-001)
 

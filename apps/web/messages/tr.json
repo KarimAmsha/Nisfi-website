@@ -415,5 +415,17 @@
       "emptyTitle": "Açık rapor yok",
       "emptyDesc": "Güvenlik raporları burada incelenir; kanıt ve raporlayan gizliliği korunur."
     }
+  },
+  "ProfileDetail": {
+    "back": "← Keşfet'e dön",
+    "backToDiscover": "Keşfet'e dön",
+    "unavailableTitle": "Bu profil kullanılamıyor",
+    "unavailableBody": "Görüntülenmeye uygun olmayabilir veya artık mevcut değil.",
+    "photosNote": "Fotoğraflar korumalıdır; orijinaller yalnızca karşılıklı onayla açılır.",
+    "aboutTitle": "Hakkında",
+    "detailsTitle": "Ayrıntılar",
+    "compatibilityTitle": "Uyum yanıtları",
+    "requestComingSoon": "İstek gönderme bir sonraki birimde başlıyor",
+    "requestNote": "İletişim yazılı bir istekle başlar — kabul öncesi doğrudan mesaj yok."
   }
 }

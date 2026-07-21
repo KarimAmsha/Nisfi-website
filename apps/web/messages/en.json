@@ -415,5 +415,17 @@
       "emptyTitle": "No open reports",
       "emptyDesc": "Safety reports appear here for review, preserving evidence and reporter confidentiality."
     }
+  },
+  "ProfileDetail": {
+    "back": "← Back to Discover",
+    "backToDiscover": "Back to Discover",
+    "unavailableTitle": "This profile isn't available",
+    "unavailableBody": "It may not be eligible to view, or it no longer exists.",
+    "photosNote": "Photos are protected; originals are revealed only by mutual consent.",
+    "aboutTitle": "About",
+    "detailsTitle": "Details",
+    "compatibilityTitle": "Compatibility answers",
+    "requestComingSoon": "Sending requests begins in the next unit",
+    "requestNote": "Contact starts with a written request — no direct messages before acceptance."
   }
 }
