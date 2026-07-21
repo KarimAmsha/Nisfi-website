@@ -8,13 +8,22 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 
 | Field | Value |
 |---|---|
-| Current phase | Phase 1 — Public experience and authentication |
-| Current unit | Unit 1.4 — Firebase Auth integration (email/password, verification, route guards) on the Auth emulator (delivered to `main`) |
-| Implementation state | Delivered to `main`. Phase 1 feature work complete; gate G1's real-project connection is deferred to the final production step (O-001). |
+| Current phase | Phase 2 — Profile, onboarding, photos, and identity verification |
+| Current unit | Unit 2.1 — profile domain schemas, profile repository, and private/public rules + tests (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 2 on emulators/mocks; gates G1/G2 real-project connection deferred to the final production step (O-001). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 2.1 — completed (delivered to `main`)
+
+Profile domain schemas, the profile repository, and the private/public profile-split security rules with emulator tests.
+
+- **Shared schemas** (`packages/shared/src/profile.ts`): Zod `editableProfileSchema` (owner-editable public fields), `privateProfileSchema` (sensitive), `PublicProfile` type, and `EDITABLE_PROFILE_KEYS` (the client-writable key list, kept in sync with the rules). Unit tests in `pnpm check`.
+- **Port + adapter:** `core/ports/profile.ts` (`ProfileRepository`) and `infrastructure/firebase/profile.repository.ts` (own/public/private get + save; Firestore `Timestamp` → ISO at the boundary; `createdAt`/`updatedAt` server-set).
+- **Rules:** `profiles/{uid}` writes field-locked to the editable keys (system/moderation/photo fields and client timestamps rejected; `createdAt`/`updatedAt` must equal server time); `profiles/{uid}/private/**` is owner-write, owner+staff-read.
+- **Tests:** `firebase/tests/profile.rules.test.ts` covers owner / other active member / staff / unauthenticated and the field-lock. `pnpm test:rules` now runs **17 tests** (rules + auth + profile). `pnpm check` + `next build` green.
 
 ## Unit 0.5 — completed (foundation; real wiring deferred per O-001)
 
@@ -150,7 +159,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 2 / Unit 2.1: domain schemas, profile repository, and security rules/tests for the private/public profile split.** Builds on the auth boundary and the Firestore rules foundation, on emulators (O-001). Gate G1's real-project connection remains deferred to the final production step.
+**Phase 2 / Unit 2.2: onboarding steps 1–3 with resumable saving** — the profile-builder wizard writing editable fields through the `ProfileRepository`, with validation, back/resume, and mobile RTL UX, on emulators (O-001).
 
 ### Deferred to the final "production wiring" step (O-001)
 

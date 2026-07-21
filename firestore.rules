@@ -37,6 +37,22 @@ service cloud.firestore {
     function changedKeys() {
       return request.resource.data.diff(resource.data).affectedKeys();
     }
+    // Owner-editable public-profile keys (keep in sync with EDITABLE_PROFILE_KEYS
+    // in @nisfi/shared). System/moderation/photo fields are never client-written.
+    function profileUpdateKeys() {
+      return [
+        'displayName', 'gender', 'birthDate', 'country', 'city', 'about',
+        'maritalStatus', 'children', 'religiousness', 'education', 'occupation',
+        'marriageTimeline', 'languages', 'visibility', 'updatedAt'
+      ];
+    }
+    function profileCreateKeys() {
+      return [
+        'displayName', 'gender', 'birthDate', 'country', 'city', 'about',
+        'maritalStatus', 'children', 'religiousness', 'education', 'occupation',
+        'marriageTimeline', 'languages', 'visibility', 'updatedAt', 'createdAt'
+      ];
+    }
 
     // users/{uid}: owner + staff read; no client create/delete; owner may update
     // only allow-listed preference/locale fields. Role/status/counters are
@@ -58,12 +74,24 @@ service cloud.firestore {
     }
 
     // profiles/{uid}: owner + staff always; active members may read (full
-    // eligibility/visibility gating and field locks land in Unit 2.1).
+    // eligibility/visibility gating lands in Unit 3.1). Writes are field-locked
+    // to the owner-editable public keys; system/moderation/photo fields and
+    // client-set timestamps are rejected. createdAt/updatedAt must be the server
+    // time (Unit 2.1).
     match /profiles/{u} {
       allow read: if isSelf(u) || isStaff() || isActive();
-      allow create, update: if isSelf(u);
+      allow create: if isSelf(u)
+        && request.resource.data.keys().hasOnly(profileCreateKeys())
+        && request.resource.data.displayName is string
+        && request.resource.data.gender in ['male', 'female']
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+      allow update: if isSelf(u)
+        && changedKeys().hasOnly(profileUpdateKeys())
+        && request.resource.data.updatedAt == request.time;
       allow delete: if false;
 
+      // Private, sensitive sub-document: owner writes; owner + staff read.
       match /private/{doc} {
         allow read: if isSelf(u) || isStaff();
         allow write: if isSelf(u);
