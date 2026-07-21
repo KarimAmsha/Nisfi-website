@@ -2,7 +2,7 @@
 
 Nisfi is a privacy-first, verification-first web platform for serious, marriage-intent matchmaking for Arabic-speaking Muslims worldwide. The product will support Arabic (the default, RTL), English, and Turkish.
 
-> **Project status:** Phase 0 / Unit 0.0 was completed and owner-approved on 2026-07-20. This repository intentionally contains no application scaffold, dependencies, Firebase configuration, or deployable service yet.
+> **Project status:** Phase 0 / Unit 0.0 was completed and owner-approved on 2026-07-20. Phase 0 / Unit 0.1 (pnpm monorepo scaffold) is implemented and delivered for owner review — see [`docs/PHASE_STATUS.md`](./docs/PHASE_STATUS.md) for the live state. The repository still contains no Firebase configuration, no deployable service, and no product features; the scaffold establishes the workspace, strict TypeScript, and tooling only.
 
 ## Source of truth
 
@@ -10,9 +10,16 @@ Nisfi is a privacy-first, verification-first web platform for serious, marriage-
 
 ## Current repository scope
 
-This unit documents the product foundation only. It does **not** create the planned pnpm monorepo, `apps/web`, `functions`, or `packages/shared`; it does not install dependencies; and it does not connect to Firebase or any external service.
+Unit 0.0 documented the product foundation. Unit 0.1 adds the pnpm monorepo scaffold: `apps/web`, `functions`, and `packages/shared` with strict TypeScript, shared ESLint/Prettier/Vitest tooling, and a single `pnpm check` gate. It does **not** install Next.js, next-intl, or the Firebase SDK, and it does not connect to Firebase or any external service.
 
-The next proposed work unit is Phase 0 / Unit 0.1 (pnpm monorepo scaffold), but it must not begin until the owner explicitly authorizes Unit 0.1.
+Common commands (run from the repository root):
+
+```bash
+pnpm install        # install workspace dependencies
+pnpm check          # typecheck + lint + format check + tests
+```
+
+The next proposed work unit is Phase 0 / Unit 0.2 (next-intl locale routing and RTL/LTR route shell), but it must not begin until the owner explicitly authorizes Unit 0.2.
 
 ## Approved technical baseline
 
@@ -23,9 +30,9 @@ The following baseline is specified by the master document and is recorded here 
 - UI: Tailwind CSS and adapted shadcn/ui components.
 - Localization: `next-intl` with `/ar`, `/en`, and `/tr` routes; Arabic is RTL by design.
 - Backend services: Firebase Authentication, Cloud Firestore, Firebase Storage, Cloud Functions for Firebase (2nd gen, Node 22), Firebase Cloud Messaging, and Firebase App Check.
-- Repository layout planned for Unit 0.1: `apps/web`, `functions`, and `packages/shared`.
+- Repository layout (created in Unit 0.1): `apps/web`, `functions`, and `packages/shared`.
 
-No package manifest exists yet by design. The exact package versions and the `packageManager` field will be pinned only in Unit 0.1 after approval.
+The workspace pins `pnpm@11.15.1` in `packageManager` and pins exact dependency versions with a committed `pnpm-lock.yaml`.
 
 ## Architecture boundary
 

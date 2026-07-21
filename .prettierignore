@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+out/
+coverage/
+lib/
+pnpm-lock.yaml
+*.tsbuildinfo
+
+# Owner-approved prose from Unit 0.0 — not subject to code formatting.
+# (Reformatting would alter approved content / reflow the binding spec.)
+NISFI_MASTER_SPEC.md
+README.md
+docs/

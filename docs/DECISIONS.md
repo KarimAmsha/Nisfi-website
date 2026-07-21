@@ -48,3 +48,13 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U0-002 | Document Node.js 22 LTS and pnpm 11 in prose only; defer exact version pinning and `packageManager` to Unit 0.1. | Implemented under owner-approved scope | This matches the requested boundary and avoids creating `package.json` early. |
 | U0-003 | Use `.env.example` as an empty-name template only. | Implemented under owner-approved scope | It communicates expected configuration without inventing or exposing values, IDs, keys, or credentials. |
 | U0-004 | The owner approved and closed Phase 0 / Unit 0.0. | Owner-approved and closed on 2026-07-20 | Unit 0.1 remains proposed and requires separate explicit owner approval before it can begin. |
+
+## D. Decisions made in Unit 0.1
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U1-001 | Pin the exact package manager `pnpm@11.15.1` in `packageManager` and enforce Node 22 via `engines`/`.nvmrc`. | Implemented under owner-authorized scope | Satisfies the mandated Node 22 LTS + pnpm 11 policy (A-003) with a reproducible, verifiable toolchain. |
+| U1-002 | Pin exact tool versions (TypeScript 5.9.3, ESLint 10.7.0, typescript-eslint 8.64.0, Prettier 3.9.5, Vitest 4.1.10) and commit `pnpm-lock.yaml`. | Implemented under owner-authorized scope | Spec Section 4 requires exact pinning for reproducibility. TypeScript is held at 5.9.3 because the current `typescript-eslint` peer range excludes TypeScript 7; upgrading is a future tested decision. |
+| U1-003 | Scaffold `apps/web`, `functions`, and `packages/shared` only, with strict TS, lint/format/test tooling and a single `pnpm check` gate; do not install Next.js, next-intl, or the Firebase SDK yet. | Implemented under owner-authorized scope | Keeps Unit 0.1 to the monorepo scaffold; Next.js routing (0.2) and Firebase boundary/lint enforcement (0.5) remain their own units per the one-unit cadence (A-012). |
+| U1-004 | Establish the backend-agnostic layering directories (`core/domain`, `core/ports`, `core/usecases`, `infrastructure/firebase`, `app`, `components`, `lib`) with documented boundaries but no product entities. | Implemented under owner-authorized scope | Encodes the mandated replaceable-backend architecture (A-007) from the first scaffold without pre-implementing feature data models. |
+| U1-005 | Exclude the owner-approved Unit 0.0 prose (`NISFI_MASTER_SPEC.md`, `README.md`, `docs/`) from Prettier reformatting. | Implemented under owner-authorized scope | Prevents automated formatting from altering approved/binding content while still enforcing formatting on code. |

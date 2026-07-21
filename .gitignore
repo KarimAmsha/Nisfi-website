@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+out/
+*.tsbuildinfo
+lib/*.js
+lib/*.d.ts
+
+# Environment & secrets (never commit — master spec Section 4)
+.env
+.env.local
+.env.*.local
+*.pem
+*-service-account*.json
+serviceAccountKey*.json
+
+# Test / coverage
+coverage/
+.vitest/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
