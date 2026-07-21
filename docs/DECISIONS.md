@@ -77,4 +77,13 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U3-001 | Present two distinct visual directions — «وَقار» (emerald + gold, institutional) and «سَكينة» (teal-slate + clay, serene) — on the real landing, a member surface, and an admin surface, in Arabic RTL + an LTR sample. | Implemented per owner instruction (2026-07-21) | Fulfils the Section 14.2 design gate; gives the owner two genuinely different, on-brand options to select or combine. |
 | U3-002 | Deliver the directions as a self-contained HTML preview plus a rationale doc under `docs/design/`, and NOT build product UI or finalize `docs/DESIGN_SYSTEM.md` yet. | Implemented per owner instruction | The spec makes `DESIGN_SYSTEM.md` binding only after selection; keeping the pitch separate avoids committing the product to an unapproved direction. |
 | U3-003 | Preview fonts use a system Arabic/Latin stack because the HTML preview cannot load network fonts; the product itself uses self-hosted IBM Plex Sans Arabic + Inter (already wired in Unit 0.2). | Implemented | Honest constraint; does not change the intended product typography. |
-| D-001 | Approved visual direction and logo/wordmark status. | **Still pending owner selection** | Two directions are now presented; the owner must select A, B, or a named combination before Unit 0.4. |
+| D-001 | Approved visual direction and logo/wordmark status. | **Resolved 2026-07-21 — Direction A «وَقار».** | Owner selected Direction A; recorded as binding in `docs/DESIGN_SYSTEM.md`. Temporary «نِصفي» text wordmark used until a final logo is provided. |
+
+## G. Decisions in Unit 0.4
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U4-001 | Use Tailwind CSS v4 with CSS-first `@theme` tokens for the Waqār system. | Implemented under owner-authorized scope | Matches the mandated Tailwind stack (Section 4); tokens live in one place and drive utilities. |
+| U4-002 | Hand-build shadcn-style primitives (cva + tailwind-merge) and a small internal outline icon set instead of running the shadcn CLI or adding an icon dependency. | Implemented under owner-authorized scope | Offline-safe and fully controlled; still yields adapted, tokenised primitives and one coherent icon family (Section 14.3/14.5). |
+| U4-003 | Build member and admin shells with responsive navigation and populate a minimal set of surfaces with sample content and localized state patterns; no feature data, auth, or Firebase. | Implemented under owner-authorized scope | Satisfies the Unit 0.4 acceptance (shells, nav, states, visual gate) without pre-building later units. |
+| U4-004 | Keep the temporary «نِصفي» text wordmark (no final logo yet). | Implemented; pending final logo from owner | D-001 left the logo open; a text mark is acceptable in the interim per the master spec. |

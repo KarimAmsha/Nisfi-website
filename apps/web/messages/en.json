@@ -3,12 +3,120 @@
     "brand": "Nisfi",
     "tagline": "Marriage-intent matchmaking — privacy and verification first.",
     "intro": "We are building a premium, safe experience for serious Muslims worldwide. The site is under construction.",
-    "status": "Under construction"
+    "status": "Under construction",
+    "enterApp": "Enter the app",
+    "openAdmin": "Admin console"
   },
   "LocaleSwitcher": {
     "label": "Language",
     "ar": "Arabic",
     "en": "English",
     "tr": "Turkish"
+  },
+  "Nav": {
+    "primary": "Primary navigation",
+    "discover": "Discover",
+    "requests": "Requests",
+    "matches": "Matches",
+    "verification": "Verification",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "me": "My profile"
+  },
+  "Common": {
+    "sendRequest": "Send request",
+    "viewProfile": "Profile",
+    "verified": "Verified",
+    "protectedTitle": "Protected photo",
+    "protectedHint": "Revealed only by mutual consent",
+    "browseMembers": "Browse members",
+    "comingSoonTitle": "Under construction",
+    "comingSoonNote": "This area is part of the approved design shell; its content is built in its own approved unit."
+  },
+  "Discover": {
+    "title": "Discover",
+    "subtitle": "Browse verified, compatibility-led profiles — no swipe mechanics.",
+    "filterCompatibility": "Compatibility: high",
+    "filterAge": "Age 27–34",
+    "filterCity": "City: Istanbul",
+    "filterVerified": "Verified only",
+    "results": "48 results",
+    "signalValues": "High values match",
+    "signalCity": "Same city"
+  },
+  "Requests": {
+    "emptyTitle": "No requests yet",
+    "emptyDesc": "When you send or receive a request, it appears here with a clear status. Start by browsing verified members."
+  },
+  "Matches": {
+    "emptyTitle": "No matches yet",
+    "emptyDesc": "When a request is accepted by both sides, a calm conversation begins. Browse members to start your first respectful contact."
+  },
+  "Notifications": {
+    "emptyTitle": "No notifications",
+    "emptyDesc": "We'll let you know here about new requests, matches, and verification updates — without noise."
+  },
+  "Verification": {
+    "title": "Identity verification",
+    "statusLabel": "In review",
+    "desc": "Your request is under manual review. We verify seriousness to protect everyone; your photo and verification selfie stay private and are never shown to members.",
+    "cta": "Update documents"
+  },
+  "Settings": {
+    "title": "Settings",
+    "note": "Manage account, privacy, language, and blocking. Options are built in their approved unit."
+  },
+  "Admin": {
+    "nav": {
+      "console": "Operations",
+      "queues": "Queues",
+      "dashboard": "Dashboard",
+      "verifications": "Verification",
+      "users": "Members",
+      "reports": "Reports"
+    },
+    "dashboard": {
+      "title": "Admin dashboard",
+      "members": "Verified members",
+      "pendingVerifications": "Pending verifications",
+      "openReports": "Open reports",
+      "matches": "Matches this week",
+      "trendNote": "Sample figures for preview — computed from real sources in the approved unit."
+    },
+    "verifications": {
+      "title": "Verification queue",
+      "heading": "Verification requests",
+      "waiting": "12 waiting",
+      "colMember": "Member",
+      "colType": "Type",
+      "colStatus": "Status",
+      "colSubmitted": "Submitted",
+      "statusPending": "Waiting",
+      "statusReview": "In review",
+      "statusVerified": "Verified",
+      "typeSelfieId": "Selfie + ID",
+      "typeIdOnly": "ID only",
+      "drawerTitle": "Verification case",
+      "evidenceNote": "Time-limited review access — logged to the audit trail; no original is stored.",
+      "kvName": "Name on ID",
+      "kvLiveness": "Liveness check",
+      "kvAccountAge": "Account age",
+      "valMatch": "Match",
+      "valPass": "Pass",
+      "valDays": "3 days",
+      "approve": "Approve verification",
+      "requestResend": "Request resend",
+      "auditNote": "Staff note: first selfie is under-lit; the second is clear and matches. — Moderator 2"
+    },
+    "users": {
+      "title": "Members",
+      "emptyTitle": "Member management tools",
+      "emptyDesc": "Search and filter members and review cases. Built in its approved unit."
+    },
+    "reports": {
+      "title": "Reports",
+      "emptyTitle": "No open reports",
+      "emptyDesc": "Safety reports appear here for review, preserving evidence and reporter confidentiality."
+    }
   }
 }

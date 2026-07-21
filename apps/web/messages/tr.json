@@ -3,12 +3,120 @@
     "brand": "Nisfi",
     "tagline": "Evlilik niyetli tanışma — önce gizlilik ve doğrulama.",
     "intro": "Dünya genelindeki ciddi Müslümanlar için premium ve güvenli bir deneyim geliştiriyoruz. Site yapım aşamasında.",
-    "status": "Yapım aşamasında"
+    "status": "Yapım aşamasında",
+    "enterApp": "Uygulamaya gir",
+    "openAdmin": "Yönetim konsolu"
   },
   "LocaleSwitcher": {
     "label": "Dil",
     "ar": "Arapça",
     "en": "İngilizce",
     "tr": "Türkçe"
+  },
+  "Nav": {
+    "primary": "Ana gezinme",
+    "discover": "Keşfet",
+    "requests": "İstekler",
+    "matches": "Eşleşmeler",
+    "verification": "Doğrulama",
+    "notifications": "Bildirimler",
+    "settings": "Ayarlar",
+    "me": "Profilim"
+  },
+  "Common": {
+    "sendRequest": "İstek gönder",
+    "viewProfile": "Profil",
+    "verified": "Doğrulanmış",
+    "protectedTitle": "Korumalı fotoğraf",
+    "protectedHint": "Yalnızca karşılıklı onayla açılır",
+    "browseMembers": "Üyelere göz at",
+    "comingSoonTitle": "Yapım aşamasında",
+    "comingSoonNote": "Bu alan onaylı tasarım kabuğunun parçasıdır; içeriği kendi onaylı biriminde geliştirilir."
+  },
+  "Discover": {
+    "title": "Keşfet",
+    "subtitle": "Doğrulanmış, uyum odaklı profillere göz atın — kaydırma yok.",
+    "filterCompatibility": "Uyum: yüksek",
+    "filterAge": "Yaş 27–34",
+    "filterCity": "Şehir: İstanbul",
+    "filterVerified": "Yalnızca doğrulanmış",
+    "results": "48 sonuç",
+    "signalValues": "Yüksek değer uyumu",
+    "signalCity": "Aynı şehir"
+  },
+  "Requests": {
+    "emptyTitle": "Henüz istek yok",
+    "emptyDesc": "Bir istek gönderdiğinizde veya aldığınızda, net durumuyla burada görünür. Doğrulanmış üyelere göz atarak başlayın."
+  },
+  "Matches": {
+    "emptyTitle": "Henüz eşleşme yok",
+    "emptyDesc": "Bir istek iki tarafça kabul edildiğinde sakin bir sohbet başlar. İlk saygılı teması başlatmak için üyelere göz atın."
+  },
+  "Notifications": {
+    "emptyTitle": "Bildirim yok",
+    "emptyDesc": "Yeni istekler, eşleşmeler ve doğrulama güncellemelerini burada bildiririz — gürültüsüz."
+  },
+  "Verification": {
+    "title": "Kimlik doğrulama",
+    "statusLabel": "İncelemede",
+    "desc": "İsteğiniz manuel incelemede. Herkesi korumak için ciddiyeti doğrularız; fotoğrafınız ve doğrulama selfie'niz gizli kalır, üyelere gösterilmez.",
+    "cta": "Belgeleri güncelle"
+  },
+  "Settings": {
+    "title": "Ayarlar",
+    "note": "Hesap, gizlilik, dil ve engelleme yönetimi. Seçenekler kendi onaylı biriminde geliştirilir."
+  },
+  "Admin": {
+    "nav": {
+      "console": "Operasyonlar",
+      "queues": "Kuyruklar",
+      "dashboard": "Panel",
+      "verifications": "Doğrulama",
+      "users": "Üyeler",
+      "reports": "Raporlar"
+    },
+    "dashboard": {
+      "title": "Yönetim paneli",
+      "members": "Doğrulanmış üyeler",
+      "pendingVerifications": "Bekleyen doğrulamalar",
+      "openReports": "Açık raporlar",
+      "matches": "Bu haftaki eşleşmeler",
+      "trendNote": "Önizleme için örnek rakamlar — onaylı birimde gerçek kaynaklardan hesaplanır."
+    },
+    "verifications": {
+      "title": "Doğrulama kuyruğu",
+      "heading": "Doğrulama istekleri",
+      "waiting": "12 bekliyor",
+      "colMember": "Üye",
+      "colType": "Tür",
+      "colStatus": "Durum",
+      "colSubmitted": "Gönderim",
+      "statusPending": "Bekliyor",
+      "statusReview": "İncelemede",
+      "statusVerified": "Doğrulandı",
+      "typeSelfieId": "Selfie + kimlik",
+      "typeIdOnly": "Yalnızca kimlik",
+      "drawerTitle": "Doğrulama vakası",
+      "evidenceNote": "Süreli inceleme erişimi — denetim kaydına işlenir; orijinal saklanmaz.",
+      "kvName": "Kimlikteki ad",
+      "kvLiveness": "Canlılık kontrolü",
+      "kvAccountAge": "Hesap yaşı",
+      "valMatch": "Eşleşiyor",
+      "valPass": "Geçti",
+      "valDays": "3 gün",
+      "approve": "Doğrulamayı onayla",
+      "requestResend": "Yeniden gönderim iste",
+      "auditNote": "Personel notu: ilk selfie az ışıklı; ikincisi net ve eşleşiyor. — Moderatör 2"
+    },
+    "users": {
+      "title": "Üyeler",
+      "emptyTitle": "Üye yönetim araçları",
+      "emptyDesc": "Üyeleri arayın, filtreleyin ve vakaları inceleyin. Onaylı biriminde geliştirilir."
+    },
+    "reports": {
+      "title": "Raporlar",
+      "emptyTitle": "Açık rapor yok",
+      "emptyDesc": "Güvenlik raporları burada incelenir; kanıt ve raporlayan gizliliği korunur."
+    }
   }
 }

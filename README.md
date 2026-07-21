@@ -21,9 +21,11 @@ pnpm --filter @nisfi/web dev     # run the web app locally
 pnpm --filter @nisfi/web build   # production build of the web app
 ```
 
-Unit 0.3 presents two high-fidelity visual directions — «وَقار» (emerald + gold) and «سَكينة» (teal-slate + clay) — on the real landing, member, and admin surfaces. Preview them in [`docs/design/visual-directions.html`](./docs/design/visual-directions.html); rationale and tokens are in [`docs/design/DIRECTIONS.md`](./docs/design/DIRECTIONS.md).
+Unit 0.3 presented two visual directions; the owner selected **Direction A «وَقار»** (emerald + gold), now the binding system in [`docs/DESIGN_SYSTEM.md`](./docs/DESIGN_SYSTEM.md). (The pitch preview and the alternative «سَكينة» remain in [`docs/design/`](./docs/design).)
 
-The next proposed work unit is Phase 0 / Unit 0.4 (design tokens, primitives, and shells). It cannot begin until the owner selects or combines a direction (see `docs/DECISIONS.md`, D-001).
+Unit 0.4 builds that system on the app: Tailwind v4 tokens, primitives (`src/components/ui`), and the member and admin shells (`src/components/shell`) with responsive navigation and localized state patterns. The member app renders at `/[locale]/app/*` and the admin console at `/[locale]/admin/*`.
+
+The next proposed work unit is Phase 0 / Unit 0.5 (Firebase adapters/ports boundary, emulators, App Check/env wiring, CI, and the restricted-import lint rule), which closes Phase 0. It needs owner-provided Firebase inputs (see `docs/DECISIONS.md`, D-002).
 
 ## Approved technical baseline
 

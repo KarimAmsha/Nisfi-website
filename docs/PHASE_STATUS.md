@@ -9,13 +9,25 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 0 — Product foundation and approved design language |
-| Current unit | Unit 0.3 — two high-fidelity visual directions for owner selection |
-| Implementation state | Presented and delivered to `main`; **awaiting owner selection** of a direction (decision D-001) |
+| Current unit | Unit 0.4 — approved design tokens, primitives, member/admin shells, responsive nav, `docs/DESIGN_SYSTEM.md` |
+| Implementation state | Implemented and verified; delivered to `main` and `claude/project-review-a9s1w1` |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
-| Previous units | Unit 0.0 (docs) — owner-approved 2026-07-20. Unit 0.1 (monorepo scaffold) and Unit 0.2 (locale routing / RTL shell) — delivered to `main`. |
-| Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, and 16 |
+| Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
+| Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
+| Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
 
-## Unit 0.3 — current (awaiting owner selection)
+## Unit 0.4 — current
+
+The owner-approved «وَقار» direction is turned into a real design system on the Next.js app: Tailwind v4 tokens, primitives, member and admin shells, responsive navigation, and state patterns, recorded in `docs/DESIGN_SYSTEM.md`.
+
+- **Tokens:** Tailwind v4 `@theme` in `globals.css` (Waqār palette, radii, shadow; fonts switch by `dir`).
+- **Primitives** (`components/ui`): Button (variants/sizes/loading), Card, Badge/status pill, Field (labelled input), Skeleton, EmptyState, and a coherent outline icon set.
+- **Shells** (`components/shell`): MemberShell (top bar + desktop sidebar + mobile bottom nav) and AdminShell (queue-first emerald sidebar with counts).
+- **Surfaces:** localized member routes (`/app/discover` populated; requests/matches/notifications empty states; verification status; settings) and admin routes (`/admin/dashboard` stat tiles; `/admin/verifications` queue + detail drawer; users/reports empty states). Landing refreshed onto the token system with entry links.
+- **i18n:** all new copy added to `messages/{ar,en,tr}.json`; no hardcoded UI strings; typed message keys.
+- **Design QA (Section 14.9):** verified via Chromium at desktop RTL (member + admin), LTR (mirrored sidebar), and mobile (bottom nav + single-column stacking). No page horizontal scroll; wide admin table scrolls in its own container.
+
+## Unit 0.3 — completed (Direction A selected)
 
 Two polished, distinct visual directions are presented on real Nisfi content — the landing page, a member surface (discovery with photo-privacy treatment), and an admin surface (verification queue) — in Arabic RTL with an English LTR sample. Per master spec Section 14.2, the owner selects or combines one; the approved direction is then recorded in `docs/DESIGN_SYSTEM.md` (Unit 0.4) and becomes binding. No product UI is built on either direction yet.
 
@@ -25,7 +37,7 @@ Two polished, distinct visual directions are presented on real Nisfi content —
 - **Design QA (Section 14.9):** verified via Chromium screenshots at desktop and narrow widths — RTL hierarchy, responsive collapse (no page horizontal scroll; admin table scrolls in its own container), status/pill states, protected-photo treatment, and AR + LTR copy all render correctly.
 - **Constraints honoured:** premium, privacy-led, Arabic-first; none of the prohibited dating-app shortcuts (no pink/hearts/swipe/neon/stock couples/fake metrics); protected photo is an intentional treatment, not a CSS blur of a real photo.
 
-**Owner action needed:** choose Direction A, Direction B, or a named combination (and optionally confirm the temporary «نِصفي» text wordmark per D-001). Unit 0.4 begins after selection.
+**Resolved:** the owner selected **Direction A «وَقار»** on 2026-07-21. It is now the binding system in `docs/DESIGN_SYSTEM.md`.
 
 ## Unit 0.2 objective
 
@@ -78,6 +90,6 @@ Add next-intl locale routing over the scaffold: the URL prefix is always present
 
 ## Next proposed unit — do not execute without approval
 
-**Phase 0 / Unit 0.4: approved design tokens, primitives, member shell, admin shell, responsive navigation, and `docs/DESIGN_SYSTEM.md`.**
+**Phase 0 / Unit 0.5: Firebase adapters/ports boundary, emulator config, App Check/env wiring, CI, and the restricted-import lint rule.**
 
-Unit 0.4 cannot begin until the owner selects or combines a direction from Unit 0.3 (decision D-001). Unit 0.5 additionally depends on owner-provided Firebase project IDs and credentials (D-002).
+Unit 0.5 depends on owner-provided inputs (decision D-002): Firebase development/staging/production project IDs, web configuration, VAPID key, and server credentials through a secure channel. Emulator scaffolding and the no-Firebase-import-outside-`infrastructure/firebase/**` lint rule can be prepared without secrets, but real wiring and any deployment need those inputs. **This closes Phase 0 (gate G0).**
