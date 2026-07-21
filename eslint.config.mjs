@@ -1,6 +1,7 @@
 // @ts-check
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
+import nextPlugin from "@next/eslint-plugin-next";
 
 export default tseslint.config(
   {
@@ -12,6 +13,8 @@ export default tseslint.config(
       "**/out/**",
       "**/coverage/**",
       "**/lib/**",
+      "**/.next/**",
+      "**/next-env.d.ts",
       "**/*.tsbuildinfo",
     ],
   },
@@ -30,6 +33,17 @@ export default tseslint.config(
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
+    },
+  },
+  {
+    // Next.js app rules (App Router).
+    files: ["apps/web/**/*.{ts,tsx}"],
+    plugins: { "@next/next": nextPlugin },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs["core-web-vitals"].rules,
+      // App Router only — there is no legacy `pages/` directory.
+      "@next/next/no-html-link-for-pages": "off",
     },
   },
   {

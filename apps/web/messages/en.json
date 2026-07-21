@@ -1,0 +1,14 @@
+{
+  "Landing": {
+    "brand": "Nisfi",
+    "tagline": "Marriage-intent matchmaking — privacy and verification first.",
+    "intro": "We are building a premium, safe experience for serious Muslims worldwide. The site is under construction.",
+    "status": "Under construction"
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "ar": "Arabic",
+    "en": "English",
+    "tr": "Turkish"
+  }
+}

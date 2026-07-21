@@ -9,68 +9,63 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 0 — Product foundation and approved design language |
-| Current unit | Unit 0.1 — pnpm monorepo scaffold |
-| Implementation state | Implemented; delivered on branch `claude/project-review-a9s1w1` for owner review |
-| Owner approval date | Pending owner review |
-| Previous unit | Unit 0.0 — closed and owner-approved on 2026-07-20 |
-| Git delivery status | Unit 0.1 committed and pushed to `claude/project-review-a9s1w1`; not pushed to `origin/main` (phase-gate G0 push to `main` remains after full Phase 0 approval). |
-| Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 15, and 16 |
+| Current unit | Unit 0.2 — next-intl locale routing and semantic RTL/LTR base with a minimal route shell |
+| Implementation state | Implemented and verified; delivered to `main` and `claude/project-review-a9s1w1` |
+| Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
+| Previous units | Unit 0.0 (docs) — closed and owner-approved 2026-07-20. Unit 0.1 (monorepo scaffold) — delivered to `main`. |
+| Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, and 16 |
 
-## Unit 0.1 objective
+## Unit 0.2 objective
 
-Create the pnpm monorepo scaffold — `apps/web`, `functions`, and `packages/shared` — with strict TypeScript, shared lint/format/test tooling, and a single `pnpm check` gate, on the mandated Node 22 LTS + pnpm 11 runtime. No product features, Next.js routing, Firebase wiring, or design system are introduced (those belong to later approved units).
+Add next-intl locale routing over the scaffold: the URL prefix is always present (`/ar`, `/en`, `/tr`) with Arabic as the default, `dir="rtl"` for Arabic and `dir="ltr"` otherwise, self-hosted fonts, and a minimal, fully localized route shell with working locale switching. No product features, auth, Firebase, Tailwind, or design system are introduced.
 
 ## Implemented scope
 
-- Established a pnpm 11 workspace (`pnpm-workspace.yaml`) over `apps/*`, `packages/*`, and `functions`, with the exact package manager pinned in `packageManager` (`pnpm@11.15.1`) and Node 22 enforced via `engines` and `.nvmrc`.
-- Added shared strict-TypeScript baseline (`tsconfig.base.json`) with `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `verbatimModuleSyntax`, and related safety flags; each package extends it.
-- Added repository-wide tooling: ESLint 10 flat config with type-aware `typescript-eslint`, Prettier, and Vitest, plus root scripts `typecheck`, `lint`, `format`/`format:check`, `test`, and the aggregate `check`.
-- Scaffolded `packages/shared` (`@nisfi/shared`) with the shared `Locale` model (`ar`/`en`/`tr`, Arabic default and RTL) and a unit test.
-- Scaffolded `apps/web` (`@nisfi/web`) with the mandated backend-agnostic layering directories — `core/domain`, `core/ports`, `core/usecases`, `infrastructure/firebase`, `app`, `components`, `lib` — documented boundaries, a seed that verifies `web → @nisfi/shared` wiring, and a unit test.
-- Scaffolded `functions` (`@nisfi/functions`) as a Node 22 TypeScript package with a documented placeholder entry point and a unit test.
-- Pinned exact dependency versions and captured a committed `pnpm-lock.yaml` for reproducible installs.
+- Installed Next.js 16.2.10 (App Router, Turbopack), React 19.2.7, and next-intl 4.13.2 into `apps/web`, pinned exactly.
+- Added next-intl routing (`src/i18n/routing.ts`) reusing the shared `Locale` model (`ar` default, `localePrefix: "always"`), request config (`src/i18n/request.ts`), and locale-aware navigation (`src/i18n/navigation.ts`).
+- Added `src/proxy.ts` (Next.js 16's renamed middleware) running the next-intl middleware for locale normalization.
+- Added the `[locale]` route group: root layout sets `<html lang dir>` semantically, self-hosts IBM Plex Sans Arabic (Arabic) and Inter (Latin) via `next/font`, and wraps content in `NextIntlClientProvider`.
+- Added a minimal, fully localized landing shell and a `LocaleSwitcher` client component; all copy lives in `messages/{ar,en,tr}.json` with no hardcoded UI strings.
+- Added typed message augmentation (`src/global.d.ts`) so translation keys are checked.
+- Extended tooling: Next-compatible strict `tsconfig`, `@next/eslint-plugin-next` rules for `apps/web`, and `.next`/`next-env.d.ts` ignored by ESLint/Prettier/git.
 
-## Files created by Unit 0.1
+## Files created or changed by Unit 0.2
 
 | File / directory | Purpose |
 |---|---|
-| `package.json` (root) | Private workspace root; `packageManager`, `engines`, and `check`/`typecheck`/`lint`/`format`/`test` scripts. |
-| `pnpm-workspace.yaml` | Workspace package globs. |
-| `.npmrc`, `.nvmrc` | Install policy and Node 22 pin. |
-| `tsconfig.base.json` | Shared strict TypeScript compiler options. |
-| `eslint.config.mjs` | Flat ESLint config with type-aware linting. |
-| `.prettierrc.json`, `.prettierignore` | Formatting config; approved Unit 0.0 prose excluded from reformatting. |
-| `.gitignore` | Ignore dependencies, build output, coverage, and secrets. |
-| `packages/shared/**` | `@nisfi/shared` scaffold: locale model + test. |
-| `apps/web/**` | `@nisfi/web` scaffold: layering directories + wiring seed + test. |
-| `functions/**` | `@nisfi/functions` scaffold: placeholder entry + test. |
-| `pnpm-lock.yaml` | Reproducible dependency lock. |
+| `apps/web/next.config.ts` | Next config wrapped with the next-intl plugin. |
+| `apps/web/tsconfig.json` | Next-compatible strict TypeScript config. |
+| `apps/web/src/i18n/{routing,request,navigation}.ts` | next-intl routing, request config, navigation primitives. |
+| `apps/web/src/proxy.ts` | Locale middleware (Next 16 `proxy`). |
+| `apps/web/src/app/[locale]/{layout,page}.tsx` | Localized root layout (RTL/LTR, fonts) and landing shell. |
+| `apps/web/src/app/globals.css` | Minimal RTL-aware base styles using logical properties. |
+| `apps/web/src/components/locale-switcher.tsx` | Locale switcher. |
+| `apps/web/src/global.d.ts` | Typed locale/messages augmentation. |
+| `apps/web/messages/{ar,en,tr}.json` | Localized copy (single source for UI strings). |
+| `eslint.config.mjs`, `.gitignore`, `.prettierignore` | Next plugin + ignore Next build artifacts. |
 
 ## Explicitly not implemented
 
-- No Next.js, next-intl, Tailwind, shadcn/ui, TanStack Query, react-hook-form, or Zod installation or routing (Unit 0.2 and later).
-- No visual directions, design tokens, or design system (Units 0.3–0.4).
-- No Firebase SDK, adapters, emulator configuration, App Check/env wiring, CI, or the `no-restricted-imports` Firebase boundary lint rule (Unit 0.5).
-- No product data model, security rules, Cloud Functions handlers, or feature code.
-- No Firebase project IDs, web config, VAPID key, service credentials, secrets, or deployment.
-- No push to `origin/main` (reserved for the Phase 0 gate G0 after full owner approval).
+- No Tailwind, shadcn/ui, design tokens, or design system (Units 0.3–0.4).
+- No authentication, session guards, Firebase SDK, or App Check (Units 0.5 and 1.x).
+- No `no-restricted-imports` Firebase boundary lint rule (Unit 0.5).
+- No product routes beyond the landing shell, no data model, no Cloud Functions handlers.
+- No secrets, project IDs, or deployment configuration.
 
 ## Verification evidence
 
-| Check | Expected evidence | Result |
-|---|---|---|
-| Runtime policy | Node 22 LTS and pnpm 11 in use | Node `v22.22.2`, pnpm `11.15.1` |
-| Clean install | Workspace installs reproducibly | `pnpm install --frozen-lockfile` succeeds |
-| Typecheck | Strict TS passes in all packages | `pnpm run typecheck` passes |
-| Lint | ESLint clean | `pnpm run lint` passes |
-| Format | Prettier clean | `pnpm run format:check` passes |
-| Tests | Package tests pass | `pnpm run test` — 5 tests across 3 packages pass |
-| Aggregate gate | Unit acceptance | `pnpm check` passes |
+| Check | Evidence |
+|---|---|
+| Runtime policy | Node `v22.22.2`, pnpm `11.15.1` |
+| Production build | `next build` succeeds; `/ar`, `/en`, `/tr` prerendered (SSG); proxy detected |
+| Root redirect | `GET /` → `307` to `/ar` (default locale) |
+| RTL/LTR | `/ar` → `<html lang="ar" dir="rtl">`; `/en` and `/tr` → `dir="ltr"` |
+| Localization | Arabic/English/Turkish copy rendered from message catalogs; no hardcoded UI strings |
+| Locale switching | Switcher links to `/ar`, `/en`, `/tr`; active locale marked `aria-current` |
+| Aggregate gate | `pnpm check` passes: typecheck, lint, format, and 5 tests across 3 packages |
 
 ## Next proposed unit — do not execute without approval
 
-**Phase 0 / Unit 0.2: next-intl locale routing and semantic RTL/LTR base with a minimal route shell.**
+**Phase 0 / Unit 0.3: two high-fidelity visual directions** using real Nisfi content on landing/member/admin sample surfaces, for the owner to select or combine.
 
-Proposed outcome: install Next.js 16.x into `apps/web`, add next-intl `/[locale]/…` routing for `/ar`, `/en`, `/tr`, establish semantic RTL/LTR direction, and render a minimal route shell verified in Arabic (RTL) with working locale switching.
-
-This is the next proposed unit only. It is not authorized to start until the owner gives explicit approval. No files for it were created by Unit 0.1.
+This unit requires an owner decision (D-001: approved visual direction). It is the next proposed unit only and needs explicit owner direction before it begins; no generic template is acceptable. Unit 0.5 additionally depends on owner-provided Firebase project IDs and credentials (D-002).

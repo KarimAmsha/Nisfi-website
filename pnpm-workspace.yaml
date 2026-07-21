@@ -2,3 +2,12 @@ packages:
   - "apps/*"
   - "packages/*"
   - "functions"
+
+# Native postinstall build scripts are opt-in (pnpm supply-chain policy).
+allowBuilds:
+  # Image processing; used by the Phase 2 photo pipeline and Next image optimization.
+  sharp: true
+  # Next.js bundles its own SWC; the standalone native build is not required.
+  "@swc/core": false
+  # Optional native file watcher; the JS fallback is sufficient.
+  "@parcel/watcher": false

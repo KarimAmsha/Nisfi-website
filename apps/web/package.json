@@ -4,13 +4,22 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
   "dependencies": {
-    "@nisfi/shared": "workspace:*"
+    "@nisfi/shared": "workspace:*",
+    "next": "16.2.10",
+    "next-intl": "4.13.2",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
   },
   "devDependencies": {
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
     "typescript": "5.9.3",
     "vitest": "4.1.10"
   }

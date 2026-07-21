@@ -1,0 +1,110 @@
+:root {
+  color-scheme: light dark;
+  --nisfi-bg: #0f1115;
+  --nisfi-surface: #171a21;
+  --nisfi-fg: #f4f5f7;
+  --nisfi-muted: #9aa3b2;
+  --nisfi-accent: #3f7f6d;
+  --nisfi-border: #262b34;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-latin), system-ui, sans-serif;
+}
+
+html[dir="rtl"] {
+  font-family: var(--font-arabic), system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--nisfi-bg);
+  color: var(--nisfi-fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.shell__brand {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.shell__tagline {
+  font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+  color: var(--nisfi-fg);
+  max-width: 42ch;
+  margin: 0;
+}
+
+.shell__intro {
+  color: var(--nisfi-muted);
+  max-width: 46ch;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.shell__badge {
+  display: inline-block;
+  padding-block: 0.35rem;
+  padding-inline: 0.9rem;
+  border: 1px solid var(--nisfi-border);
+  border-radius: 999px;
+  background: var(--nisfi-surface);
+  color: var(--nisfi-muted);
+  font-size: 0.85rem;
+}
+
+.switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.switcher__label {
+  color: var(--nisfi-muted);
+  font-size: 0.9rem;
+  margin-inline-end: 0.25rem;
+}
+
+.switcher__link {
+  padding-block: 0.35rem;
+  padding-inline: 0.8rem;
+  border: 1px solid var(--nisfi-border);
+  border-radius: 0.6rem;
+  color: var(--nisfi-fg);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.switcher__link:hover {
+  border-color: var(--nisfi-accent);
+}
+
+.switcher__link[aria-current="true"] {
+  border-color: var(--nisfi-accent);
+  background: color-mix(in srgb, var(--nisfi-accent) 22%, transparent);
+  color: var(--nisfi-fg);
+}

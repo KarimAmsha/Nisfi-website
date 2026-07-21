@@ -2,7 +2,7 @@
 
 Nisfi is a privacy-first, verification-first web platform for serious, marriage-intent matchmaking for Arabic-speaking Muslims worldwide. The product will support Arabic (the default, RTL), English, and Turkish.
 
-> **Project status:** Phase 0 / Unit 0.0 was completed and owner-approved on 2026-07-20. Phase 0 / Unit 0.1 (pnpm monorepo scaffold) is implemented and delivered for owner review — see [`docs/PHASE_STATUS.md`](./docs/PHASE_STATUS.md) for the live state. The repository still contains no Firebase configuration, no deployable service, and no product features; the scaffold establishes the workspace, strict TypeScript, and tooling only.
+> **Project status:** Phase 0 is in progress. Unit 0.0 (docs) was owner-approved on 2026-07-20; Unit 0.1 (pnpm monorepo scaffold) and Unit 0.2 (next-intl locale routing with RTL/LTR route shell) are implemented and delivered to `main` — see [`docs/PHASE_STATUS.md`](./docs/PHASE_STATUS.md) for the live state. The web app renders `/ar` (default, RTL), `/en`, and `/tr`. The repository still contains no Firebase configuration, no deployable service, and no product features beyond a minimal localized shell.
 
 ## Source of truth
 
@@ -10,16 +10,18 @@ Nisfi is a privacy-first, verification-first web platform for serious, marriage-
 
 ## Current repository scope
 
-Unit 0.0 documented the product foundation. Unit 0.1 adds the pnpm monorepo scaffold: `apps/web`, `functions`, and `packages/shared` with strict TypeScript, shared ESLint/Prettier/Vitest tooling, and a single `pnpm check` gate. It does **not** install Next.js, next-intl, or the Firebase SDK, and it does not connect to Firebase or any external service.
+Unit 0.0 documented the product foundation. Unit 0.1 added the pnpm monorepo scaffold (`apps/web`, `functions`, `packages/shared`) with strict TypeScript and shared ESLint/Prettier/Vitest tooling. Unit 0.2 added Next.js 16 + next-intl locale routing: `/ar` (default, RTL), `/en`, and `/tr` render a minimal, fully localized route shell with working locale switching. The Firebase SDK is **not** installed and no external service is connected.
 
 Common commands (run from the repository root):
 
 ```bash
 pnpm install        # install workspace dependencies
 pnpm check          # typecheck + lint + format check + tests
+pnpm --filter @nisfi/web dev     # run the web app locally
+pnpm --filter @nisfi/web build   # production build of the web app
 ```
 
-The next proposed work unit is Phase 0 / Unit 0.2 (next-intl locale routing and RTL/LTR route shell), but it must not begin until the owner explicitly authorizes Unit 0.2.
+The next proposed work unit is Phase 0 / Unit 0.3 (two high-fidelity visual directions for owner selection). It requires an owner decision on visual direction (see `docs/DECISIONS.md`, D-001) before it begins.
 
 ## Approved technical baseline
 

@@ -58,3 +58,14 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U1-003 | Scaffold `apps/web`, `functions`, and `packages/shared` only, with strict TS, lint/format/test tooling and a single `pnpm check` gate; do not install Next.js, next-intl, or the Firebase SDK yet. | Implemented under owner-authorized scope | Keeps Unit 0.1 to the monorepo scaffold; Next.js routing (0.2) and Firebase boundary/lint enforcement (0.5) remain their own units per the one-unit cadence (A-012). |
 | U1-004 | Establish the backend-agnostic layering directories (`core/domain`, `core/ports`, `core/usecases`, `infrastructure/firebase`, `app`, `components`, `lib`) with documented boundaries but no product entities. | Implemented under owner-authorized scope | Encodes the mandated replaceable-backend architecture (A-007) from the first scaffold without pre-implementing feature data models. |
 | U1-005 | Exclude the owner-approved Unit 0.0 prose (`NISFI_MASTER_SPEC.md`, `README.md`, `docs/`) from Prettier reformatting. | Implemented under owner-authorized scope | Prevents automated formatting from altering approved/binding content while still enforcing formatting on code. |
+
+## E. Decisions made in Unit 0.2
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U2-001 | Install Next.js 16.2.10, React 19.2.7, and next-intl 4.13.2 (pinned exactly); defer Tailwind/shadcn to the design-system units. | Implemented under owner-authorized scope | Delivers the locale routing + RTL/LTR base without pulling design-system work (Units 0.3–0.4) into this unit. |
+| U2-002 | Reuse the shared `Locale` model (`LOCALES`, `DEFAULT_LOCALE`) from `@nisfi/shared` as the single source for next-intl routing. | Implemented under owner-authorized scope | Keeps locales consistent across web, functions, and routing (spec Sections 4, 13). |
+| U2-003 | Name the locale middleware `proxy.ts`. | Implemented under owner-authorized scope | Matches the master spec's `proxy.ts` (Section 9) and Next.js 16's renamed middleware entry point. |
+| U2-004 | Self-host IBM Plex Sans Arabic (Arabic) and Inter (Latin) via `next/font`. | Implemented under owner-authorized scope | Satisfies the Section 13 font requirement; `next/font` self-hosts the assets. |
+| U2-005 | Keep all UI copy in `messages/{ar,en,tr}.json`; no hardcoded strings in components. | Implemented under owner-authorized scope | Enforces the Section 13 localization rule from the first rendered surface. |
+| U2-006 | Deliver each completed unit to `main` (fast-forward) in addition to the working branch. | Implemented per explicit owner instruction (2026-07-21) | The owner directed that all work land on `main`. |

@@ -1,0 +1,14 @@
+{
+  "Landing": {
+    "brand": "Nisfi",
+    "tagline": "Evlilik niyetli tanışma — önce gizlilik ve doğrulama.",
+    "intro": "Dünya genelindeki ciddi Müslümanlar için premium ve güvenli bir deneyim geliştiriyoruz. Site yapım aşamasında.",
+    "status": "Yapım aşamasında"
+  },
+  "LocaleSwitcher": {
+    "label": "Dil",
+    "ar": "Arapça",
+    "en": "İngilizce",
+    "tr": "Türkçe"
+  }
+}
