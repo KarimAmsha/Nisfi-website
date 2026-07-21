@@ -1,9 +1,9 @@
 import { getApps, initializeApp, type FirebaseApp } from "firebase/app";
-import { getAuth, type Auth } from "firebase/auth";
+import { connectAuthEmulator, getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
-import { appCheckSiteKey, firebaseConfig } from "./env";
+import { appCheckSiteKey, AUTH_EMULATOR_URL, firebaseConfig, useEmulator } from "./env";
 
 /**
  * The web app's Firebase client. This module (under
@@ -38,8 +38,15 @@ export function ensureAppCheck(): void {
   appCheckStarted = true;
 }
 
+let authEmulatorConnected = false;
+
 export function firebaseAuth(): Auth {
-  return getAuth(getFirebaseApp());
+  const auth = getAuth(getFirebaseApp());
+  if (useEmulator() && !authEmulatorConnected) {
+    connectAuthEmulator(auth, AUTH_EMULATOR_URL, { disableWarnings: true });
+    authEmulatorConnected = true;
+  }
+  return auth;
 }
 
 export function firebaseFirestore(): Firestore {

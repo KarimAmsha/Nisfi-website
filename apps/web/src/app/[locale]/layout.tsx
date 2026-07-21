@@ -6,6 +6,7 @@ import { setRequestLocale } from "next-intl/server";
 import { IBM_Plex_Sans_Arabic, Inter } from "next/font/google";
 import { directionForLocale } from "@nisfi/shared";
 import { routing } from "@/i18n/routing";
+import { AuthProvider } from "@/lib/auth-context";
 import "../globals.css";
 
 const arabicFont = IBM_Plex_Sans_Arabic({
@@ -48,7 +49,9 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <html lang={locale} dir={direction} className={`${arabicFont.variable} ${latinFont.variable}`}>
       <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

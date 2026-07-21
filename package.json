@@ -18,7 +18,7 @@
     "test": "pnpm -r run test",
     "check": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test",
     "emulators": "firebase emulators:start --project demo-nisfi",
-    "test:rules": "firebase emulators:exec --only firestore --project demo-nisfi \"vitest run --config firebase/vitest.config.ts\""
+    "test:rules": "firebase emulators:exec --only firestore,auth --project demo-nisfi \"vitest run --config firebase/vitest.config.ts\""
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

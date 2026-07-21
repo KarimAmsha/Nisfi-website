@@ -7,11 +7,16 @@ import { z } from "zod";
 import { useTranslations } from "next-intl";
 import { Field } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useAuth } from "@/lib/auth-context";
+import { authErrorKey } from "@/lib/auth-error";
 
 export function RegisterForm() {
   const t = useTranslations("Auth");
-  const [submitted, setSubmitted] = useState(false);
+  const { signUp, resendVerification, configured } = useAuth();
+  const router = useRouter();
+  const [pending, setPending] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const schema = z
     .object({
@@ -31,9 +36,20 @@ export function RegisterForm() {
     formState: { errors, isSubmitting },
   } = useForm<Values>({ resolver: zodResolver(schema) });
 
-  const onSubmit = handleSubmit(async () => {
-    await new Promise((r) => setTimeout(r, 500));
-    setSubmitted(true);
+  const onSubmit = handleSubmit(async (values) => {
+    setFormError(null);
+    if (!configured) {
+      await new Promise((r) => setTimeout(r, 400));
+      setPending(true);
+      return;
+    }
+    try {
+      await signUp({ email: values.email, password: values.password });
+      await resendVerification();
+      router.push("/auth/verify-email");
+    } catch (error) {
+      setFormError(t(`errors.${authErrorKey(error)}`));
+    }
   });
 
   return (
@@ -62,10 +78,15 @@ export function RegisterForm() {
         error={errors.confirmPassword?.message}
         {...register("confirmPassword")}
       />
+      {formError ? (
+        <p role="alert" className="rounded-md bg-danger/10 px-3 py-2 text-sm text-danger">
+          {formError}
+        </p>
+      ) : null}
       <Button type="submit" block loading={isSubmitting}>
         {t("register.submit")}
       </Button>
-      {submitted ? (
+      {pending ? (
         <p role="status" className="rounded-md bg-info/10 px-3 py-2 text-sm text-info">
           {t("pendingNote")}
         </p>

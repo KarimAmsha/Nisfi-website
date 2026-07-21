@@ -7,11 +7,16 @@ import { z } from "zod";
 import { useTranslations } from "next-intl";
 import { Field } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useAuth } from "@/lib/auth-context";
+import { authErrorKey } from "@/lib/auth-error";
 
 export function LoginForm() {
   const t = useTranslations("Auth");
-  const [submitted, setSubmitted] = useState(false);
+  const { signIn, configured } = useAuth();
+  const router = useRouter();
+  const [pending, setPending] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const schema = z.object({
     email: z.string().min(1, t("errors.emailRequired")).email(t("errors.emailInvalid")),
@@ -25,11 +30,19 @@ export function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<Values>({ resolver: zodResolver(schema) });
 
-  const onSubmit = handleSubmit(async () => {
-    // Auth backend is wired in Unit 1.4 (Firebase Auth emulator). For now the
-    // form validates and shows a truthful pending state.
-    await new Promise((r) => setTimeout(r, 500));
-    setSubmitted(true);
+  const onSubmit = handleSubmit(async (values) => {
+    setFormError(null);
+    if (!configured) {
+      await new Promise((r) => setTimeout(r, 400));
+      setPending(true);
+      return;
+    }
+    try {
+      const user = await signIn(values);
+      router.push(user.emailVerified ? "/app" : "/auth/verify-email");
+    } catch (error) {
+      setFormError(t(`errors.${authErrorKey(error)}`));
+    }
   });
 
   return (
@@ -55,10 +68,15 @@ export function LoginForm() {
           {t("login.forgotLink")}
         </Link>
       </div>
+      {formError ? (
+        <p role="alert" className="rounded-md bg-danger/10 px-3 py-2 text-sm text-danger">
+          {formError}
+        </p>
+      ) : null}
       <Button type="submit" block loading={isSubmitting}>
         {t("login.submit")}
       </Button>
-      {submitted ? (
+      {pending ? (
         <p role="status" className="rounded-md bg-info/10 px-3 py-2 text-sm text-info">
           {t("pendingNote")}
         </p>

@@ -3,6 +3,7 @@ import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { RequireAdmin } from "@/components/auth/auth-gate";
 
 export default async function AdminLayout({
   children,
@@ -16,5 +17,5 @@ export default async function AdminLayout({
     notFound();
   }
   setRequestLocale(locale);
-  return children;
+  return <RequireAdmin>{children}</RequireAdmin>;
 }

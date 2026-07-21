@@ -9,8 +9,8 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 1 — Public experience and authentication |
-| Current unit | Unit 1.3 — register / login / forgot-password UI and validation (delivered to `main`) |
-| Implementation state | Delivered to `main`. Phase 0 foundation complete except deferred real Firebase/production wiring (O-001); building Phase 1 against emulators/mocks. Auth backend integration is Unit 1.4. |
+| Current unit | Unit 1.4 — Firebase Auth integration (email/password, verification, route guards) on the Auth emulator (delivered to `main`) |
+| Implementation state | Delivered to `main`. Phase 1 feature work complete; gate G1's real-project connection is deferred to the final production step (O-001). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
@@ -107,6 +107,17 @@ Add next-intl locale routing over the scaffold: the URL prefix is always present
 - **O-001 — secrets/wiring deferred to a final step.** Real Firebase config/credentials, image-platform keys, and production deployment are done **once, at the end**. Until then, feature units are built and verified against emulators/mocks. Gate G0's real-project connection is therefore deferred; the 0.5 foundation (boundary, emulators, rules, env-based init, CI) stands.
 - **O-002 — images on a free platform (Cloudinary), not Firebase Storage.** Overrides Section 4/10.14/11.3 for image storage. Privacy preserved via Cloudinary private/authenticated delivery + on-the-fly blur + short-lived signed reveal URLs. The `StorageService` port stays backend-agnostic; the adapter (built in Unit 2.4) targets Cloudinary. Firebase remains for Auth/Firestore/Functions/FCM/App Check.
 
+## Unit 1.4 — completed (delivered to `main`)
+
+Firebase Authentication integrated through the backend-agnostic boundary, exercised on the Auth emulator (no real keys, O-001).
+
+- **Port + adapter:** `core/ports/auth.ts` (`AuthService`, `AuthError`) and `infrastructure/firebase/auth.service.ts` (email/password sign-up/in/out, password reset, email verification, `onAuthChange` with role from custom claims). Firebase errors map to stable domain codes.
+- **Emulator wiring:** `env.ts` emulator mode (demo config + `NEXT_PUBLIC_FIREBASE_USE_EMULATOR`), `client.ts` connects the Auth emulator; public pages still render when Firebase is unconfigured.
+- **Client auth state:** `lib/auth-context.tsx` (`AuthProvider` in the root locale layout, `useAuth`).
+- **Flows:** login/register/forgot forms call the service (honest pending state when unconfigured); email-verification screen (`/auth/verify-email`) with resend + re-check; first-login routing to `/app` (or verify-email).
+- **Guards:** `RequireAuth` on `/app`, `RequireAdmin` on `/admin` — UX only (real authorization stays server-side via rules; A-008). Permissive when unconfigured so shells stay viewable in preview.
+- **Tests:** `firebase/tests/auth.test.ts` — auth path against the emulator; `pnpm test:rules` now runs firestore + auth → **9 tests pass**. `pnpm check` + `next build` green (65 routes).
+
 ## Unit 1.3 — completed (delivered to `main`)
 
 Register / login / forgot-password UI and validation (react-hook-form + zod), UI only — the auth backend is Unit 1.4.
@@ -139,7 +150,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 1 / Unit 1.4: Firebase Auth integration** — email/password sign-up + login + password reset, email verification, session/route-guard strategy, and first-login routing, exercised against the **Firebase Auth emulator** (per O-001; no real project keys yet). This is the last unit before gate G1.
+**Phase 2 / Unit 2.1: domain schemas, profile repository, and security rules/tests for the private/public profile split.** Builds on the auth boundary and the Firestore rules foundation, on emulators (O-001). Gate G1's real-project connection remains deferred to the final production step.
 
 ### Deferred to the final "production wiring" step (O-001)
 

@@ -153,11 +153,24 @@
       "emailInvalid": "Enter a valid email address.",
       "passwordRequired": "Password is required.",
       "passwordMin": "At least 8 characters.",
-      "confirmMismatch": "Passwords do not match."
+      "confirmMismatch": "Passwords do not match.",
+      "invalidCredentials": "Incorrect email or password.",
+      "emailInUse": "This email is already in use.",
+      "authFailed": "Something went wrong. Please try again."
     },
     "legalNote": "By continuing you agree to the Terms and Privacy Policy.",
     "pendingNote": "Authentication will connect when Firebase is wired in the next step.",
-    "forgotSent": "If that email is registered, you'll receive a reset message."
+    "forgotSent": "If that email is registered, you'll receive a reset message.",
+    "verify": {
+      "title": "Verify your email",
+      "subtitle": "One last step before you sign in.",
+      "body": "We sent a verification link to {email}. Open it, then come back and continue.",
+      "resend": "Resend link",
+      "resent": "Link resent.",
+      "checkAgain": "I've verified, continue",
+      "notYet": "Your email isn't verified yet. Open the link in your inbox, then try again.",
+      "signOut": "Sign out"
+    }
   },
   "LocaleSwitcher": {
     "label": "Language",

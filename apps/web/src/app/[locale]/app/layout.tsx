@@ -4,6 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { MemberShell } from "@/components/shell/member-shell";
+import { RequireAuth } from "@/components/auth/auth-gate";
 
 export default async function MemberAppLayout({
   children,
@@ -17,5 +18,9 @@ export default async function MemberAppLayout({
     notFound();
   }
   setRequestLocale(locale);
-  return <MemberShell>{children}</MemberShell>;
+  return (
+    <RequireAuth>
+      <MemberShell>{children}</MemberShell>
+    </RequireAuth>
+  );
 }

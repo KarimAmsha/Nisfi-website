@@ -153,11 +153,24 @@
       "emailInvalid": "Geçerli bir e-posta girin.",
       "passwordRequired": "Şifre gerekli.",
       "passwordMin": "En az 8 karakter.",
-      "confirmMismatch": "Şifreler eşleşmiyor."
+      "confirmMismatch": "Şifreler eşleşmiyor.",
+      "invalidCredentials": "E-posta veya şifre hatalı.",
+      "emailInUse": "Bu e-posta zaten kullanımda.",
+      "authFailed": "Bir şeyler ters gitti. Lütfen tekrar dene."
     },
     "legalNote": "Devam ederek Şartlar'ı ve Gizlilik Politikası'nı kabul edersin.",
     "pendingNote": "Kimlik doğrulama, bir sonraki adımda Firebase bağlandığında etkinleşecek.",
-    "forgotSent": "Bu e-posta kayıtlıysa, bir sıfırlama mesajı alacaksın."
+    "forgotSent": "Bu e-posta kayıtlıysa, bir sıfırlama mesajı alacaksın.",
+    "verify": {
+      "title": "E-postanı doğrula",
+      "subtitle": "Giriş yapmadan önce son bir adım.",
+      "body": "{email} adresine bir doğrulama bağlantısı gönderdik. Bağlantıyı aç, sonra geri dönüp devam et.",
+      "resend": "Bağlantıyı yeniden gönder",
+      "resent": "Bağlantı yeniden gönderildi.",
+      "checkAgain": "Doğruladım, devam et",
+      "notYet": "E-postan henüz doğrulanmadı. Gelen kutundaki bağlantıyı aç, sonra tekrar dene.",
+      "signOut": "Çıkış yap"
+    }
   },
   "LocaleSwitcher": {
     "label": "Dil",

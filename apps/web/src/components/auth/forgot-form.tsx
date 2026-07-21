@@ -8,9 +8,11 @@ import { useTranslations } from "next-intl";
 import { Field } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { useAuth } from "@/lib/auth-context";
 
 export function ForgotForm() {
   const t = useTranslations("Auth");
+  const { sendPasswordReset, configured } = useAuth();
   const [sent, setSent] = useState(false);
 
   const schema = z.object({
@@ -24,8 +26,17 @@ export function ForgotForm() {
     formState: { errors, isSubmitting },
   } = useForm<Values>({ resolver: zodResolver(schema) });
 
-  const onSubmit = handleSubmit(async () => {
-    await new Promise((r) => setTimeout(r, 500));
+  const onSubmit = handleSubmit(async (values) => {
+    // Always show the same neutral result — never reveal whether an email exists.
+    if (configured) {
+      try {
+        await sendPasswordReset(values.email);
+      } catch {
+        // Swallow: the response must not disclose account existence.
+      }
+    } else {
+      await new Promise((r) => setTimeout(r, 400));
+    }
     setSent(true);
   });
 
