@@ -183,7 +183,12 @@
     "step1": "Temeller",
     "step2": "Konum ve diller",
     "step3": "Durum",
+    "step4": "Geçmiş",
+    "step5": "Planlar",
+    "step6": "Uyum",
     "choose": "Seç…",
+    "optional": "(isteğe bağlı)",
+    "compatibilityHint": "Sana uygun olanı yanıtla; herhangi bir soruyu atlayabilirsin.",
     "fields": {
       "displayName": "Görünen ad",
       "gender": "Cinsiyet",
@@ -193,7 +198,12 @@
       "languages": "Diller",
       "maritalStatus": "Medeni durum",
       "children": "Çocuk",
-      "religiousness": "Dindarlık"
+      "religiousness": "Dindarlık",
+      "education": "Eğitim",
+      "occupation": "Meslek",
+      "marriageTimeline": "Evlilik zaman çizelgesi",
+      "about": "Hakkında",
+      "visibility": "Profil görünürlüğü"
     },
     "options": {
       "genderMale": "Erkek",
@@ -210,7 +220,12 @@
       "relPrefer": "Belirtmek istemiyorum",
       "langAr": "Arapça",
       "langEn": "İngilizce",
-      "langTr": "Türkçe"
+      "langTr": "Türkçe",
+      "marriageWithinYear": "Bir yıl içinde",
+      "marriageOneToTwo": "Bir ila iki yıl",
+      "marriageNotSure": "Henüz emin değilim",
+      "visVisible": "Uygun üyelere görünür",
+      "visHidden": "Şimdilik gizli"
     },
     "errors": {
       "required": "Bu alan gerekli.",

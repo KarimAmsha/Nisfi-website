@@ -4,30 +4,29 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   CHILDREN_STATUSES,
   GENDERS,
+  localized,
   LOCALES,
+  type Locale,
   MARITAL_STATUSES,
+  MARRIAGE_TIMELINES,
+  PROFILE_VISIBILITY,
   RELIGIOUSNESS,
+  STARTER_QUESTIONS,
 } from "@nisfi/shared";
 import { Field } from "@/components/ui/input";
 import { SelectField } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { useAuth } from "@/lib/auth-context";
 import { Link } from "@/i18n/navigation";
-import { buttonVariants } from "@/components/ui/button";
 import { profileRepository } from "@/infrastructure/firebase/profile.repository";
 
 const DRAFT_KEY = "nisfi.onboarding.draft.v1";
 const LANGUAGE_LABEL_KEY = { ar: "langAr", en: "langEn", tr: "langTr" } as const;
-const STEP_FIELDS = [
-  ["displayName", "gender", "birthDate"],
-  ["country", "city", "languages"],
-  ["maritalStatus", "children", "religiousness"],
-] as const;
 
 function loadDraft(): Record<string, unknown> {
   if (typeof window === "undefined") return {};
@@ -40,6 +39,7 @@ function loadDraft(): Record<string, unknown> {
 
 export function OnboardingWizard() {
   const t = useTranslations("Onboarding");
+  const locale = useLocale();
   const { user, configured } = useAuth();
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
@@ -57,8 +57,23 @@ export function OnboardingWizard() {
     maritalStatus: z.enum(MARITAL_STATUSES, { message: t("errors.required") }),
     children: z.enum(CHILDREN_STATUSES, { message: t("errors.required") }),
     religiousness: z.enum(RELIGIOUSNESS, { message: t("errors.required") }),
+    education: z.string().trim().max(120).optional(),
+    occupation: z.string().trim().max(120).optional(),
+    marriageTimeline: z.enum(MARRIAGE_TIMELINES, { message: t("errors.required") }),
+    about: z.string().trim().max(600).optional(),
+    visibility: z.enum(PROFILE_VISIBILITY, { message: t("errors.required") }),
+    answers: z.record(z.string(), z.string()).optional(),
   });
   type Values = z.infer<typeof schema>;
+
+  const STEP_FIELDS: (keyof Values)[][] = [
+    ["displayName", "gender", "birthDate"],
+    ["country", "city", "languages"],
+    ["maritalStatus", "children", "religiousness"],
+    ["education", "occupation"],
+    ["marriageTimeline", "about"],
+    ["visibility"],
+  ];
 
   const {
     register,
@@ -69,10 +84,9 @@ export function OnboardingWizard() {
     formState: { errors },
   } = useForm<Values>({
     resolver: zodResolver(schema),
-    defaultValues: { languages: [], ...loadDraft() } as Partial<Values>,
+    defaultValues: { languages: [], answers: {}, ...loadDraft() } as Partial<Values>,
   });
 
-  // Resumable: persist every change to localStorage.
   useEffect(() => {
     const sub = watch((values) => {
       window.localStorage.setItem(DRAFT_KEY, JSON.stringify(values));
@@ -81,11 +95,17 @@ export function OnboardingWizard() {
   }, [watch]);
 
   const selectedLanguages = watch("languages") ?? [];
-  const toggleLanguage = (locale: (typeof LOCALES)[number]) => {
-    const next = selectedLanguages.includes(locale)
-      ? selectedLanguages.filter((l) => l !== locale)
-      : [...selectedLanguages, locale];
+  const answers = watch("answers") ?? {};
+
+  const toggleLanguage = (l: Locale) => {
+    const next = selectedLanguages.includes(l)
+      ? selectedLanguages.filter((x) => x !== l)
+      : [...selectedLanguages, l];
     setValue("languages", next, { shouldValidate: true, shouldDirty: true });
+  };
+
+  const setAnswer = (questionId: string, optionId: string) => {
+    setValue("answers", { ...answers, [questionId]: optionId }, { shouldDirty: true });
   };
 
   const goNext = async () => {
@@ -116,7 +136,7 @@ export function OnboardingWizard() {
     );
   }
 
-  const stepTitles = [t("step1"), t("step2"), t("step3")];
+  const stepTitles = [t("step1"), t("step2"), t("step3"), t("step4"), t("step5"), t("step6")];
 
   return (
     <div className="flex flex-col gap-5">
@@ -184,13 +204,13 @@ export function OnboardingWizard() {
               <div className="flex flex-col gap-1.5">
                 <span className="text-sm font-medium text-ink">{t("fields.languages")}</span>
                 <div className="flex flex-wrap gap-2">
-                  {LOCALES.map((locale) => {
-                    const active = selectedLanguages.includes(locale);
+                  {LOCALES.map((l) => {
+                    const active = selectedLanguages.includes(l);
                     return (
                       <button
-                        key={locale}
+                        key={l}
                         type="button"
-                        onClick={() => toggleLanguage(locale)}
+                        onClick={() => toggleLanguage(l)}
                         aria-pressed={active}
                         className={cn(
                           "rounded-full border px-4 py-2 text-sm transition-colors",
@@ -199,7 +219,7 @@ export function OnboardingWizard() {
                             : "border-border text-ink-600 hover:border-primary",
                         )}
                       >
-                        {t(`options.${LANGUAGE_LABEL_KEY[locale]}`)}
+                        {t(`options.${LANGUAGE_LABEL_KEY[l]}`)}
                       </button>
                     );
                   })}
@@ -246,6 +266,77 @@ export function OnboardingWizard() {
                   { value: "preferNotToSay", label: t("options.relPrefer") },
                 ]}
                 {...register("religiousness")}
+              />
+            </>
+          ) : null}
+
+          {step === 3 ? (
+            <>
+              <Field
+                label={`${t("fields.education")} ${t("optional")}`}
+                error={errors.education?.message}
+                {...register("education")}
+              />
+              <Field
+                label={`${t("fields.occupation")} ${t("optional")}`}
+                error={errors.occupation?.message}
+                {...register("occupation")}
+              />
+            </>
+          ) : null}
+
+          {step === 4 ? (
+            <>
+              <SelectField
+                label={t("fields.marriageTimeline")}
+                placeholder={t("choose")}
+                error={errors.marriageTimeline?.message}
+                options={[
+                  { value: "withinYear", label: t("options.marriageWithinYear") },
+                  { value: "oneToTwoYears", label: t("options.marriageOneToTwo") },
+                  { value: "notSure", label: t("options.marriageNotSure") },
+                ]}
+                {...register("marriageTimeline")}
+              />
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="about" className="text-sm font-medium text-ink">
+                  {`${t("fields.about")} ${t("optional")}`}
+                </label>
+                <textarea
+                  id="about"
+                  rows={4}
+                  className="rounded-md border border-border bg-surface px-3.5 py-2.5 text-ink placeholder:text-ink-600/70 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                  {...register("about")}
+                />
+              </div>
+            </>
+          ) : null}
+
+          {step === 5 ? (
+            <>
+              <p className="text-sm text-ink-600">{t("compatibilityHint")}</p>
+              {STARTER_QUESTIONS.map((question) => (
+                <SelectField
+                  key={question.id}
+                  label={localized(question.text, locale)}
+                  placeholder={t("choose")}
+                  value={answers[question.id] ?? ""}
+                  onChange={(e) => setAnswer(question.id, e.target.value)}
+                  options={question.options.map((option) => ({
+                    value: option.id,
+                    label: localized(option.label, locale),
+                  }))}
+                />
+              ))}
+              <SelectField
+                label={t("fields.visibility")}
+                placeholder={t("choose")}
+                error={errors.visibility?.message}
+                options={[
+                  { value: "visible", label: t("options.visVisible") },
+                  { value: "hidden", label: t("options.visHidden") },
+                ]}
+                {...register("visibility")}
               />
             </>
           ) : null}

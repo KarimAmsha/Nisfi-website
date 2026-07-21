@@ -43,14 +43,14 @@ service cloud.firestore {
       return [
         'displayName', 'gender', 'birthDate', 'country', 'city', 'about',
         'maritalStatus', 'children', 'religiousness', 'education', 'occupation',
-        'marriageTimeline', 'languages', 'visibility', 'updatedAt'
+        'marriageTimeline', 'languages', 'visibility', 'answers', 'updatedAt'
       ];
     }
     function profileCreateKeys() {
       return [
         'displayName', 'gender', 'birthDate', 'country', 'city', 'about',
         'maritalStatus', 'children', 'religiousness', 'education', 'occupation',
-        'marriageTimeline', 'languages', 'visibility', 'updatedAt', 'createdAt'
+        'marriageTimeline', 'languages', 'visibility', 'answers', 'updatedAt', 'createdAt'
       ];
     }
 

@@ -9,12 +9,21 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 2 — Profile, onboarding, photos, and identity verification |
-| Current unit | Unit 2.2 — onboarding steps 1–3 (profile builder) with resumable saving (delivered to `main`) |
+| Current unit | Unit 2.3 — onboarding steps 4–6, compatibility questions, and completion logic (delivered to `main`) |
 | Implementation state | Delivered to `main`. Building Phase 2 on emulators/mocks; gates G1/G2 real-project connection deferred to the final production step (O-001). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 2.3 — completed (delivered to `main`)
+
+Onboarding steps 4–6, dynamic compatibility questions, and profile-completion logic.
+
+- **Wizard (now 6 steps):** adds Background (education/occupation), Plans (marriage timeline + about textarea), and Compatibility (dynamic questions + visibility). Per-step validation, resumable draft, RTL.
+- **Compatibility questions** (`packages/shared/src/compatibility.ts`): localized `CompatibilityQuestion` schema + a starter set rendered dynamically (final wording is owner decision D-008; admin CRUD via `questionBank` comes in a later unit). Answers stored on the profile as `answers` (added to the schema and the rules field-lock).
+- **Completion logic:** `computeProfileCompletion()` (pure, 0–100%) over tracked fields + answered questions, unit-tested — shared tests now **14**.
+- **Verified:** `pnpm check` + `next build` (68 routes) green; `pnpm test:rules` 17 tests green (profile field-lock still holds with the new `answers` key).
 
 ## Unit 2.2 — completed (delivered to `main`)
 
@@ -170,7 +179,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 2 / Unit 2.3: onboarding steps 4–6 and admin-driven compatibility questions** — remaining profile fields (education/occupation, marriage timeline, about, visibility) plus the dynamic localized question set and completion logic, on emulators (O-001).
+**Phase 2 / Unit 2.4: photo upload/reorder/delete, processing pipeline, and moderation states — on the free image platform (Cloudinary, per O-002).** Private originals, on-the-fly blurred public views, and short-lived signed reveal URLs, behind a backend-agnostic `StorageService` port. Emulator/mocked where possible (O-001).
 
 ### Deferred to the final "production wiring" step (O-001)
 

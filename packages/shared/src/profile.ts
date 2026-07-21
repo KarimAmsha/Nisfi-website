@@ -34,6 +34,8 @@ export const editableProfileSchema = z.object({
   marriageTimeline: z.enum(MARRIAGE_TIMELINES),
   languages: z.array(z.enum(LOCALES)).min(1).max(3),
   visibility: z.enum(PROFILE_VISIBILITY),
+  /** Compatibility answers: questionId -> optionId (master spec Section 10.9). */
+  answers: z.record(z.string(), z.string()).optional(),
 });
 export type EditableProfile = z.infer<typeof editableProfileSchema>;
 

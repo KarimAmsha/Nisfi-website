@@ -183,7 +183,12 @@
     "step1": "الأساسيات",
     "step2": "الموقع واللغات",
     "step3": "الوضع",
+    "step4": "الخلفية",
+    "step5": "الخطط",
+    "step6": "التوافق",
     "choose": "اختر…",
+    "optional": "(اختياري)",
+    "compatibilityHint": "أجب بما يناسبك؛ يمكنك ترك أيّ سؤال.",
     "fields": {
       "displayName": "الاسم الظاهر",
       "gender": "الجنس",
@@ -193,7 +198,12 @@
       "languages": "اللغات",
       "maritalStatus": "الحالة الاجتماعية",
       "children": "الأطفال",
-      "religiousness": "الالتزام الديني"
+      "religiousness": "الالتزام الديني",
+      "education": "التعليم",
+      "occupation": "المهنة",
+      "marriageTimeline": "إطار الزواج",
+      "about": "نبذة عنك",
+      "visibility": "ظهور الملف"
     },
     "options": {
       "genderMale": "ذكر",
@@ -210,7 +220,12 @@
       "relPrefer": "أفضّل عدم الذكر",
       "langAr": "العربية",
       "langEn": "الإنجليزية",
-      "langTr": "التركية"
+      "langTr": "التركية",
+      "marriageWithinYear": "خلال سنة",
+      "marriageOneToTwo": "سنة إلى سنتين",
+      "marriageNotSure": "غير محدّد",
+      "visVisible": "ظاهر للأعضاء المؤهّلين",
+      "visHidden": "مخفي مؤقّتًا"
     },
     "errors": {
       "required": "هذا الحقل مطلوب.",

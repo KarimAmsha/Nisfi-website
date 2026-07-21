@@ -25,3 +25,14 @@ export {
   type PublicProfile,
   type PrivateProfile,
 } from "./profile";
+
+export {
+  localizedTextSchema,
+  compatibilityOptionSchema,
+  compatibilityQuestionSchema,
+  localized,
+  STARTER_QUESTIONS,
+  computeProfileCompletion,
+  type LocalizedText,
+  type CompatibilityQuestion,
+} from "./compatibility";

@@ -183,7 +183,12 @@
     "step1": "Basics",
     "step2": "Location & languages",
     "step3": "Situation",
+    "step4": "Background",
+    "step5": "Plans",
+    "step6": "Compatibility",
     "choose": "Choose…",
+    "optional": "(optional)",
+    "compatibilityHint": "Answer what fits you; you can skip any question.",
     "fields": {
       "displayName": "Display name",
       "gender": "Gender",
@@ -193,7 +198,12 @@
       "languages": "Languages",
       "maritalStatus": "Marital status",
       "children": "Children",
-      "religiousness": "Religiousness"
+      "religiousness": "Religiousness",
+      "education": "Education",
+      "occupation": "Occupation",
+      "marriageTimeline": "Marriage timeline",
+      "about": "About you",
+      "visibility": "Profile visibility"
     },
     "options": {
       "genderMale": "Male",
@@ -210,7 +220,12 @@
       "relPrefer": "Prefer not to say",
       "langAr": "Arabic",
       "langEn": "English",
-      "langTr": "Turkish"
+      "langTr": "Turkish",
+      "marriageWithinYear": "Within a year",
+      "marriageOneToTwo": "One to two years",
+      "marriageNotSure": "Not sure yet",
+      "visVisible": "Visible to eligible members",
+      "visHidden": "Hidden for now"
     },
     "errors": {
       "required": "This field is required.",
