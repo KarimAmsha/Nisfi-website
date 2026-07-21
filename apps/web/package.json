@@ -14,6 +14,7 @@
     "@nisfi/shared": "workspace:*",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
+    "firebase": "12.16.0",
     "next": "16.2.10",
     "next-intl": "4.13.2",
     "react": "19.2.7",

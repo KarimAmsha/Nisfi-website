@@ -1,0 +1,48 @@
+rules_version = '2';
+
+// Nisfi Storage security rules — Unit 0.5 baseline (master spec Sections 10.14, 11.3).
+// DEFAULT DENY. Core invariant enforced from the start: original photos and
+// verification selfies are NEVER client-readable (including staff); access to
+// originals happens only through server-authorized signed URLs. Blurred photos
+// are written by Cloud Functions only.
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isOwner(u) {
+      return signedIn() && request.auth.uid == u;
+    }
+    function isImage() {
+      return request.resource.size < 8 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp)');
+    }
+
+    // Original photos: no client read (incl. staff); owner may create only.
+    match /profiles/{u}/photos/original/{photoId} {
+      allow read: if false;
+      allow create: if isOwner(u) && isImage();
+      allow update, delete: if false;
+    }
+
+    // Blurred photos: Functions-only write; authenticated read (full eligibility
+    // gating against photo metadata lands in Unit 2.4).
+    match /profiles/{u}/photos/blurred/{photoId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Verification selfies: owner may create once; no member read; staff access
+    // is via short-lived server-authorized URLs; Functions delete by retention.
+    match /verification/{u}/{requestId} {
+      allow read: if false;
+      allow create: if isOwner(u) && isImage();
+      allow update, delete: if false;
+    }
+
+    // Everything else is denied until explicitly designed and tested.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

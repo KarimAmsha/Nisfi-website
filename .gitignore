@@ -25,6 +25,14 @@ serviceAccountKey*.json
 coverage/
 .vitest/
 
+# Firebase emulators & artifacts
+.firebase/
+*-debug.log
+firebase-debug.log
+firestore-debug.log
+storage-debug.log
+ui-debug.log
+
 # Editor / OS
 .DS_Store
 .idea/

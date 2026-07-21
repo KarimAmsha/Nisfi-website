@@ -25,7 +25,12 @@ Unit 0.3 presented two visual directions; the owner selected **Direction A «و�
 
 Unit 0.4 builds that system on the app: Tailwind v4 tokens, primitives (`src/components/ui`), and the member and admin shells (`src/components/shell`) with responsive navigation and localized state patterns. The member app renders at `/[locale]/app/*` and the admin console at `/[locale]/admin/*`.
 
-The next proposed work unit is Phase 0 / Unit 0.5 (Firebase adapters/ports boundary, emulators, App Check/env wiring, CI, and the restricted-import lint rule), which closes Phase 0. It needs owner-provided Firebase inputs (see `docs/DECISIONS.md`, D-002).
+Unit 0.5 establishes the Firebase boundary and foundation: the restricted-import ESLint rule (`firebase/*` only under `infrastructure/firebase/**`), emulator config (`firebase.json`, `.firebaserc`, `firestore.indexes.json`), baseline default-deny `firestore.rules`/`storage.rules` with passing emulator tests (`pnpm test:rules`), env-based client/admin init, and CI. Real cloud wiring closes Phase 0 (gate G0) once the owner provides Firebase config/credentials as environment secrets (see `docs/DECISIONS.md`, D-002).
+
+```bash
+pnpm test:rules     # run Firestore security-rules tests under the emulator (needs Java)
+pnpm emulators      # start the Firebase emulators locally
+```
 
 ## Approved technical baseline
 

@@ -11,3 +11,7 @@ allowBuilds:
   "@swc/core": false
   # Optional native file watcher; the JS fallback is sufficient.
   "@parcel/watcher": false
+  # Firebase/protobuf/re2 postinstalls are optional for our build, emulator, and tests.
+  "@firebase/util": false
+  protobufjs: false
+  re2: false

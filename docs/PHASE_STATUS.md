@@ -9,14 +9,28 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 0 — Product foundation and approved design language |
-| Current unit | Unit 0.4 — approved design tokens, primitives, member/admin shells, responsive nav, `docs/DESIGN_SYSTEM.md` |
-| Implementation state | Implemented and verified; delivered to `main` and `claude/project-review-a9s1w1` |
+| Current unit | Unit 0.5 — Firebase adapters/ports boundary, emulator config, App Check/env wiring, CI, restricted-import lint rule (closes Phase 0 / gate G0) |
+| Implementation state | Boundary, emulator config, baseline security rules + passing emulator tests, env-based client/server init, and CI implemented and delivered to `main`. Real environment wiring pending owner-provided Firebase config/secrets (D-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
 
-## Unit 0.4 — current
+## Unit 0.5 — current (in progress)
+
+Establishes the backend boundary and Firebase foundation. Real cloud wiring/deployment awaits owner Firebase inputs (D-002); everything below is implemented and verified without secrets.
+
+- **Boundary lint rule:** ESLint `no-restricted-imports` forbids `firebase`/`firebase-admin` outside `apps/web/src/infrastructure/firebase/**` (Section 5.1).
+- **Emulator config:** `firebase.json` (auth/firestore/storage emulators), `.firebaserc` (project `nisfi-d9db1`), `firestore.indexes.json` (all nine composite indexes from Section 10.13).
+- **Security rules (baseline, default-deny):** `firestore.rules` and `storage.rules` encode the shared predicates (signedIn/isSelf/role/isStaff/isAdmin/isSuper/isActive) and core invariants — owner-only user docs with allow-listed updates, staff reads, functions-only audit logs, and originals/verification media never client-readable. Per-collection rules and the full Section 11.4 matrix expand in their feature units (e.g. profiles in 2.1).
+- **Emulator rules tests:** `firebase/tests/firestore.rules.test.ts` — **7 tests pass** under the Firestore emulator (unauth deny, owner read, other-member deny, moderator claim, field-lock deny, default-deny write, audit-log deny). Run via `pnpm test:rules`.
+- **Env-based init:** `infrastructure/firebase/{env,client}.ts` (web app + App Check, reads `NEXT_PUBLIC_*`) and `functions/src/firebase.ts` (Admin SDK, reads `FIREBASE_*` or ADC). No secrets hardcoded or committed.
+- **CI:** `.github/workflows/ci.yml` runs the quality gate + web build, plus a Java-backed job running the emulator rules tests.
+- **Verified:** `pnpm check` and `next build` green; `pnpm test:rules` green; emulators start.
+
+**Remaining for G0 (needs owner input, D-002):** provide the web config (`NEXT_PUBLIC_FIREBASE_*`, VAPID, reCAPTCHA App Check site key) and rotated server credentials as environment secrets; then connect the running app to the real project and confirm end-to-end. Feature adapters (profile/request/match/… repositories) and Cloud Functions handlers are built in their Phase 1+ units.
+
+## Unit 0.4 — completed
 
 The owner-approved «وَقار» direction is turned into a real design system on the Next.js app: Tailwind v4 tokens, primitives, member and admin shells, responsive navigation, and state patterns, recorded in `docs/DESIGN_SYSTEM.md`.
 
@@ -88,15 +102,15 @@ Add next-intl locale routing over the scaffold: the URL prefix is always present
 | Locale switching | Switcher links to `/ar`, `/en`, `/tr`; active locale marked `aria-current` |
 | Aggregate gate | `pnpm check` passes: typecheck, lint, format, and 5 tests across 3 packages |
 
+## Closing Phase 0 (gate G0) — owner action needed
+
+The Unit 0.5 foundation is implemented and verified (see the Unit 0.5 section above). To close gate G0, the owner provides (decision D-002), through **environment secrets — never pasted in chat**:
+
+- Web config: `NEXT_PUBLIC_FIREBASE_*`, `NEXT_PUBLIC_FIREBASE_VAPID_KEY`, and `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` (App Check).
+- Server credentials: `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` (rotated — the key first shared on 2026-07-21 must be revoked).
+
+Then: connect the running app to the real project, confirm end-to-end, and complete the G0 review. Also pending before real cloud resources: region/data-residency (D-004) and billing guardrails (D-003).
+
 ## Next proposed unit — do not execute without approval
 
-**Phase 0 / Unit 0.5: Firebase adapters/ports boundary, emulator config, App Check/env wiring, CI, and the restricted-import lint rule.**
-
-Unit 0.5 depends on owner-provided inputs (decision D-002): Firebase development/staging/production project IDs, web configuration, VAPID key, and server credentials through a secure channel. **This closes Phase 0 (gate G0).**
-
-**Groundwork already in place (no secrets):**
-
-- The `no-restricted-imports` ESLint rule now forbids `firebase`/`firebase-admin` imports outside `apps/web/src/infrastructure/firebase/**` (Section 5.1 boundary).
-- A GitHub Actions CI workflow (`.github/workflows/ci.yml`) runs `pnpm install --frozen-lockfile`, `pnpm check`, and the web build on Node 22 / pnpm 11.
-
-**Still needed from the owner (D-002), supplied securely — never pasted in chat:** the client web config (`NEXT_PUBLIC_FIREBASE_*`, VAPID key) and server credentials (`FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`) as environment variables/secrets. Remaining 0.5 work (Firebase adapters implementing the ports, App Check/env wiring, and Firestore/Storage emulator config with rules tests) is done once those are provided.
+**Phase 1 / Unit 1.1: premium localized landing page and shared public navigation/footer** — after G0 is closed. Firebase feature adapters (profile/request/match/… repositories) and Cloud Functions handlers are built in their Phase 1+ units on top of the boundary established here.

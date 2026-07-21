@@ -1,0 +1,102 @@
+rules_version = '2';
+
+// Nisfi Firestore security rules — Unit 0.5 baseline.
+// Starts from DEFAULT DENY (master spec Section 11). Shared predicates and the
+// core invariants are established here; per-collection rules and the full
+// emulator test matrix (Section 11.4) are expanded in each feature unit
+// (e.g. profiles in Unit 2.1). Custom claims — not the mirrored Firestore
+// field — are authoritative for roles.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+    function uid() {
+      return request.auth.uid;
+    }
+    function isSelf(u) {
+      return signedIn() && uid() == u;
+    }
+    function role() {
+      return signedIn() && request.auth.token.role != null ? request.auth.token.role : 'user';
+    }
+    function isStaff() {
+      return role() in ['moderator', 'admin', 'superAdmin'];
+    }
+    function isAdmin() {
+      return role() in ['admin', 'superAdmin'];
+    }
+    function isSuper() {
+      return role() == 'superAdmin';
+    }
+    function isActive() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(uid()))
+        && get(/databases/$(database)/documents/users/$(uid())).data.status == 'active';
+    }
+    function changedKeys() {
+      return request.resource.data.diff(resource.data).affectedKeys();
+    }
+
+    // users/{uid}: owner + staff read; no client create/delete; owner may update
+    // only allow-listed preference/locale fields. Role/status/counters are
+    // server-only (Cloud Functions with admin privileges bypass these rules).
+    match /users/{u} {
+      allow read: if isSelf(u) || isStaff();
+      allow create, delete: if false;
+      allow update: if isSelf(u)
+        && changedKeys().hasOnly(['locale', 'preferences', 'updatedAt']);
+
+      match /devices/{deviceId} {
+        allow read: if isSelf(u);
+        allow write: if isSelf(u);
+      }
+      match /private/{doc} {
+        allow read: if isSelf(u) || isStaff();
+        allow write: if isSelf(u);
+      }
+    }
+
+    // profiles/{uid}: owner + staff always; active members may read (full
+    // eligibility/visibility gating and field locks land in Unit 2.1).
+    match /profiles/{u} {
+      allow read: if isSelf(u) || isStaff() || isActive();
+      allow create, update: if isSelf(u);
+      allow delete: if false;
+
+      match /private/{doc} {
+        allow read: if isSelf(u) || isStaff();
+        allow write: if isSelf(u);
+      }
+    }
+
+    // verificationRequests: owner + staff read; active owner may create a
+    // strictly-shaped pending request; decisions are server-only.
+    match /verificationRequests/{id} {
+      allow read: if isStaff() || (signedIn() && resource.data.uid == uid());
+      allow create: if isActive()
+        && request.resource.data.uid == uid()
+        && request.resource.data.status == 'pending';
+      allow update, delete: if false;
+    }
+
+    // notifications: owner reads; owner may only flip `read`; no create/delete.
+    match /notifications/{u}/items/{id} {
+      allow read: if isSelf(u);
+      allow update: if isSelf(u) && changedKeys().hasOnly(['read']);
+      allow create, delete: if false;
+    }
+
+    // auditLogs: superAdmin read only; append is Functions-only.
+    match /auditLogs/{id} {
+      allow read: if isSuper();
+      allow write: if false;
+    }
+
+    // Everything not explicitly designed and tested yet is denied to clients.
+    // (Cloud Functions use the Admin SDK and are not subject to these rules.)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

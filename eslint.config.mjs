@@ -16,6 +16,8 @@ export default tseslint.config(
       "**/.next/**",
       "**/next-env.d.ts",
       "**/*.tsbuildinfo",
+      // Emulator rules tests run outside the TS project graph (own vitest config).
+      "firebase/**",
     ],
   },
   eslint.configs.recommended,
