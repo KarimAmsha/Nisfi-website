@@ -7,6 +7,74 @@
     "enterApp": "Uygulamaya gir",
     "openAdmin": "Yönetim konsolu"
   },
+  "Public": {
+    "nav": {
+      "howItWorks": "Nasıl çalışır",
+      "principles": "İlkelerimiz",
+      "faq": "SSS",
+      "login": "Giriş",
+      "getStarted": "Başla"
+    },
+    "footer": {
+      "tagline": "Ciddi, evlilik niyetli tanışma — gizli ve doğrulanmış.",
+      "product": "Ürün",
+      "company": "Nisfi hakkında",
+      "about": "Hakkında",
+      "contact": "İletişim",
+      "legal": "Yasal",
+      "privacy": "Gizlilik",
+      "terms": "Şartlar",
+      "rights": "Tüm hakları saklıdır.",
+      "draftNote": "Yasal sayfalar inceleme aşamasındaki taslaklardır."
+    }
+  },
+  "Home": {
+    "hero": {
+      "eyebrow": "Evlilik niyetli tanışma",
+      "titleA": "Ciddi bir tanışma ",
+      "titleEm": "güvenle",
+      "titleB": " başlar, fotoğrafla değil.",
+      "subtitle": "Dünya genelindeki ciddi Müslümanlar için korumalı bir platform: doğrulanmış kimlikler, karşılıklı onaya kadar gizli tutulan fotoğraflar ve baskısız saygılı iletişim.",
+      "primaryCta": "Başla",
+      "secondaryCta": "Nisfi nasıl çalışır",
+      "trust1": "Doğrulanmış kimlik",
+      "trust2": "Gizli fotoğraflar",
+      "trust3": "Kaydırma yok"
+    },
+    "how": {
+      "title": "Üç sakin adım",
+      "subtitle": "Acele yok, geri sayım yok.",
+      "step1Title": "Kimliğini doğrula",
+      "step1Desc": "Görünmeden önce ciddiyeti manuel bir inceleme doğrular.",
+      "step2Title": "Sakince göz at",
+      "step2Desc": "Görünüşe değil, uyuma dayalı profiller.",
+      "step3Title": "Saygıyla iletişim kur",
+      "step3Desc": "Bir düşünülmüş istek, ardından karşılıklı onayla fotoğraf açılması."
+    },
+    "principles": {
+      "title": "Ödün vermediğimiz ilkeler",
+      "p1Title": "Önce gizlilik",
+      "p1Desc": "Fotoğraflarınız varsayılan olarak bulanık, doğum tarihiniz gizli ve verileriniz sizindir.",
+      "p2Title": "Gerçek doğrulama",
+      "p2Desc": "İnsan eliyle kimlik incelemesi, ciddi olmayanları uzak tutar.",
+      "p3Title": "Baskısız saygı",
+      "p3Desc": "Kaydırma yok, takip yok ve biri reddettiğinde utanç yok."
+    },
+    "faq": {
+      "title": "Sıkça sorulanlar",
+      "q1": "Fotoğraflarım herkese görünür mü?",
+      "a1": "Hayır. Fotoğraflarınız varsayılan olarak bulanıktır ve yalnızca siz ve diğer kişi kabul ettiğinizde açılır.",
+      "q2": "Doğrulama nasıl işler?",
+      "a2": "Bir kimlik belgesi ve selfie yüklersiniz; bir ekip tarafından manuel incelenir ve gizli kalır.",
+      "q3": "Nisfi ücretsiz mi?",
+      "a3": "Ücretsiz başlarsınız. Gelecekteki ücretli planlar net olacak, sürpriz olmayacak."
+    },
+    "cta": {
+      "title": "Yolculuğuna ciddiyetle başla",
+      "subtitle": "Zamanına ve gizliliğine saygı duyan bir topluluğa katıl.",
+      "button": "Profilini oluştur"
+    }
+  },
   "LocaleSwitcher": {
     "label": "Dil",
     "ar": "Arapça",

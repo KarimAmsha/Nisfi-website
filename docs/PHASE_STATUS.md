@@ -8,17 +8,17 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 
 | Field | Value |
 |---|---|
-| Current phase | Phase 0 — Product foundation and approved design language |
-| Current unit | Unit 0.5 — Firebase adapters/ports boundary, emulator config, App Check/env wiring, CI, restricted-import lint rule (closes Phase 0 / gate G0) |
-| Implementation state | Boundary, emulator config, baseline security rules + passing emulator tests, env-based client/server init, and CI implemented and delivered to `main`. Real environment wiring pending owner-provided Firebase config/secrets (D-002). |
+| Current phase | Phase 1 — Public experience and authentication |
+| Current unit | Unit 1.1 — premium localized landing page and shared public nav/footer (delivered to `main`) |
+| Implementation state | Delivered to `main`. Phase 0 foundation complete except the deferred real Firebase/production wiring (O-001); building Phase 1 features against emulators/mocks. |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
 
-## Unit 0.5 — current (in progress)
+## Unit 0.5 — completed (foundation; real wiring deferred per O-001)
 
-Establishes the backend boundary and Firebase foundation. Real cloud wiring/deployment awaits owner Firebase inputs (D-002); everything below is implemented and verified without secrets.
+Establishes the backend boundary and Firebase foundation. Real cloud wiring/deployment is deferred to the final production step (O-001); everything below is implemented and verified without secrets.
 
 - **Boundary lint rule:** ESLint `no-restricted-imports` forbids `firebase`/`firebase-admin` outside `apps/web/src/infrastructure/firebase/**` (Section 5.1).
 - **Emulator config:** `firebase.json` (auth/firestore/storage emulators), `.firebaserc` (project `nisfi-d9db1`), `firestore.indexes.json` (all nine composite indexes from Section 10.13).
@@ -102,15 +102,26 @@ Add next-intl locale routing over the scaffold: the URL prefix is always present
 | Locale switching | Switcher links to `/ar`, `/en`, `/tr`; active locale marked `aria-current` |
 | Aggregate gate | `pnpm check` passes: typecheck, lint, format, and 5 tests across 3 packages |
 
-## Closing Phase 0 (gate G0) — owner action needed
+## Owner directives — 2026-07-21 (affect the whole plan)
 
-The Unit 0.5 foundation is implemented and verified (see the Unit 0.5 section above). To close gate G0, the owner provides (decision D-002), through **environment secrets — never pasted in chat**:
+- **O-001 — secrets/wiring deferred to a final step.** Real Firebase config/credentials, image-platform keys, and production deployment are done **once, at the end**. Until then, feature units are built and verified against emulators/mocks. Gate G0's real-project connection is therefore deferred; the 0.5 foundation (boundary, emulators, rules, env-based init, CI) stands.
+- **O-002 — images on a free platform (Cloudinary), not Firebase Storage.** Overrides Section 4/10.14/11.3 for image storage. Privacy preserved via Cloudinary private/authenticated delivery + on-the-fly blur + short-lived signed reveal URLs. The `StorageService` port stays backend-agnostic; the adapter (built in Unit 2.4) targets Cloudinary. Firebase remains for Auth/Firestore/Functions/FCM/App Check.
 
-- Web config: `NEXT_PUBLIC_FIREBASE_*`, `NEXT_PUBLIC_FIREBASE_VAPID_KEY`, and `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` (App Check).
-- Server credentials: `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` (rotated — the key first shared on 2026-07-21 must be revoked).
+## Unit 1.1 — completed (delivered to `main`)
 
-Then: connect the running app to the real project, confirm end-to-end, and complete the G0 review. Also pending before real cloud resources: region/data-residency (D-004) and billing guardrails (D-003).
+Premium localized landing page and shared public navigation/footer on the Waqār system.
 
-## Next proposed unit — do not execute without approval
+- **Public shell:** `PublicHeader` (brand, section nav, locale switcher, log-in/get-started) and `PublicFooter` (product/legal columns, locale, draft-legal note, rights).
+- **Landing sections:** hero (headline + geometric brand art + trust row), how-it-works (3 steps), principles (3), FAQ (3), and a final CTA.
+- **SEO:** localized `generateMetadata` with title/description, canonical, `hreflang` alternates (ar/en/tr), and Open Graph.
+- **i18n:** `Public` + `Home` namespaces added to all three locales; no hardcoded UI strings.
+- **Verified:** desktop RTL (Arabic) and LTR (English, mirrored) via Chromium; `pnpm check` and `next build` green. Legal links render as draft text (real pages arrive in Unit 1.2). Auth CTAs point to `/app` until auth lands (1.3/1.4).
 
-**Phase 1 / Unit 1.1: premium localized landing page and shared public navigation/footer** — after G0 is closed. Firebase feature adapters (profile/request/match/… repositories) and Cloud Functions handlers are built in their Phase 1+ units on top of the boundary established here.
+## Next proposed unit
+
+**Phase 1 / Unit 1.2: about / contact / FAQ and legal-page shells** with clear draft/legal-review labelling — then 1.3 (register/login/forgot-password UI) and 1.4 (Firebase Auth via emulator, per O-001).
+
+### Deferred to the final "production wiring" step (O-001)
+
+- Provide, as environment secrets: Firebase web config (`NEXT_PUBLIC_FIREBASE_*`, VAPID, reCAPTCHA App Check site key), rotated server credentials (`FIREBASE_*`), and Cloudinary keys.
+- Connect to the real Firebase project + Cloudinary, region/data-residency (D-004), billing guardrails (D-003), then deploy. This closes gate G0 and enables production.

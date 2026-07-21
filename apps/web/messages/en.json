@@ -7,6 +7,74 @@
     "enterApp": "Enter the app",
     "openAdmin": "Admin console"
   },
+  "Public": {
+    "nav": {
+      "howItWorks": "How it works",
+      "principles": "Principles",
+      "faq": "FAQ",
+      "login": "Log in",
+      "getStarted": "Get started"
+    },
+    "footer": {
+      "tagline": "Serious, marriage-intent matchmaking — private and verified.",
+      "product": "Product",
+      "company": "About Nisfi",
+      "about": "About",
+      "contact": "Contact",
+      "legal": "Legal",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "rights": "All rights reserved.",
+      "draftNote": "Legal pages are drafts under review."
+    }
+  },
+  "Home": {
+    "hero": {
+      "eyebrow": "Marriage-intent matchmaking",
+      "titleA": "A serious introduction begins with ",
+      "titleEm": "trust",
+      "titleB": ", not a photo.",
+      "subtitle": "A protected platform for serious Muslims worldwide: verified identities, photos kept private until mutual consent, and respectful contact without pressure.",
+      "primaryCta": "Get started",
+      "secondaryCta": "How Nisfi works",
+      "trust1": "Verified identity",
+      "trust2": "Private photos",
+      "trust3": "No swipe mechanics"
+    },
+    "how": {
+      "title": "Three calm steps",
+      "subtitle": "No rush, no countdowns.",
+      "step1Title": "Verify your identity",
+      "step1Desc": "A manual review confirms seriousness before you appear.",
+      "step2Title": "Browse deliberately",
+      "step2Desc": "Profiles built on compatibility, not appearance.",
+      "step3Title": "Connect respectfully",
+      "step3Desc": "One considered request, then photo reveal by mutual consent."
+    },
+    "principles": {
+      "title": "Principles we won't compromise",
+      "p1Title": "Privacy first",
+      "p1Desc": "Your photos are blurred by default, your date of birth is private, and your data is yours.",
+      "p2Title": "Real verification",
+      "p2Desc": "Human identity review keeps out the non-serious.",
+      "p3Title": "Respect without pressure",
+      "p3Desc": "No swiping, no chasing, and no shame when someone declines."
+    },
+    "faq": {
+      "title": "Frequently asked",
+      "q1": "Are my photos visible to everyone?",
+      "a1": "No. Your photos are blurred by default and revealed only when you and the other person both agree.",
+      "q2": "How does verification work?",
+      "a2": "You upload an ID document and a selfie, reviewed manually by a human team; they stay private.",
+      "q3": "Is Nisfi free?",
+      "a3": "You start for free. Any future paid plans will be clear, with no surprises."
+    },
+    "cta": {
+      "title": "Begin your journey, seriously",
+      "subtitle": "Join a community that respects your time and privacy.",
+      "button": "Create your profile"
+    }
+  },
   "LocaleSwitcher": {
     "label": "Language",
     "ar": "Arabic",
