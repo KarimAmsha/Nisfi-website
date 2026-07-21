@@ -92,4 +92,11 @@ Add next-intl locale routing over the scaffold: the URL prefix is always present
 
 **Phase 0 / Unit 0.5: Firebase adapters/ports boundary, emulator config, App Check/env wiring, CI, and the restricted-import lint rule.**
 
-Unit 0.5 depends on owner-provided inputs (decision D-002): Firebase development/staging/production project IDs, web configuration, VAPID key, and server credentials through a secure channel. Emulator scaffolding and the no-Firebase-import-outside-`infrastructure/firebase/**` lint rule can be prepared without secrets, but real wiring and any deployment need those inputs. **This closes Phase 0 (gate G0).**
+Unit 0.5 depends on owner-provided inputs (decision D-002): Firebase development/staging/production project IDs, web configuration, VAPID key, and server credentials through a secure channel. **This closes Phase 0 (gate G0).**
+
+**Groundwork already in place (no secrets):**
+
+- The `no-restricted-imports` ESLint rule now forbids `firebase`/`firebase-admin` imports outside `apps/web/src/infrastructure/firebase/**` (Section 5.1 boundary).
+- A GitHub Actions CI workflow (`.github/workflows/ci.yml`) runs `pnpm install --frozen-lockfile`, `pnpm check`, and the web build on Node 22 / pnpm 11.
+
+**Still needed from the owner (D-002), supplied securely — never pasted in chat:** the client web config (`NEXT_PUBLIC_FIREBASE_*`, VAPID key) and server credentials (`FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`) as environment variables/secrets. Remaining 0.5 work (Firebase adapters implementing the ports, App Check/env wiring, and Firestore/Storage emulator config with rules tests) is done once those are provided.

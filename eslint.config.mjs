@@ -47,6 +47,26 @@ export default tseslint.config(
     },
   },
   {
+    // Backend-agnostic boundary (master spec Section 5.1): `firebase/*` may be
+    // imported only inside the web app's infrastructure/firebase layer.
+    files: ["apps/web/src/**/*.{ts,tsx}"],
+    ignores: ["apps/web/src/infrastructure/firebase/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["firebase", "firebase/*", "firebase-admin", "firebase-admin/*"],
+              message:
+                "Firebase may only be imported inside apps/web/src/infrastructure/firebase/** (master spec Section 5.1). Consume domain ports instead.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     // Config files run in Node and are not part of the TS project graph.
     files: ["**/*.config.{js,mjs,ts}"],
     ...tseslint.configs.disableTypeChecked,
