@@ -240,6 +240,24 @@
     },
     "pendingNote": "Firebase bağlandığında hesabına kaydedilecek; ilerlemen şimdilik yerel olarak saklanıyor."
   },
+  "Photos": {
+    "title": "Fotoğrafların",
+    "subtitle": "Fotoğrafların korumalı: üyeler yalnızca bulanık bir sürüm görür, karşılıklı onayla açılır.",
+    "add": "Fotoğraf ekle",
+    "addHint": "JPG, PNG veya WEBP, en fazla 8 MB.",
+    "count": "{count}/{max}",
+    "privacyNote": "Orijinal gizlidir ve herkese açık okunamaz; ekibimiz her fotoğrafı bulanık gösteriminden önce inceler.",
+    "empty": "Henüz fotoğraf yok. Başlamak için bir tane ekle.",
+    "moderationPending": "İncelemede",
+    "moderationApproved": "Onaylandı",
+    "moderationRejected": "Reddedildi",
+    "moveEarlier": "Öne al",
+    "moveLater": "Geriye al",
+    "delete": "Sil",
+    "errorType": "Desteklenmeyen dosya türü.",
+    "errorSize": "Fotoğraf 8 MB'tan büyük.",
+    "errorLimit": "Fotoğraf sınırına ulaştın."
+  },
   "LocaleSwitcher": {
     "label": "Dil",
     "ar": "Arapça",

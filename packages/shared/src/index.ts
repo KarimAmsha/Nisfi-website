@@ -36,3 +36,14 @@ export {
   type LocalizedText,
   type CompatibilityQuestion,
 } from "./compatibility";
+
+export {
+  PHOTO_MODERATION,
+  MAX_PHOTOS,
+  MAX_PHOTO_BYTES,
+  ACCEPTED_IMAGE_TYPES,
+  validatePhotoFile,
+  type Photo,
+  type PhotoModeration,
+  type PhotoValidationError,
+} from "./photo";

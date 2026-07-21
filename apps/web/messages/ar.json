@@ -240,6 +240,24 @@
     },
     "pendingNote": "سيُحفَظ في حسابك عند ربط Firebase؛ تقدّمك محفوظ محليًّا الآن."
   },
+  "Photos": {
+    "title": "صورك",
+    "subtitle": "صورك محميّة: لا يرى الأعضاء إلا نسخة محجوبة، وتُكشف الأصلية بموافقة الطرفين.",
+    "add": "إضافة صورة",
+    "addHint": "JPG أو PNG أو WEBP، حتى 8 ميغابايت.",
+    "count": "{count}/{max}",
+    "privacyNote": "الأصل خاصّ ولا يُقرأ علنًا؛ يراجع الفريق كل صورة قبل ظهورها المحجوب.",
+    "empty": "لا صور بعد. أضف صورة لتبدأ.",
+    "moderationPending": "قيد المراجعة",
+    "moderationApproved": "معتمدة",
+    "moderationRejected": "مرفوضة",
+    "moveEarlier": "تقديم",
+    "moveLater": "تأخير",
+    "delete": "حذف",
+    "errorType": "نوع الملف غير مدعوم.",
+    "errorSize": "حجم الصورة أكبر من 8 ميغابايت.",
+    "errorLimit": "بلغت الحد الأقصى لعدد الصور."
+  },
   "LocaleSwitcher": {
     "label": "اللغة",
     "ar": "العربية",

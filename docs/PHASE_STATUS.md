@@ -9,12 +9,22 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 2 — Profile, onboarding, photos, and identity verification |
-| Current unit | Unit 2.3 — onboarding steps 4–6, compatibility questions, and completion logic (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 2 on emulators/mocks; gates G1/G2 real-project connection deferred to the final production step (O-001). |
+| Current unit | Unit 2.4 — photo upload/reorder/delete, moderation states, on Cloudinary (preview/mock) (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 2 on emulators/mocks; real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 2.4 — completed (delivered to `main`; real Cloudinary deferred per O-001)
+
+Photo upload/reorder/delete and moderation states behind a backend-agnostic `StorageService` port, targeting the free image platform (Cloudinary, O-002).
+
+- **Shared:** `Photo` types + moderation states (`pending`/`approved`/`rejected`), limits (`MAX_PHOTOS`, `MAX_PHOTO_BYTES`, accepted types), and `validatePhotoFile()` (unit-tested — shared tests now 18).
+- **Port + adapters:** `core/ports/storage.ts` (`StorageService`); a preview **mock** adapter (in-memory, owner object-URL previews, new photos start `pending`) and a documented **Cloudinary** adapter skeleton (private originals, on-the-fly `e_blur` public view, short-lived signed reveal URLs, signed uploads). `getStorageService()` picks Cloudinary when configured, else the mock.
+- **UI:** `PhotoManager` at `/[locale]/app/me` — add (client type/size/limit validation), reorder (earlier/later), delete, per-photo moderation badge, count, and a prominent privacy note. RTL-verified in the member shell.
+- **Deferred:** real Cloudinary credentials + the signed-upload Cloud Function are wired in the final production step (O-001). `.env.example` documents `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` + server keys.
+- **Verified:** `pnpm check` + `next build` (71 routes) green; RTL screenshot.
 
 ## Unit 2.3 — completed (delivered to `main`)
 
@@ -179,7 +189,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 2 / Unit 2.4: photo upload/reorder/delete, processing pipeline, and moderation states — on the free image platform (Cloudinary, per O-002).** Private originals, on-the-fly blurred public views, and short-lived signed reveal URLs, behind a backend-agnostic `StorageService` port. Emulator/mocked where possible (O-001).
+**Phase 2 / Unit 2.5: verification submission and user status experience** — the private selfie path/rules (kept off the public image platform), and the retry/rejection UX, on emulators (O-001).
 
 ### Deferred to the final "production wiring" step (O-001)
 

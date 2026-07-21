@@ -240,6 +240,24 @@
     },
     "pendingNote": "This will save to your account when Firebase is connected; your progress is stored locally for now."
   },
+  "Photos": {
+    "title": "Your photos",
+    "subtitle": "Your photos are protected: members see only a blurred version, revealed by mutual consent.",
+    "add": "Add photo",
+    "addHint": "JPG, PNG, or WEBP, up to 8 MB.",
+    "count": "{count}/{max}",
+    "privacyNote": "The original is private and never publicly readable; our team reviews each photo before its blurred display.",
+    "empty": "No photos yet. Add one to get started.",
+    "moderationPending": "In review",
+    "moderationApproved": "Approved",
+    "moderationRejected": "Rejected",
+    "moveEarlier": "Move earlier",
+    "moveLater": "Move later",
+    "delete": "Delete",
+    "errorType": "Unsupported file type.",
+    "errorSize": "Photo is larger than 8 MB.",
+    "errorLimit": "You've reached the photo limit."
+  },
   "LocaleSwitcher": {
     "label": "Language",
     "ar": "Arabic",
