@@ -75,6 +75,50 @@
       "button": "Profilini oluştur"
     }
   },
+  "About": {
+    "title": "Nisfi hakkında",
+    "lead": "Nisfi, dünya genelindeki ciddi Müslümanlar için önce gizlilik ve doğrulama ilkesiyle kurulmuş evlilik niyetli bir tanışma platformudur.",
+    "missionTitle": "Misyonumuz",
+    "missionBody": "Ciddiyetin ve uyumun görünüşten önce geldiği, saygılı ve güvenli bir alan sunmak — geçici uygulama mantığından uzak.",
+    "notTitle": "Nisfi ne değildir",
+    "notBody": "Geçici bir flört uygulaması ya da sosyal ağ değildir; kaydırma yok, herkese açık fotoğraf yok ve sahte vaatler yok.",
+    "valuesTitle": "Değerlerimiz",
+    "v1": "Gizlilik bir özellik değil, bir haktır.",
+    "v2": "Doğrulama herkesi korur.",
+    "v3": "Her etkileşimde saygı."
+  },
+  "Contact": {
+    "title": "İletişim",
+    "lead": "Sizi duymaktan memnuniyet duyarız. Site yapım aşamasında ve resmi destek kanalları hazırlanıyor.",
+    "channelsNote": "Destek kanallarını ve yanıt sürelerini lansmandan önce resmi olarak duyuracağız; tutamayacağımız sözler vermeyiz.",
+    "comingSoon": "İletişim formu kendi onaylı biriminde etkinleştirilecek."
+  },
+  "Legal": {
+    "draftBadge": "Taslak",
+    "draftNotice": "Bu sayfa yalnızca örnek amaçlı erken bir taslaktır, nihai bir hukuki belge değildir. Hukuki inceleme aşamasındadır ve hiçbir yükümlülük veya garanti oluşturmaz.",
+    "lastReviewLabel": "Durum",
+    "underReview": "Hukuki inceleme aşamasında",
+    "privacy": {
+      "title": "Gizlilik politikası",
+      "intro": "Verilerinizi en aza indirmeye ve korumaya bağlıyız. Bu taslak, hukuki metin onaylanana kadar genel ilkeleri özetler.",
+      "s1Title": "Neleri topluyoruz",
+      "s1Body": "Sağladığınız hesap ve profil verileri ile hizmeti çalıştırmak ve güvence altına almak için gereken temel teknik bilgiler.",
+      "s2Title": "Fotoğraflar ve hassas veriler",
+      "s2Body": "Fotoğraflar varsayılan olarak bulanıktır ve herkese açık okunamaz; doğrulama selfie'si gizlidir. Doğum tarihi ve doğrulama verileri hassas kabul edilir.",
+      "s3Title": "Haklarınız",
+      "s3Body": "Nihai hukuki metin ve düzenleyici inceleme çerçevesinde erişim, düzeltme ve silme haklarına sahipsiniz."
+    },
+    "terms": {
+      "title": "Kullanım şartları",
+      "intro": "Bu taslak, nihai hukuki metin onaylanana kadar genel kullanım beklentilerini belirler.",
+      "s1Title": "Uygunluk",
+      "s1Body": "Hizmet, saygılı davranış ve doğru bilgi taahhüdü veren, evlilik konusunda ciddi yetişkinler içindir.",
+      "s2Title": "Kabul edilebilir davranış",
+      "s2Body": "Taciz, kimliğe bürünme ve saldırgan içerik yasaktır; topluluğu korumak için moderasyon işlemleri yapılabilir.",
+      "s3Title": "Hesap ve fesih",
+      "s3Body": "Hesabınızı yönetebilir ve silebilirsiniz; ihlal eden hesaplar güvenlik politikalarımız uyarınca kısıtlanabilir."
+    }
+  },
   "LocaleSwitcher": {
     "label": "Dil",
     "ar": "Arapça",

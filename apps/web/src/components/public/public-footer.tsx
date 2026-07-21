@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { BrandMark } from "@/components/ui/brand-mark";
 
@@ -10,7 +11,7 @@ export function PublicFooter() {
 
   return (
     <footer className="border-t border-border bg-surface">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-[1.5fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2.5 font-bold text-ink">
             <BrandMark />
@@ -45,16 +46,42 @@ export function PublicFooter() {
           </ul>
         </nav>
 
-        <div>
+        <nav aria-label={t("company")}>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-ink-600">
+            {t("company")}
+          </h4>
+          <ul className="mt-3 flex flex-col gap-2 text-sm text-ink">
+            <li>
+              <Link href="/about" className="hover:text-primary-700">
+                {t("about")}
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:text-primary-700">
+                {t("contact")}
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
+        <nav aria-label={t("legal")}>
           <h4 className="text-xs font-semibold uppercase tracking-wider text-ink-600">
             {t("legal")}
           </h4>
-          <ul className="mt-3 flex flex-col gap-2 text-sm text-ink-600">
-            <li>{t("privacy")}</li>
-            <li>{t("terms")}</li>
+          <ul className="mt-3 flex flex-col gap-2 text-sm text-ink">
+            <li>
+              <Link href="/privacy" className="hover:text-primary-700">
+                {t("privacy")}
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" className="hover:text-primary-700">
+                {t("terms")}
+              </Link>
+            </li>
           </ul>
           <p className="mt-3 text-xs text-ink-600">{t("draftNote")}</p>
-        </div>
+        </nav>
       </div>
 
       <div className="border-t border-border">

@@ -75,6 +75,50 @@
       "button": "Create your profile"
     }
   },
+  "About": {
+    "title": "About Nisfi",
+    "lead": "Nisfi is a marriage-intent matchmaking platform for serious Muslims worldwide, built on privacy and verification first.",
+    "missionTitle": "Our mission",
+    "missionBody": "To offer a respectful, safe space where seriousness and compatibility come before appearance — far from throwaway-app mechanics.",
+    "notTitle": "What Nisfi is not",
+    "notBody": "It is not a casual dating app or a social network; no swiping, no public photo display, and no false promises.",
+    "valuesTitle": "Our values",
+    "v1": "Privacy is a right, not a feature.",
+    "v2": "Verification protects everyone.",
+    "v3": "Respect in every interaction."
+  },
+  "Contact": {
+    "title": "Contact us",
+    "lead": "We'd love to hear from you. The site is under construction and official support channels are being set up.",
+    "channelsNote": "We will announce support channels and response times officially before launch; we don't make promises we can't keep.",
+    "comingSoon": "The contact form will be enabled in its approved unit."
+  },
+  "Legal": {
+    "draftBadge": "Draft",
+    "draftNotice": "This page is an early draft for illustration only, not a final legal document. It is under legal review and creates no obligation or guarantee.",
+    "lastReviewLabel": "Status",
+    "underReview": "Under legal review",
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "We are committed to minimizing and protecting your data. This draft outlines the general principles until the legal text is approved.",
+      "s1Title": "What we collect",
+      "s1Body": "The account and profile data you provide, and basic technical information needed to run and secure the service.",
+      "s2Title": "Photos and sensitive data",
+      "s2Body": "Photos are blurred by default and never publicly readable; the verification selfie is private. Date of birth and verification data are treated as sensitive.",
+      "s3Title": "Your rights",
+      "s3Body": "You have rights of access, correction, and deletion as set out by the final legal text and regulatory review."
+    },
+    "terms": {
+      "title": "Terms of use",
+      "intro": "This draft sets out general expectations of use until the final legal text is approved.",
+      "s1Title": "Eligibility",
+      "s1Body": "The service is for adults serious about marriage, who commit to respectful conduct and truthful information.",
+      "s2Title": "Acceptable conduct",
+      "s2Body": "Harassment, impersonation, and abusive content are prohibited; moderation actions may be taken to protect the community.",
+      "s3Title": "Account and termination",
+      "s3Body": "You can manage and delete your account; violating accounts may be restricted under our safety policies."
+    }
+  },
   "LocaleSwitcher": {
     "label": "Language",
     "ar": "Arabic",

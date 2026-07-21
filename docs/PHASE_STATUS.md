@@ -9,8 +9,8 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 1 — Public experience and authentication |
-| Current unit | Unit 1.1 — premium localized landing page and shared public nav/footer (delivered to `main`) |
-| Implementation state | Delivered to `main`. Phase 0 foundation complete except the deferred real Firebase/production wiring (O-001); building Phase 1 features against emulators/mocks. |
+| Current unit | Unit 1.2 — about / contact / legal-page shells (privacy, terms) with draft labelling (delivered to `main`) |
+| Implementation state | Delivered to `main`. Phase 0 foundation complete except deferred real Firebase/production wiring (O-001); building Phase 1 public surface against emulators/mocks. |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
@@ -107,6 +107,17 @@ Add next-intl locale routing over the scaffold: the URL prefix is always present
 - **O-001 — secrets/wiring deferred to a final step.** Real Firebase config/credentials, image-platform keys, and production deployment are done **once, at the end**. Until then, feature units are built and verified against emulators/mocks. Gate G0's real-project connection is therefore deferred; the 0.5 foundation (boundary, emulators, rules, env-based init, CI) stands.
 - **O-002 — images on a free platform (Cloudinary), not Firebase Storage.** Overrides Section 4/10.14/11.3 for image storage. Privacy preserved via Cloudinary private/authenticated delivery + on-the-fly blur + short-lived signed reveal URLs. The `StorageService` port stays backend-agnostic; the adapter (built in Unit 2.4) targets Cloudinary. Firebase remains for Auth/Firestore/Functions/FCM/App Check.
 
+## Unit 1.2 — completed (delivered to `main`)
+
+About / contact / legal-page shells on the public shell, localized, with clear draft/legal-review labelling and no invented legal assurances.
+
+- **Routes:** `/[locale]/about`, `/contact`, `/privacy`, `/terms` — all statically generated per locale.
+- **Legal pages:** a prominent `LegalDraftBanner` ("Draft · Under legal review") plus generic, obligation-free sections. Contact makes no support promises it can't keep (D-009 pending).
+- **Shared shell:** `PublicPage` + `PublicSection`; footer now links Company (about/contact) and Legal (privacy/terms).
+- **SEO:** per-page localized `generateMetadata` with canonical + hreflang alternates (`lib/seo.ts`).
+- **i18n:** `About` / `Contact` / `Legal` namespaces across ar/en/tr; no hardcoded strings.
+- **Verified:** desktop RTL (Arabic) via Chromium; all routes 200; `pnpm check` + `next build` green (53 routes).
+
 ## Unit 1.1 — completed (delivered to `main`)
 
 Premium localized landing page and shared public navigation/footer on the Waqār system.
@@ -119,7 +130,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 1 / Unit 1.2: about / contact / FAQ and legal-page shells** with clear draft/legal-review labelling — then 1.3 (register/login/forgot-password UI) and 1.4 (Firebase Auth via emulator, per O-001).
+**Phase 1 / Unit 1.3: register / login / forgot-password UI and validation** (three-locale field/error/loading flows) — then 1.4 (Firebase Auth integration via the Auth emulator, per O-001).
 
 ### Deferred to the final "production wiring" step (O-001)
 
