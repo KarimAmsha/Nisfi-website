@@ -12,7 +12,7 @@ export default tseslint.config(
       "**/build/**",
       "**/out/**",
       "**/coverage/**",
-      "**/lib/**",
+      "functions/lib/**",
       "**/.next/**",
       "**/next-env.d.ts",
       "**/*.tsbuildinfo",
@@ -59,9 +59,11 @@ export default tseslint.config(
         {
           patterns: [
             {
-              group: ["firebase", "firebase/*", "firebase-admin", "firebase-admin/*"],
+              // Anchored so it matches the Firebase SDK packages only, not our
+              // own `@/infrastructure/firebase/*` adapter modules.
+              regex: "^firebase(-admin)?(/.*)?$",
               message:
-                "Firebase may only be imported inside apps/web/src/infrastructure/firebase/** (master spec Section 5.1). Consume domain ports instead.",
+                "The Firebase SDK may only be imported inside apps/web/src/infrastructure/firebase/** (master spec Section 5.1). Consume domain ports/adapters instead.",
             },
           ],
         },

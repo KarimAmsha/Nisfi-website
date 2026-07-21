@@ -47,7 +47,7 @@ class FirestoreProfileRepository implements ProfileRepository {
     return snap.exists() ? toPublicProfile(uid, snap.data()) : null;
   }
 
-  async saveOwn(uid: string, data: EditableProfile): Promise<void> {
+  async saveOwn(uid: string, data: Partial<EditableProfile>): Promise<void> {
     const ref = this.profileRef(uid);
     const exists = (await getDoc(ref)).exists();
     await setDoc(

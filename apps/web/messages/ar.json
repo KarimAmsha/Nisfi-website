@@ -172,6 +172,59 @@
       "signOut": "تسجيل الخروج"
     }
   },
+  "Onboarding": {
+    "title": "أكمل ملفك",
+    "subtitle": "خطوات قصيرة، ويُحفَظ تقدّمك تلقائيًّا.",
+    "progress": "الخطوة {current} من {total}",
+    "autoSaved": "يُحفَظ تلقائيًّا",
+    "next": "التالي",
+    "back": "السابق",
+    "finish": "حفظ ومتابعة",
+    "step1": "الأساسيات",
+    "step2": "الموقع واللغات",
+    "step3": "الوضع",
+    "choose": "اختر…",
+    "fields": {
+      "displayName": "الاسم الظاهر",
+      "gender": "الجنس",
+      "birthDate": "تاريخ الميلاد",
+      "country": "الدولة",
+      "city": "المدينة",
+      "languages": "اللغات",
+      "maritalStatus": "الحالة الاجتماعية",
+      "children": "الأطفال",
+      "religiousness": "الالتزام الديني"
+    },
+    "options": {
+      "genderMale": "ذكر",
+      "genderFemale": "أنثى",
+      "maritalSingle": "أعزب/عزباء",
+      "maritalDivorced": "مطلّق/ة",
+      "maritalWidowed": "أرمل/ة",
+      "childrenNone": "لا يوجد",
+      "childrenHave": "لديّ أطفال",
+      "childrenPrefer": "أفضّل عدم الذكر",
+      "relPracticing": "ملتزم",
+      "relModerate": "معتدل",
+      "relLearning": "في طريق الالتزام",
+      "relPrefer": "أفضّل عدم الذكر",
+      "langAr": "العربية",
+      "langEn": "الإنجليزية",
+      "langTr": "التركية"
+    },
+    "errors": {
+      "required": "هذا الحقل مطلوب.",
+      "displayNameMin": "الاسم قصير جدًّا.",
+      "birthInvalid": "تاريخ غير صحيح.",
+      "languagesMin": "اختر لغة واحدة على الأقل."
+    },
+    "done": {
+      "title": "حُفظت خطواتك",
+      "body": "أكملنا الخطوات الأولى من ملفك. تابع إلى التطبيق أو أكمل لاحقًا.",
+      "goToApp": "المتابعة إلى نِصفي"
+    },
+    "pendingNote": "سيُحفَظ في حسابك عند ربط Firebase؛ تقدّمك محفوظ محليًّا الآن."
+  },
   "LocaleSwitcher": {
     "label": "اللغة",
     "ar": "العربية",

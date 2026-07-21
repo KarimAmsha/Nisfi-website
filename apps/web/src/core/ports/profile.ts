@@ -10,8 +10,9 @@ export interface ProfileRepository {
   getOwn(uid: string): Promise<PublicProfile | null>;
   /** Another member's public profile, subject to security rules. */
   getPublic(uid: string): Promise<PublicProfile | null>;
-  /** Create or update only the owner-editable public fields. */
-  saveOwn(uid: string, data: EditableProfile): Promise<void>;
+  /** Create or update owner-editable public fields (a subset is allowed, e.g.
+   * resumable onboarding). */
+  saveOwn(uid: string, data: Partial<EditableProfile>): Promise<void>;
   /** The owner's private, sensitive profile data. */
   getPrivate(uid: string): Promise<PrivateProfile | null>;
   savePrivate(uid: string, data: PrivateProfile): Promise<void>;

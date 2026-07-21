@@ -172,6 +172,59 @@
       "signOut": "Çıkış yap"
     }
   },
+  "Onboarding": {
+    "title": "Profilini tamamla",
+    "subtitle": "Kısa adımlar ve ilerlemen otomatik kaydedilir.",
+    "progress": "Adım {current} / {total}",
+    "autoSaved": "Otomatik kaydedildi",
+    "next": "İleri",
+    "back": "Geri",
+    "finish": "Kaydet ve devam et",
+    "step1": "Temeller",
+    "step2": "Konum ve diller",
+    "step3": "Durum",
+    "choose": "Seç…",
+    "fields": {
+      "displayName": "Görünen ad",
+      "gender": "Cinsiyet",
+      "birthDate": "Doğum tarihi",
+      "country": "Ülke",
+      "city": "Şehir",
+      "languages": "Diller",
+      "maritalStatus": "Medeni durum",
+      "children": "Çocuk",
+      "religiousness": "Dindarlık"
+    },
+    "options": {
+      "genderMale": "Erkek",
+      "genderFemale": "Kadın",
+      "maritalSingle": "Bekar",
+      "maritalDivorced": "Boşanmış",
+      "maritalWidowed": "Dul",
+      "childrenNone": "Yok",
+      "childrenHave": "Çocuğum var",
+      "childrenPrefer": "Belirtmek istemiyorum",
+      "relPracticing": "Uygulayan",
+      "relModerate": "Ilımlı",
+      "relLearning": "Öğrenme yolunda",
+      "relPrefer": "Belirtmek istemiyorum",
+      "langAr": "Arapça",
+      "langEn": "İngilizce",
+      "langTr": "Türkçe"
+    },
+    "errors": {
+      "required": "Bu alan gerekli.",
+      "displayNameMin": "Ad çok kısa.",
+      "birthInvalid": "Geçersiz tarih.",
+      "languagesMin": "En az bir dil seç."
+    },
+    "done": {
+      "title": "Adımların kaydedildi",
+      "body": "Profilinin ilk adımlarını kaydettik. Uygulamaya devam et veya sonra tamamla.",
+      "goToApp": "Nisfi'ye devam et"
+    },
+    "pendingNote": "Firebase bağlandığında hesabına kaydedilecek; ilerlemen şimdilik yerel olarak saklanıyor."
+  },
   "LocaleSwitcher": {
     "label": "Dil",
     "ar": "Arapça",

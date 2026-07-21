@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 2 — Profile, onboarding, photos, and identity verification |
-| Current unit | Unit 2.1 — profile domain schemas, profile repository, and private/public rules + tests (delivered to `main`) |
+| Current unit | Unit 2.2 — onboarding steps 1–3 (profile builder) with resumable saving (delivered to `main`) |
 | Implementation state | Delivered to `main`. Building Phase 2 on emulators/mocks; gates G1/G2 real-project connection deferred to the final production step (O-001). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 2.2 — completed (delivered to `main`)
+
+Onboarding profile-builder wizard, steps 1–3, resumable and localized.
+
+- **Route:** `/[locale]/onboarding` (noindex, `RequireAuth`). Steps: Basics (name/gender/DOB), Location & languages (country/city/language chips), Situation (marital/children/religiousness).
+- **Wizard:** react-hook-form + zod per-step validation; progress stepper; back/next; a `SelectField` primitive and language toggle chips; RTL-aware.
+- **Resumable:** progress persisted to `localStorage` on every change and restored on return; on finish, writes the collected fields via `ProfileRepository.saveOwn` (now accepts a partial) when Firebase is configured, otherwise keeps the local draft and shows an honest pending note.
+- **i18n:** `Onboarding` namespace (fields, enum option labels, errors) across ar/en/tr.
+- **Fix:** the ESLint ignore `**/lib/**` was unintentionally excluding `apps/web/src/lib/**` from linting; scoped it to `functions/lib/**`, and anchored the Firebase-boundary rule regex so it matches the SDK, not our `@/infrastructure/firebase/*` modules.
+- **Verified:** RTL wizard via Chromium; `pnpm check` + `next build` green (68 routes).
 
 ## Unit 2.1 — completed (delivered to `main`)
 
@@ -159,7 +170,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 2 / Unit 2.2: onboarding steps 1–3 with resumable saving** — the profile-builder wizard writing editable fields through the `ProfileRepository`, with validation, back/resume, and mobile RTL UX, on emulators (O-001).
+**Phase 2 / Unit 2.3: onboarding steps 4–6 and admin-driven compatibility questions** — remaining profile fields (education/occupation, marriage timeline, about, visibility) plus the dynamic localized question set and completion logic, on emulators (O-001).
 
 ### Deferred to the final "production wiring" step (O-001)
 

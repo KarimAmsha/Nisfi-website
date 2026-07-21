@@ -172,6 +172,59 @@
       "signOut": "Sign out"
     }
   },
+  "Onboarding": {
+    "title": "Complete your profile",
+    "subtitle": "Short steps, and your progress is saved automatically.",
+    "progress": "Step {current} of {total}",
+    "autoSaved": "Auto-saved",
+    "next": "Next",
+    "back": "Back",
+    "finish": "Save and continue",
+    "step1": "Basics",
+    "step2": "Location & languages",
+    "step3": "Situation",
+    "choose": "Choose…",
+    "fields": {
+      "displayName": "Display name",
+      "gender": "Gender",
+      "birthDate": "Date of birth",
+      "country": "Country",
+      "city": "City",
+      "languages": "Languages",
+      "maritalStatus": "Marital status",
+      "children": "Children",
+      "religiousness": "Religiousness"
+    },
+    "options": {
+      "genderMale": "Male",
+      "genderFemale": "Female",
+      "maritalSingle": "Single",
+      "maritalDivorced": "Divorced",
+      "maritalWidowed": "Widowed",
+      "childrenNone": "None",
+      "childrenHave": "Have children",
+      "childrenPrefer": "Prefer not to say",
+      "relPracticing": "Practicing",
+      "relModerate": "Moderate",
+      "relLearning": "Learning",
+      "relPrefer": "Prefer not to say",
+      "langAr": "Arabic",
+      "langEn": "English",
+      "langTr": "Turkish"
+    },
+    "errors": {
+      "required": "This field is required.",
+      "displayNameMin": "Name is too short.",
+      "birthInvalid": "Invalid date.",
+      "languagesMin": "Choose at least one language."
+    },
+    "done": {
+      "title": "Your steps are saved",
+      "body": "We saved the first steps of your profile. Continue to the app or finish later.",
+      "goToApp": "Continue to Nisfi"
+    },
+    "pendingNote": "This will save to your account when Firebase is connected; your progress is stored locally for now."
+  },
   "LocaleSwitcher": {
     "label": "Language",
     "ar": "Arabic",
