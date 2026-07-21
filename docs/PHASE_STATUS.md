@@ -9,11 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 0 — Product foundation and approved design language |
-| Current unit | Unit 0.2 — next-intl locale routing and semantic RTL/LTR base with a minimal route shell |
-| Implementation state | Implemented and verified; delivered to `main` and `claude/project-review-a9s1w1` |
+| Current unit | Unit 0.3 — two high-fidelity visual directions for owner selection |
+| Implementation state | Presented and delivered to `main`; **awaiting owner selection** of a direction (decision D-001) |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
-| Previous units | Unit 0.0 (docs) — closed and owner-approved 2026-07-20. Unit 0.1 (monorepo scaffold) — delivered to `main`. |
-| Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, and 16 |
+| Previous units | Unit 0.0 (docs) — owner-approved 2026-07-20. Unit 0.1 (monorepo scaffold) and Unit 0.2 (locale routing / RTL shell) — delivered to `main`. |
+| Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, and 16 |
+
+## Unit 0.3 — current (awaiting owner selection)
+
+Two polished, distinct visual directions are presented on real Nisfi content — the landing page, a member surface (discovery with photo-privacy treatment), and an admin surface (verification queue) — in Arabic RTL with an English LTR sample. Per master spec Section 14.2, the owner selects or combines one; the approved direction is then recorded in `docs/DESIGN_SYSTEM.md` (Unit 0.4) and becomes binding. No product UI is built on either direction yet.
+
+- **Deliverables:** `docs/design/visual-directions.html` (interactive A/B preview) and `docs/design/DIRECTIONS.md` (rationale, palettes, typography, components, photo-privacy treatment, how to choose).
+- **Direction A — «وَقار»:** deep emerald + restrained antique gold; institutional, crisp, editorial.
+- **Direction B — «سَكينة»:** teal-slate + warm clay; serene, airy, contemporary.
+- **Design QA (Section 14.9):** verified via Chromium screenshots at desktop and narrow widths — RTL hierarchy, responsive collapse (no page horizontal scroll; admin table scrolls in its own container), status/pill states, protected-photo treatment, and AR + LTR copy all render correctly.
+- **Constraints honoured:** premium, privacy-led, Arabic-first; none of the prohibited dating-app shortcuts (no pink/hearts/swipe/neon/stock couples/fake metrics); protected photo is an intentional treatment, not a CSS blur of a real photo.
+
+**Owner action needed:** choose Direction A, Direction B, or a named combination (and optionally confirm the temporary «نِصفي» text wordmark per D-001). Unit 0.4 begins after selection.
 
 ## Unit 0.2 objective
 
@@ -66,6 +78,6 @@ Add next-intl locale routing over the scaffold: the URL prefix is always present
 
 ## Next proposed unit — do not execute without approval
 
-**Phase 0 / Unit 0.3: two high-fidelity visual directions** using real Nisfi content on landing/member/admin sample surfaces, for the owner to select or combine.
+**Phase 0 / Unit 0.4: approved design tokens, primitives, member shell, admin shell, responsive navigation, and `docs/DESIGN_SYSTEM.md`.**
 
-This unit requires an owner decision (D-001: approved visual direction). It is the next proposed unit only and needs explicit owner direction before it begins; no generic template is acceptable. Unit 0.5 additionally depends on owner-provided Firebase project IDs and credentials (D-002).
+Unit 0.4 cannot begin until the owner selects or combines a direction from Unit 0.3 (decision D-001). Unit 0.5 additionally depends on owner-provided Firebase project IDs and credentials (D-002).

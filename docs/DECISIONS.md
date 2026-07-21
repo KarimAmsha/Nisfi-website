@@ -69,3 +69,12 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U2-004 | Self-host IBM Plex Sans Arabic (Arabic) and Inter (Latin) via `next/font`. | Implemented under owner-authorized scope | Satisfies the Section 13 font requirement; `next/font` self-hosts the assets. |
 | U2-005 | Keep all UI copy in `messages/{ar,en,tr}.json`; no hardcoded strings in components. | Implemented under owner-authorized scope | Enforces the Section 13 localization rule from the first rendered surface. |
 | U2-006 | Deliver each completed unit to `main` (fast-forward) in addition to the working branch. | Implemented per explicit owner instruction (2026-07-21) | The owner directed that all work land on `main`. |
+
+## F. Decisions in Unit 0.3
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U3-001 | Present two distinct visual directions — «وَقار» (emerald + gold, institutional) and «سَكينة» (teal-slate + clay, serene) — on the real landing, a member surface, and an admin surface, in Arabic RTL + an LTR sample. | Implemented per owner instruction (2026-07-21) | Fulfils the Section 14.2 design gate; gives the owner two genuinely different, on-brand options to select or combine. |
+| U3-002 | Deliver the directions as a self-contained HTML preview plus a rationale doc under `docs/design/`, and NOT build product UI or finalize `docs/DESIGN_SYSTEM.md` yet. | Implemented per owner instruction | The spec makes `DESIGN_SYSTEM.md` binding only after selection; keeping the pitch separate avoids committing the product to an unapproved direction. |
+| U3-003 | Preview fonts use a system Arabic/Latin stack because the HTML preview cannot load network fonts; the product itself uses self-hosted IBM Plex Sans Arabic + Inter (already wired in Unit 0.2). | Implemented | Honest constraint; does not change the intended product typography. |
+| D-001 | Approved visual direction and logo/wordmark status. | **Still pending owner selection** | Two directions are now presented; the owner must select A, B, or a named combination before Unit 0.4. |

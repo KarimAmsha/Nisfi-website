@@ -21,7 +21,9 @@ pnpm --filter @nisfi/web dev     # run the web app locally
 pnpm --filter @nisfi/web build   # production build of the web app
 ```
 
-The next proposed work unit is Phase 0 / Unit 0.3 (two high-fidelity visual directions for owner selection). It requires an owner decision on visual direction (see `docs/DECISIONS.md`, D-001) before it begins.
+Unit 0.3 presents two high-fidelity visual directions — «وَقار» (emerald + gold) and «سَكينة» (teal-slate + clay) — on the real landing, member, and admin surfaces. Preview them in [`docs/design/visual-directions.html`](./docs/design/visual-directions.html); rationale and tokens are in [`docs/design/DIRECTIONS.md`](./docs/design/DIRECTIONS.md).
+
+The next proposed work unit is Phase 0 / Unit 0.4 (design tokens, primitives, and shells). It cannot begin until the owner selects or combines a direction (see `docs/DECISIONS.md`, D-001).
 
 ## Approved technical baseline
 

@@ -1,0 +1,1369 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>نِصفي — اتجاهان بصريان</title>
+    <style>
+      /* ============================================================
+         Nisfi — Visual direction pitch (Phase 0 / Unit 0.3)
+         Two directions on real content. Not final; owner selects/combines.
+         Committed grounds (fixed light presentation for an honest pitch).
+         Intended product fonts: IBM Plex Sans Arabic (ar) + Inter (en/tr);
+         previewed here with a system Arabic/Latin stack (no network fonts).
+         ============================================================ */
+
+      :root {
+        --ar: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
+        --lt: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+        --page-bg: #eceae4;
+        --chrome-fg: #1b211f;
+        --chrome-muted: #626b67;
+        --maxw: 1180px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--page-bg);
+        color: var(--chrome-fg);
+        font-family: var(--ar);
+        line-height: 1.6;
+        min-height: 100dvh;
+        overflow-x: hidden;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      p {
+        margin: 0;
+      }
+      img,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        color: inherit;
+      }
+      :focus-visible {
+        outline: 3px solid #0e6650;
+        outline-offset: 2px;
+        border-radius: 6px;
+      }
+
+      /* ---------------- Page chrome ---------------- */
+      .chrome {
+        max-width: var(--maxw);
+        margin-inline: auto;
+        padding: 28px 20px 8px;
+      }
+      .chrome__eyebrow {
+        font-size: 0.8rem;
+        letter-spacing: 0.14em;
+        color: var(--chrome-muted);
+        font-weight: 600;
+      }
+      .chrome__title {
+        font-size: clamp(1.7rem, 4vw, 2.4rem);
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin-top: 6px;
+        text-wrap: balance;
+      }
+      .chrome__lede {
+        color: var(--chrome-muted);
+        max-width: 60ch;
+        margin-top: 10px;
+      }
+      .chrome__note {
+        margin-top: 14px;
+        font-size: 0.82rem;
+        color: var(--chrome-muted);
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        background: #fff;
+        border: 1px solid #d8ddd9;
+        border-radius: 999px;
+        padding: 6px 14px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #c49a55;
+        display: inline-block;
+      }
+
+      /* Segmented direction switch */
+      .switch {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: color-mix(in srgb, var(--page-bg) 88%, transparent);
+        backdrop-filter: blur(8px);
+        border-block: 1px solid #d8ddd9;
+        margin-top: 22px;
+      }
+      .switch__inner {
+        max-width: var(--maxw);
+        margin-inline: auto;
+        padding: 12px 20px;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .seg {
+        display: inline-flex;
+        background: #fff;
+        border: 1px solid #d3d9d4;
+        border-radius: 12px;
+        padding: 4px;
+        gap: 4px;
+      }
+      .seg button {
+        font-family: var(--ar);
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #46504c;
+        background: transparent;
+        border: 0;
+        border-radius: 9px;
+        padding: 8px 18px;
+        cursor: pointer;
+        transition: background 0.15s ease, color 0.15s ease;
+      }
+      .seg button[aria-selected="true"] {
+        background: #12251f;
+        color: #fff;
+      }
+      .switch__hint {
+        color: var(--chrome-muted);
+        font-size: 0.85rem;
+      }
+
+      /* ---------------- Direction canvas ---------------- */
+      .dir {
+        max-width: var(--maxw);
+        margin: 26px auto 60px;
+        padding-inline: 20px;
+      }
+      .dir[hidden] {
+        display: none;
+      }
+
+      /* Per-direction design tokens */
+      .dir-a {
+        --canvas: #fbfaf7;
+        --surface: #ffffff;
+        --p700: #0a4d3c;
+        --p600: #0e6650;
+        --p50: #edf7f3;
+        --accent: #c49a55;
+        --ink: #17201d;
+        --ink600: #5d6964;
+        --border: #dde4e0;
+        --radius: 13px;
+        --radius-lg: 18px;
+        --shadow: 0 1px 2px rgba(16, 40, 33, 0.05), 0 10px 30px -18px rgba(16, 40, 33, 0.28);
+        --head-weight: 700;
+        --head-spacing: -0.02em;
+        --btn-radius: 11px;
+        --ok: #1f8a5b;
+        --warn: #c9821e;
+        --danger: #b4402f;
+        --info: #2b6cb0;
+      }
+      .dir-b {
+        --canvas: #f2f4f3;
+        --surface: #ffffff;
+        --p700: #173f3b;
+        --p600: #2c6560;
+        --p50: #e7f0ee;
+        --accent: #b0705b;
+        --ink: #182320;
+        --ink600: #64726d;
+        --border: #e2e8e5;
+        --radius: 20px;
+        --radius-lg: 26px;
+        --shadow: 0 1px 2px rgba(23, 63, 59, 0.04), 0 18px 44px -24px rgba(23, 63, 59, 0.3);
+        --head-weight: 600;
+        --head-spacing: -0.01em;
+        --btn-radius: 999px;
+        --ok: #1f8a5b;
+        --warn: #c9821e;
+        --danger: #b4402f;
+        --info: #2b6cb0;
+      }
+
+      /* Spec strip */
+      .spec {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 20px 22px;
+        box-shadow: var(--shadow);
+        display: grid;
+        gap: 18px;
+        grid-template-columns: 1.2fr 1fr;
+      }
+      .spec__name {
+        font-size: 1.5rem;
+        font-weight: var(--head-weight);
+        letter-spacing: var(--head-spacing);
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .spec__badge {
+        font-family: var(--lt);
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--p600);
+        background: var(--p50);
+        border: 1px solid var(--border);
+        padding: 4px 10px;
+        border-radius: 999px;
+      }
+      .spec__why {
+        color: var(--ink600);
+        margin-top: 8px;
+        font-size: 0.95rem;
+      }
+      .swatches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .sw {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .spec__meta {
+        display: grid;
+        gap: 10px;
+        align-content: start;
+        font-size: 0.88rem;
+      }
+      .spec__meta div {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px dashed var(--border);
+        padding-bottom: 8px;
+      }
+      .spec__meta span:first-child {
+        color: var(--ink600);
+      }
+      .spec__meta span:last-child {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .surface-label {
+        font-family: var(--lt);
+        font-size: 0.74rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink600);
+        margin: 34px 4px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .surface-label::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: var(--border);
+      }
+
+      .panel {
+        background: var(--canvas);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      /* ---------- Landing hero ---------- */
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 8px;
+        align-items: stretch;
+      }
+      .hero__copy {
+        padding: 40px 40px 36px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        font-weight: 700;
+        color: var(--ink);
+        font-size: 1.15rem;
+      }
+      .brand__mark {
+        width: 34px;
+        height: 34px;
+      }
+      .hero__eyebrow {
+        margin-top: 30px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--p600);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .hero__h1 {
+        margin-top: 16px;
+        font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+        line-height: 1.2;
+        font-weight: var(--head-weight);
+        letter-spacing: var(--head-spacing);
+        color: var(--ink);
+        text-wrap: balance;
+      }
+      .hero__h1 em {
+        font-style: normal;
+        color: var(--p700);
+        position: relative;
+      }
+      .hero__sub {
+        margin-top: 16px;
+        color: var(--ink600);
+        max-width: 40ch;
+        font-size: 1.02rem;
+      }
+      .hero__cta {
+        margin-top: 26px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        font-family: inherit;
+        font-size: 0.98rem;
+        font-weight: 600;
+        border-radius: var(--btn-radius);
+        padding: 12px 22px;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: transform 0.12s ease, box-shadow 0.15s ease, background 0.15s ease;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .btn {
+          transition: none;
+        }
+      }
+      .btn--primary {
+        background: var(--p600);
+        color: #fff;
+        box-shadow: 0 8px 20px -12px var(--p700);
+      }
+      .btn--primary:hover {
+        background: var(--p700);
+      }
+      .btn--ghost {
+        background: transparent;
+        color: var(--ink);
+        border-color: var(--border);
+      }
+      .btn--ghost:hover {
+        border-color: var(--p600);
+        color: var(--p700);
+      }
+      .hero__trust {
+        margin-top: 26px;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        color: var(--ink600);
+        font-size: 0.85rem;
+      }
+      .hero__trust span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .tick {
+        color: var(--p600);
+      }
+
+      /* hero art side */
+      .hero__art {
+        background: linear-gradient(160deg, var(--p700), var(--p600));
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 360px;
+        overflow: hidden;
+      }
+      .hero__art .grid-mesh {
+        position: absolute;
+        inset: 0;
+        opacity: 0.5;
+      }
+      .protectchip {
+        position: absolute;
+        inset-block-end: 20px;
+        inset-inline-start: 20px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #fff;
+        border-radius: 12px;
+        padding: 10px 14px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 0.82rem;
+        backdrop-filter: blur(4px);
+        max-width: 78%;
+      }
+
+      /* how it works */
+      .how {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: var(--border);
+        border-top: 1px solid var(--border);
+      }
+      .how__cell {
+        background: var(--surface);
+        padding: 24px 26px;
+      }
+      .how__n {
+        font-family: var(--lt);
+        font-variant-numeric: tabular-nums;
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 0.9rem;
+        letter-spacing: 0.1em;
+      }
+      .how__t {
+        margin-top: 8px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .how__d {
+        margin-top: 6px;
+        color: var(--ink600);
+        font-size: 0.9rem;
+      }
+
+      /* LTR mini hero */
+      .ltr-strip {
+        margin-top: 12px;
+        border: 1px dashed var(--border);
+        border-radius: var(--radius);
+        padding: 18px 22px;
+        background: var(--surface);
+      }
+      .ltr-strip[dir="ltr"] {
+        text-align: start;
+        font-family: var(--lt);
+      }
+      .ltr-strip .k {
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink600);
+      }
+      .ltr-strip h4 {
+        font-size: 1.35rem;
+        color: var(--ink);
+        font-weight: var(--head-weight);
+        margin-top: 6px;
+        letter-spacing: var(--head-spacing);
+      }
+      .ltr-strip p {
+        color: var(--ink600);
+        margin-top: 4px;
+        font-size: 0.92rem;
+      }
+
+      /* ---------- Member: discovery ---------- */
+      .disc {
+        padding: 26px;
+      }
+      .filters {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .chip {
+        font-size: 0.84rem;
+        color: var(--ink600);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 7px 14px;
+        display: inline-flex;
+        gap: 7px;
+        align-items: center;
+      }
+      .chip--active {
+        color: var(--p700);
+        background: var(--p50);
+        border-color: color-mix(in srgb, var(--p600) 40%, var(--border));
+        font-weight: 600;
+      }
+      .chip--count {
+        margin-inline-start: auto;
+        color: var(--ink600);
+        background: transparent;
+        border: 0;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .pcard {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .protected {
+        position: relative;
+        aspect-ratio: 4 / 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .protected__overlay {
+        position: absolute;
+        inset-block-start: 10px;
+        inset-inline-start: 10px;
+        background: rgba(15, 30, 25, 0.62);
+        color: #fff;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        padding: 5px 11px;
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+        backdrop-filter: blur(2px);
+      }
+      .protected__hint {
+        position: absolute;
+        inset-block-end: 10px;
+        inset-inline: 10px;
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 0.72rem;
+        text-align: center;
+      }
+      .pcard__body {
+        padding: 15px 16px 17px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .pcard__row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+      }
+      .pcard__name {
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .pcard__meta {
+        color: var(--ink600);
+        font-size: 0.86rem;
+      }
+      .verimark {
+        color: var(--p600);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.78rem;
+        font-weight: 600;
+      }
+      .signals {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .sig {
+        font-size: 0.76rem;
+        color: var(--ink600);
+        background: var(--p50);
+        border-radius: 8px;
+        padding: 4px 9px;
+      }
+      .pcard__cta {
+        margin-top: 4px;
+        display: flex;
+        gap: 8px;
+      }
+      .btn--sm {
+        padding: 9px 14px;
+        font-size: 0.86rem;
+        flex: 1;
+      }
+
+      /* ---------- Admin: verification queue ---------- */
+      .admin {
+        display: grid;
+        grid-template-columns: 1.55fr 1fr;
+        min-height: 440px;
+      }
+      .admin__main {
+        border-inline-end: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        overflow-x: auto;
+      }
+      table.q {
+        min-width: 460px;
+      }
+      .admin__bar {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .admin__bar h3 {
+        font-size: 1rem;
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .queuecount {
+        font-family: var(--lt);
+        font-variant-numeric: tabular-nums;
+        background: var(--p700);
+        color: #fff;
+        font-size: 0.75rem;
+        border-radius: 999px;
+        padding: 2px 9px;
+      }
+      .searchbox {
+        margin-inline-start: auto;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        padding: 7px 12px;
+        color: var(--ink600);
+        font-size: 0.82rem;
+        background: var(--canvas);
+        min-width: 150px;
+      }
+      table.q {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.86rem;
+      }
+      table.q th {
+        text-align: start;
+        font-family: var(--lt);
+        font-size: 0.68rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink600);
+        font-weight: 600;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: var(--canvas);
+      }
+      table.q td {
+        padding: 13px 20px;
+        border-bottom: 1px solid var(--border);
+        color: var(--ink);
+      }
+      table.q tr[aria-selected="true"] td {
+        background: var(--p50);
+      }
+      .who {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .ava {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: var(--p700);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 0.78rem;
+        font-weight: 700;
+        font-family: var(--lt);
+      }
+      .uid {
+        color: var(--ink600);
+        font-family: var(--lt);
+        font-size: 0.78rem;
+        font-variant-numeric: tabular-nums;
+      }
+      .pill {
+        font-size: 0.74rem;
+        font-weight: 600;
+        border-radius: 999px;
+        padding: 3px 10px;
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+        border: 1px solid transparent;
+      }
+      .pill--pending {
+        color: #8a5a12;
+        background: #fdf3e2;
+        border-color: #f0d9b4;
+      }
+      .pill--review {
+        color: var(--info);
+        background: #e8f0fb;
+        border-color: #cfe0f6;
+      }
+      .pill--ok {
+        color: #12613f;
+        background: #e6f4ec;
+        border-color: #bfe3cf;
+      }
+      .pill--dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* detail drawer */
+      .drawer {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        background: var(--surface);
+      }
+      .drawer__head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .drawer__title {
+        font-weight: 700;
+        color: var(--ink);
+        font-size: 1.05rem;
+      }
+      .evidence {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .evidence__img {
+        aspect-ratio: 16 / 9;
+        position: relative;
+        display: grid;
+        place-items: center;
+      }
+      .evidence__foot {
+        padding: 9px 12px;
+        font-size: 0.76rem;
+        color: var(--ink600);
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        background: var(--canvas);
+      }
+      .kv {
+        display: grid;
+        gap: 8px;
+        font-size: 0.86rem;
+      }
+      .kv > div {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .kv span:first-child {
+        color: var(--ink600);
+      }
+      .kv span:last-child {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .auditnote {
+        font-size: 0.82rem;
+        color: var(--ink600);
+        background: var(--canvas);
+        border: 1px solid var(--border);
+        border-inline-start: 3px solid var(--accent);
+        border-radius: 8px;
+        padding: 10px 12px;
+      }
+      .drawer__actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 2px;
+      }
+      .btn--danger {
+        background: transparent;
+        color: var(--danger);
+        border-color: color-mix(in srgb, var(--danger) 35%, var(--border));
+      }
+      .btn--danger:hover {
+        background: color-mix(in srgb, var(--danger) 8%, transparent);
+      }
+
+      footer.foot {
+        max-width: var(--maxw);
+        margin: 0 auto 50px;
+        padding: 0 20px;
+        color: var(--chrome-muted);
+        font-size: 0.82rem;
+      }
+
+      @media (max-width: 860px) {
+        .spec,
+        .hero,
+        .admin {
+          grid-template-columns: 1fr;
+        }
+        .cards {
+          grid-template-columns: 1fr 1fr;
+        }
+        .how {
+          grid-template-columns: 1fr;
+        }
+        .admin__main {
+          border-inline-end: 0;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+      @media (max-width: 560px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        .seg {
+          width: 100%;
+        }
+        .seg button {
+          flex: 1;
+          padding: 9px 8px;
+          font-size: 0.82rem;
+          text-align: center;
+        }
+        .switch__hint {
+          display: none;
+        }
+        .hero__copy {
+          padding: 28px 22px 26px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="chrome">
+      <div class="chrome__eyebrow">نِصفي · المرحلة ٠ · الوحدة ٣</div>
+      <h1 class="chrome__title">اتجاهان بصريان — للاختيار أو الدمج</h1>
+      <p class="chrome__lede">
+        اتجاهان متكاملان مطبّقان على محتوى نِصفي الحقيقي: صفحة الهبوط، سطح للعضو (الاستكشاف بخصوصية
+        الصور)، وسطح للإدارة (طابور التوثيق). كلاهما عربيّ أوّلًا (RTL) ومبنيّ على الوقار والخصوصية —
+        لا قوالب تعارف، ولا قلوب، ولا بطاقات سحب.
+      </p>
+      <div class="chrome__note"><span class="dot"></span> مسودّة عرض — غير نهائية حتى يعتمد المالك اتجاهًا، فيُسجَّل في <code>docs/DESIGN_SYSTEM.md</code>.</div>
+    </header>
+
+    <div class="switch">
+      <div class="switch__inner">
+        <div class="seg" role="tablist" aria-label="اختيار الاتجاه البصري">
+          <button role="tab" id="tab-a" aria-selected="true" aria-controls="dir-a">الاتجاه A — وَقار</button>
+          <button role="tab" id="tab-b" aria-selected="false" aria-controls="dir-b">الاتجاه B — سَكينة</button>
+        </div>
+        <span class="switch__hint">زمرّدي مؤسسي مقابل هدوء عصري — بدّل بينهما.</span>
+      </div>
+    </div>
+
+    <!-- ============ DIRECTION A ============ -->
+    <section class="dir dir-a" id="dir-a" role="tabpanel" aria-labelledby="tab-a">
+      <div class="spec">
+        <div>
+          <div class="spec__name">
+            وَقار <span class="spec__badge">Direction A · Waqār</span>
+          </div>
+          <p class="spec__why">
+            زمرّدي غائر وذهب عتيق مقيّد للغاية. لغة مؤسسية حادّة وواثقة توحي بخدمة تعارف جادّة
+            ومحمية — سلطة، هدوء، ونيّة واضحة. الذهب علامةٌ لا لون نصوص.
+          </p>
+          <div class="swatches" aria-label="لوحة الألوان">
+            <span class="sw" style="background:#0a4d3c" title="Primary 700 #0A4D3C"></span>
+            <span class="sw" style="background:#0e6650" title="Primary 600 #0E6650"></span>
+            <span class="sw" style="background:#edf7f3" title="Primary 50 #EDF7F3"></span>
+            <span class="sw" style="background:#c49a55" title="Accent gold #C49A55"></span>
+            <span class="sw" style="background:#fbfaf7" title="Canvas #FBFAF7"></span>
+            <span class="sw" style="background:#17201d" title="Ink #17201D"></span>
+            <span class="sw" style="background:#dde4e0" title="Border #DDE4E0"></span>
+          </div>
+        </div>
+        <div class="spec__meta">
+          <div><span>الخط العربي</span><span>IBM Plex Sans Arabic</span></div>
+          <div><span>الخط اللاتيني</span><span>Inter</span></div>
+          <div><span>الحواف</span><span>13–18px · حادّة راقية</span></div>
+          <div><span>الأزرار</span><span>مستطيلة ناعمة (11px)</span></div>
+          <div><span>الطابع</span><span>مؤسسي · تحريري · واثق</span></div>
+        </div>
+      </div>
+
+      <div class="surface-label">صفحة الهبوط</div>
+      <div class="panel">
+        <div class="hero">
+          <div class="hero__copy">
+            <div class="brand">
+              <svg class="brand__mark" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+                <rect x="1" y="1" width="32" height="32" rx="9" fill="#0A4D3C" />
+                <path d="M11 23V11l12 12V11" stroke="#C49A55" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="17" cy="17" r="13" stroke="#0E6650" stroke-width="1" opacity="0.5" />
+              </svg>
+              نِصفي
+            </div>
+            <div class="hero__eyebrow">◆ تعارفٌ بنيّة الزواج</div>
+            <h1 class="hero__h1">لقاءٌ جادّ يبدأ بـ<em>الثقة</em>، لا بالصورة.</h1>
+            <p class="hero__sub">
+              منصّة محميّة للمسلمين الجادّين حول العالم: توثيق للهوية، صورٌ محجوبة حتى الموافقة
+              المتبادلة، وتواصلٌ محترم بلا ضغط.
+            </p>
+            <div class="hero__cta">
+              <button class="btn btn--primary">أنشئ ملفك</button>
+              <button class="btn btn--ghost">كيف تعمل نِصفي</button>
+            </div>
+            <div class="hero__trust">
+              <span><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> هوية موثّقة</span>
+              <span><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1l6 2v4c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> صورٌ خاصّة</span>
+              <span><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> بلا خوارزميات سحب</span>
+            </div>
+          </div>
+          <div class="hero__art">
+            <svg class="grid-mesh" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <pattern id="mashA" width="56" height="56" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <path d="M28 0v56M0 28h56" stroke="#C49A55" stroke-width="0.8" opacity="0.4" />
+                  <circle cx="28" cy="28" r="12" fill="none" stroke="#EDF7F3" stroke-width="0.8" opacity="0.35" />
+                </pattern>
+              </defs>
+              <rect width="400" height="400" fill="url(#mashA)" />
+              <circle cx="200" cy="200" r="120" fill="none" stroke="#C49A55" stroke-width="1.5" opacity="0.55" />
+              <path d="M120 250V150l160 100V150" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9" />
+            </svg>
+            <div class="protectchip">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 7V5a4 4 0 018 0v2M3 7h10v6H3z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              الصور محجوبة افتراضيًّا — تُكشف بموافقة الطرفين فقط.
+            </div>
+          </div>
+        </div>
+        <div class="how">
+          <div class="how__cell"><div class="how__n">٠١</div><div class="how__t">وثّق هويتك</div><div class="how__d">مراجعة يدويّة للتحقّق من الجدّية قبل الظهور.</div></div>
+          <div class="how__cell"><div class="how__n">٠٢</div><div class="how__t">تصفّح بتأنٍّ</div><div class="how__d">ملفّات مبنيّة على التوافق، لا على المظهر.</div></div>
+          <div class="how__cell"><div class="how__n">٠٣</div><div class="how__t">تواصل باحترام</div><div class="how__d">طلبٌ واحد مدروس، ثم كشفُ الصورة بالتراضي.</div></div>
+        </div>
+      </div>
+      <div class="ltr-strip" dir="ltr">
+        <div class="k">English · LTR sample</div>
+        <h4>A serious introduction, built on trust.</h4>
+        <p>Verified identities, private photos, and respectful contact — for marriage-minded Muslims worldwide.</p>
+      </div>
+
+      <div class="surface-label">سطح العضو · الاستكشاف</div>
+      <div class="panel">
+        <div class="disc">
+          <div class="filters">
+            <span class="chip chip--active">التوافق: عالٍ</span>
+            <span class="chip">العمر ٢٧–٣٤</span>
+            <span class="chip">المدينة: إسطنبول</span>
+            <span class="chip">موثّق فقط ✓</span>
+            <span class="chip chip--count">٤٨ نتيجة</span>
+          </div>
+          <div class="cards">
+            <article class="pcard">
+              <div class="protected" style="background:linear-gradient(135deg,#0a4d3c,#0e6650)">
+                <svg width="46" height="46" viewBox="0 0 46 46" fill="none" aria-hidden="true"><path d="M13 21v-4a10 10 0 0120 0v4M9 21h28v16H9z" stroke="#EDF7F3" stroke-width="1.5" stroke-linejoin="round" opacity="0.8"/></svg>
+                <span class="protected__overlay"><span class="pill--dot" style="background:#c49a55"></span> صورة محمية</span>
+                <div class="protected__hint">تُكشف بموافقة الطرفين</div>
+              </div>
+              <div class="pcard__body">
+                <div class="pcard__row">
+                  <span class="pcard__name">أ. — ٢٩</span>
+                  <span class="verimark"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1l6 2v4c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> موثّقة</span>
+                </div>
+                <div class="pcard__meta">إسطنبول · معلّمة · تخطّط للزواج خلال سنة</div>
+                <div class="signals"><span class="sig">توافق القيم ٩٢٪</span><span class="sig">تدرّج ديني قريب</span></div>
+                <div class="pcard__cta"><button class="btn btn--primary btn--sm">إرسال طلب</button><button class="btn btn--ghost btn--sm">الملف</button></div>
+              </div>
+            </article>
+            <article class="pcard">
+              <div class="protected" style="background:linear-gradient(135deg,#123f34,#0a4d3c)">
+                <svg width="46" height="46" viewBox="0 0 46 46" fill="none" aria-hidden="true"><path d="M13 21v-4a10 10 0 0120 0v4M9 21h28v16H9z" stroke="#EDF7F3" stroke-width="1.5" stroke-linejoin="round" opacity="0.8"/></svg>
+                <span class="protected__overlay"><span class="pill--dot" style="background:#c49a55"></span> صورة محمية</span>
+                <div class="protected__hint">تُكشف بموافقة الطرفين</div>
+              </div>
+              <div class="pcard__body">
+                <div class="pcard__row">
+                  <span class="pcard__name">م. — ٣٣</span>
+                  <span class="verimark"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1l6 2v4c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> موثّق</span>
+                </div>
+                <div class="pcard__meta">أنقرة · مهندس · مقيم، يفضّل الاستقرار</div>
+                <div class="signals"><span class="sig">توافق القيم ٨٧٪</span><span class="sig">لغة مشتركة</span></div>
+                <div class="pcard__cta"><button class="btn btn--primary btn--sm">إرسال طلب</button><button class="btn btn--ghost btn--sm">الملف</button></div>
+              </div>
+            </article>
+            <article class="pcard">
+              <div class="protected" style="background:linear-gradient(135deg,#0e6650,#177a5f)">
+                <svg width="46" height="46" viewBox="0 0 46 46" fill="none" aria-hidden="true"><path d="M13 21v-4a10 10 0 0120 0v4M9 21h28v16H9z" stroke="#EDF7F3" stroke-width="1.5" stroke-linejoin="round" opacity="0.8"/></svg>
+                <span class="protected__overlay"><span class="pill--dot" style="background:#c49a55"></span> صورة محمية</span>
+                <div class="protected__hint">تُكشف بموافقة الطرفين</div>
+              </div>
+              <div class="pcard__body">
+                <div class="pcard__row">
+                  <span class="pcard__name">س. — ٢٧</span>
+                  <span class="verimark"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1l6 2v4c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> موثّقة</span>
+                </div>
+                <div class="pcard__meta">إزمير · صيدلانية · أسرة أولًا</div>
+                <div class="signals"><span class="sig">توافق القيم ٩٥٪</span><span class="sig">المدينة نفسها</span></div>
+                <div class="pcard__cta"><button class="btn btn--primary btn--sm">إرسال طلب</button><button class="btn btn--ghost btn--sm">الملف</button></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="surface-label">سطح الإدارة · طابور التوثيق</div>
+      <div class="panel">
+        <div class="admin">
+          <div class="admin__main">
+            <div class="admin__bar">
+              <h3>طلبات التوثيق</h3>
+              <span class="queuecount">١٢ بالانتظار</span>
+              <span class="searchbox">بحث بالمُعرّف…</span>
+            </div>
+            <table class="q">
+              <thead>
+                <tr><th>العضو</th><th>النوع</th><th>الحالة</th><th>التقديم</th></tr>
+              </thead>
+              <tbody>
+                <tr aria-selected="true">
+                  <td><div class="who"><span class="ava">A9</span><div>عضو موثّق قيد المراجعة<br /><span class="uid">uid_9f3a…</span></div></div></td>
+                  <td>سيلفي + هوية</td>
+                  <td><span class="pill pill--review"><span class="pill--dot"></span> قيد المراجعة</span></td>
+                  <td class="uid">قبل ٤ د</td>
+                </tr>
+                <tr>
+                  <td><div class="who"><span class="ava">K2</span><div>طلب جديد<br /><span class="uid">uid_2b7c…</span></div></div></td>
+                  <td>سيلفي + هوية</td>
+                  <td><span class="pill pill--pending"><span class="pill--dot"></span> بالانتظار</span></td>
+                  <td class="uid">قبل ١١ د</td>
+                </tr>
+                <tr>
+                  <td><div class="who"><span class="ava">R5</span><div>إعادة تقديم<br /><span class="uid">uid_5d1e…</span></div></div></td>
+                  <td>هوية فقط</td>
+                  <td><span class="pill pill--pending"><span class="pill--dot"></span> بالانتظار</span></td>
+                  <td class="uid">قبل ٢٦ د</td>
+                </tr>
+                <tr>
+                  <td><div class="who"><span class="ava">T8</span><div>مكتمل<br /><span class="uid">uid_8a0b…</span></div></div></td>
+                  <td>سيلفي + هوية</td>
+                  <td><span class="pill pill--ok"><span class="pill--dot"></span> موثّق</span></td>
+                  <td class="uid">قبل ١ س</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <aside class="drawer" aria-label="تفاصيل الحالة">
+            <div class="drawer__head">
+              <div>
+                <div class="drawer__title">حالة التوثيق</div>
+                <div class="uid">uid_9f3a… · فتح قبل ٤ د</div>
+              </div>
+              <span class="pill pill--review"><span class="pill--dot"></span> قيد المراجعة</span>
+            </div>
+            <div class="evidence">
+              <div class="evidence__img" style="background:linear-gradient(135deg,#0a4d3c,#0e6650)">
+                <svg width="40" height="40" viewBox="0 0 46 46" fill="none" aria-hidden="true"><path d="M13 21v-4a10 10 0 0120 0v4M9 21h28v16H9z" stroke="#EDF7F3" stroke-width="1.5" stroke-linejoin="round" opacity="0.85"/></svg>
+              </div>
+              <div class="evidence__foot"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 7V5a4 4 0 018 0v2M3 7h10v6H3z" stroke="#5d6964" stroke-width="1.3" stroke-linejoin="round"/></svg> وصول موقّت للمراجعة — يُسجَّل في سجلّ التدقيق ولا يُخزَّن أصل.</div>
+            </div>
+            <div class="kv">
+              <div><span>الاسم على الهوية</span><span>مطابِق</span></div>
+              <div><span>حيّة (Liveness)</span><span>ناجحة</span></div>
+              <div><span>عمر الحساب</span><span>٣ أيام</span></div>
+            </div>
+            <div class="auditnote">ملاحظة طاقم: الإضاءة ضعيفة في السيلفي الأولى؛ الثانية واضحة ومطابِقة. — مشرف ٢</div>
+            <div class="drawer__actions">
+              <button class="btn btn--primary btn--sm">اعتماد التوثيق</button>
+              <button class="btn btn--danger btn--sm">طلب إعادة</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DIRECTION B ============ -->
+    <section class="dir dir-b" id="dir-b" role="tabpanel" aria-labelledby="tab-b" hidden>
+      <div class="spec">
+        <div>
+          <div class="spec__name">
+            سَكينة <span class="spec__badge">Direction B · Sakīna</span>
+          </div>
+          <p class="spec__why">
+            أزرقُ مخضرٌّ هادئ ولمسةٌ طينيّة ترابية دافئة. مساحاتٌ أوسع، حوافُّ أليَن، وإحساسٌ عصريّ
+            لطيف يوحي بالطمأنينة والأمل — دون أن يفقد الخصوصية أو الرُّقيّ.
+          </p>
+          <div class="swatches" aria-label="لوحة الألوان">
+            <span class="sw" style="background:#173f3b" title="Primary 700 #173F3B"></span>
+            <span class="sw" style="background:#2c6560" title="Primary 600 #2C6560"></span>
+            <span class="sw" style="background:#e7f0ee" title="Primary 50 #E7F0EE"></span>
+            <span class="sw" style="background:#b0705b" title="Accent clay #B0705B"></span>
+            <span class="sw" style="background:#f2f4f3" title="Canvas #F2F4F3"></span>
+            <span class="sw" style="background:#182320" title="Ink #182320"></span>
+            <span class="sw" style="background:#e2e8e5" title="Border #E2E8E5"></span>
+          </div>
+        </div>
+        <div class="spec__meta">
+          <div><span>الخط العربي</span><span>IBM Plex Sans Arabic</span></div>
+          <div><span>الخط اللاتيني</span><span>Inter</span></div>
+          <div><span>الحواف</span><span>20–26px · ليّنة واسعة</span></div>
+          <div><span>الأزرار</span><span>مكوّرة كاملًا (حبّة)</span></div>
+          <div><span>الطابع</span><span>هادئ · عصري · دافئ</span></div>
+        </div>
+      </div>
+
+      <div class="surface-label">صفحة الهبوط</div>
+      <div class="panel">
+        <div class="hero">
+          <div class="hero__copy">
+            <div class="brand">
+              <svg class="brand__mark" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+                <rect x="1" y="1" width="32" height="32" rx="12" fill="#173F3B" />
+                <path d="M6 22a11 11 0 0122 0" stroke="#B0705B" stroke-width="2.2" stroke-linecap="round" />
+                <circle cx="17" cy="15" r="3.4" fill="#E7F0EE" />
+              </svg>
+              نِصفي
+            </div>
+            <div class="hero__eyebrow">● سكينةٌ ونيّةٌ صادقة</div>
+            <h1 class="hero__h1">ابحث عن <em>سكنٍ</em> — بهدوءٍ وخصوصية.</h1>
+            <p class="hero__sub">
+              تجربةٌ لطيفة للمسلمين الجادّين: هويّاتٌ موثّقة، صورٌ محميّة تُكشف بالتراضي، وتواصلٌ
+              محترمٌ على مهلك.
+            </p>
+            <div class="hero__cta">
+              <button class="btn btn--primary">ابدأ بهدوء</button>
+              <button class="btn btn--ghost">تعرّف على الرحلة</button>
+            </div>
+            <div class="hero__trust">
+              <span><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> هوية موثّقة</span>
+              <span><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1l6 2v4c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> صورٌ خاصّة</span>
+              <span><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> بلا ضغط</span>
+            </div>
+          </div>
+          <div class="hero__art" style="background:linear-gradient(165deg,#173f3b,#2c6560)">
+            <svg class="grid-mesh" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <g opacity="0.9">
+                <path d="M0 300q100-70 200 0t200 0" fill="none" stroke="#B0705B" stroke-width="2" opacity="0.7" />
+                <path d="M0 330q100-60 200 0t200 0" fill="none" stroke="#E7F0EE" stroke-width="1.4" opacity="0.4" />
+                <path d="M0 270q100-80 200 0t200 0" fill="none" stroke="#E7F0EE" stroke-width="1.2" opacity="0.28" />
+                <circle cx="290" cy="120" r="34" fill="#B0705B" opacity="0.85" />
+                <circle cx="290" cy="120" r="52" fill="none" stroke="#E7F0EE" stroke-width="1" opacity="0.5" />
+              </g>
+            </svg>
+            <div class="protectchip">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 7V5a4 4 0 018 0v2M3 7h10v6H3z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              صورُك تبقى محميّة — تُكشف حين تختار أنت والطرف الآخر.
+            </div>
+          </div>
+        </div>
+        <div class="how">
+          <div class="how__cell"><div class="how__n">٠١</div><div class="how__t">وثّق هويتك</div><div class="how__d">خطوةٌ واحدة لطيفة تحمي الجميع.</div></div>
+          <div class="how__cell"><div class="how__n">٠٢</div><div class="how__t">تصفّح على مهلك</div><div class="how__d">توافقٌ حقيقيّ، بلا عدّادات ولا استعجال.</div></div>
+          <div class="how__cell"><div class="how__n">٠٣</div><div class="how__t">ابدأ حوارًا</div><div class="how__d">طلبٌ محترم، ثم كشفُ الصورة بالتراضي.</div></div>
+        </div>
+      </div>
+      <div class="ltr-strip" dir="ltr">
+        <div class="k">English · LTR sample</div>
+        <h4>Find your calm — privately, at your own pace.</h4>
+        <p>Verified identities and protected photos, revealed only when you both choose. No pressure, no swiping.</p>
+      </div>
+
+      <div class="surface-label">سطح العضو · الاستكشاف</div>
+      <div class="panel">
+        <div class="disc">
+          <div class="filters">
+            <span class="chip chip--active">التوافق: عالٍ</span>
+            <span class="chip">العمر ٢٧–٣٤</span>
+            <span class="chip">المدينة: إسطنبول</span>
+            <span class="chip">موثّق فقط ✓</span>
+            <span class="chip chip--count">٤٨ نتيجة</span>
+          </div>
+          <div class="cards">
+            <article class="pcard">
+              <div class="protected" style="background:linear-gradient(135deg,#173f3b,#2c6560)">
+                <svg width="46" height="46" viewBox="0 0 46 46" fill="none" aria-hidden="true"><path d="M13 21v-4a10 10 0 0120 0v4M9 21h28v16H9z" stroke="#E7F0EE" stroke-width="1.5" stroke-linejoin="round" opacity="0.85"/></svg>
+                <span class="protected__overlay"><span class="pill--dot" style="background:#b0705b"></span> صورة محمية</span>
+                <div class="protected__hint">تُكشف بموافقة الطرفين</div>
+              </div>
+              <div class="pcard__body">
+                <div class="pcard__row">
+                  <span class="pcard__name">أ. — ٢٩</span>
+                  <span class="verimark"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1l6 2v4c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> موثّقة</span>
+                </div>
+                <div class="pcard__meta">إسطنبول · معلّمة · تخطّط للزواج خلال سنة</div>
+                <div class="signals"><span class="sig">توافق القيم ٩٢٪</span><span class="sig">تدرّج ديني قريب</span></div>
+                <div class="pcard__cta"><button class="btn btn--primary btn--sm">إرسال طلب</button><button class="btn btn--ghost btn--sm">الملف</button></div>
+              </div>
+            </article>
+            <article class="pcard">
+              <div class="protected" style="background:linear-gradient(135deg,#1f524c,#2c6560)">
+                <svg width="46" height="46" viewBox="0 0 46 46" fill="none" aria-hidden="true"><path d="M13 21v-4a10 10 0 0120 0v4M9 21h28v16H9z" stroke="#E7F0EE" stroke-width="1.5" stroke-linejoin="round" opacity="0.85"/></svg>
+                <span class="protected__overlay"><span class="pill--dot" style="background:#b0705b"></span> صورة محمية</span>
+                <div class="protected__hint">تُكشف بموافقة الطرفين</div>
+              </div>
+              <div class="pcard__body">
+                <div class="pcard__row">
+                  <span class="pcard__name">م. — ٣٣</span>
+                  <span class="verimark"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1l6 2v4c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> موثّق</span>
+                </div>
+                <div class="pcard__meta">أنقرة · مهندس · مقيم، يفضّل الاستقرار</div>
+                <div class="signals"><span class="sig">توافق القيم ٨٧٪</span><span class="sig">لغة مشتركة</span></div>
+                <div class="pcard__cta"><button class="btn btn--primary btn--sm">إرسال طلب</button><button class="btn btn--ghost btn--sm">الملف</button></div>
+              </div>
+            </article>
+            <article class="pcard">
+              <div class="protected" style="background:linear-gradient(135deg,#2c6560,#3c7d73)">
+                <svg width="46" height="46" viewBox="0 0 46 46" fill="none" aria-hidden="true"><path d="M13 21v-4a10 10 0 0120 0v4M9 21h28v16H9z" stroke="#E7F0EE" stroke-width="1.5" stroke-linejoin="round" opacity="0.85"/></svg>
+                <span class="protected__overlay"><span class="pill--dot" style="background:#b0705b"></span> صورة محمية</span>
+                <div class="protected__hint">تُكشف بموافقة الطرفين</div>
+              </div>
+              <div class="pcard__body">
+                <div class="pcard__row">
+                  <span class="pcard__name">س. — ٢٧</span>
+                  <span class="verimark"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1l6 2v4c0 4-3 6.5-6 8-3-1.5-6-4-6-8V3l6-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> موثّقة</span>
+                </div>
+                <div class="pcard__meta">إزمير · صيدلانية · أسرة أولًا</div>
+                <div class="signals"><span class="sig">توافق القيم ٩٥٪</span><span class="sig">المدينة نفسها</span></div>
+                <div class="pcard__cta"><button class="btn btn--primary btn--sm">إرسال طلب</button><button class="btn btn--ghost btn--sm">الملف</button></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="surface-label">سطح الإدارة · طابور التوثيق</div>
+      <div class="panel">
+        <div class="admin">
+          <div class="admin__main">
+            <div class="admin__bar">
+              <h3>طلبات التوثيق</h3>
+              <span class="queuecount">١٢ بالانتظار</span>
+              <span class="searchbox">بحث بالمُعرّف…</span>
+            </div>
+            <table class="q">
+              <thead>
+                <tr><th>العضو</th><th>النوع</th><th>الحالة</th><th>التقديم</th></tr>
+              </thead>
+              <tbody>
+                <tr aria-selected="true">
+                  <td><div class="who"><span class="ava">A9</span><div>عضو موثّق قيد المراجعة<br /><span class="uid">uid_9f3a…</span></div></div></td>
+                  <td>سيلفي + هوية</td>
+                  <td><span class="pill pill--review"><span class="pill--dot"></span> قيد المراجعة</span></td>
+                  <td class="uid">قبل ٤ د</td>
+                </tr>
+                <tr>
+                  <td><div class="who"><span class="ava">K2</span><div>طلب جديد<br /><span class="uid">uid_2b7c…</span></div></div></td>
+                  <td>سيلفي + هوية</td>
+                  <td><span class="pill pill--pending"><span class="pill--dot"></span> بالانتظار</span></td>
+                  <td class="uid">قبل ١١ د</td>
+                </tr>
+                <tr>
+                  <td><div class="who"><span class="ava">R5</span><div>إعادة تقديم<br /><span class="uid">uid_5d1e…</span></div></div></td>
+                  <td>هوية فقط</td>
+                  <td><span class="pill pill--pending"><span class="pill--dot"></span> بالانتظار</span></td>
+                  <td class="uid">قبل ٢٦ د</td>
+                </tr>
+                <tr>
+                  <td><div class="who"><span class="ava">T8</span><div>مكتمل<br /><span class="uid">uid_8a0b…</span></div></div></td>
+                  <td>سيلفي + هوية</td>
+                  <td><span class="pill pill--ok"><span class="pill--dot"></span> موثّق</span></td>
+                  <td class="uid">قبل ١ س</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <aside class="drawer" aria-label="تفاصيل الحالة">
+            <div class="drawer__head">
+              <div>
+                <div class="drawer__title">حالة التوثيق</div>
+                <div class="uid">uid_9f3a… · فتح قبل ٤ د</div>
+              </div>
+              <span class="pill pill--review"><span class="pill--dot"></span> قيد المراجعة</span>
+            </div>
+            <div class="evidence">
+              <div class="evidence__img" style="background:linear-gradient(135deg,#173f3b,#2c6560)">
+                <svg width="40" height="40" viewBox="0 0 46 46" fill="none" aria-hidden="true"><path d="M13 21v-4a10 10 0 0120 0v4M9 21h28v16H9z" stroke="#E7F0EE" stroke-width="1.5" stroke-linejoin="round" opacity="0.85"/></svg>
+              </div>
+              <div class="evidence__foot"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 7V5a4 4 0 018 0v2M3 7h10v6H3z" stroke="#64726d" stroke-width="1.3" stroke-linejoin="round"/></svg> وصول موقّت للمراجعة — يُسجَّل في سجلّ التدقيق ولا يُخزَّن أصل.</div>
+            </div>
+            <div class="kv">
+              <div><span>الاسم على الهوية</span><span>مطابِق</span></div>
+              <div><span>حيّة (Liveness)</span><span>ناجحة</span></div>
+              <div><span>عمر الحساب</span><span>٣ أيام</span></div>
+            </div>
+            <div class="auditnote">ملاحظة طاقم: الإضاءة ضعيفة في السيلفي الأولى؛ الثانية واضحة ومطابِقة. — مشرف ٢</div>
+            <div class="drawer__actions">
+              <button class="btn btn--primary btn--sm">اعتماد التوثيق</button>
+              <button class="btn btn--danger btn--sm">طلب إعادة</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      نِصفي — عرض اتجاهات المرحلة ٠ / الوحدة ٣. الخطوط الفعلية في المنتج: IBM Plex Sans Arabic +
+      Inter (مستضافة ذاتيًّا). الصور هنا معالجاتٌ مجرّدة تمثّل «الصورة المحمية» ولا تحجب صورة حقيقية.
+    </footer>
+
+    <script>
+      (function () {
+        var tabs = { a: document.getElementById("tab-a"), b: document.getElementById("tab-b") };
+        var panels = { a: document.getElementById("dir-a"), b: document.getElementById("dir-b") };
+        function select(which) {
+          var isA = which === "a";
+          tabs.a.setAttribute("aria-selected", String(isA));
+          tabs.b.setAttribute("aria-selected", String(!isA));
+          panels.a.hidden = !isA;
+          panels.b.hidden = isA;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+        tabs.a.addEventListener("click", function () { select("a"); });
+        tabs.b.addEventListener("click", function () { select("b"); });
+      })();
+    </script>
+  </body>
+</html>
