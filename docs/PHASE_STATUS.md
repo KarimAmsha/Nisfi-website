@@ -8,13 +8,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 
 | Field | Value |
 |---|---|
-| Current phase | Phase 2 — Profile, onboarding, photos, and identity verification |
-| Current unit | Unit 2.5 — verification submission and status experience (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 2 on emulators/mocks; real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current phase | Phase 2 — Profile, onboarding, photos, and identity verification (complete; gate G2 met pending deferred wiring) |
+| Current unit | Unit 2.6 — own-profile review/edit and completion gate (delivered to `main`) |
+| Implementation state | Delivered to `main`. Phase 2 complete on emulators/mocks; next is Phase 3 (discovery & connection requests). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 2.6 — completed (delivered to `main`; closes Phase 2 / gate G2, pending deferred wiring)
+
+Own-profile review/edit surface and the profile-completion gate — the member sees their profile state at a glance and is guided to finish it before it can surface to others.
+
+- **Hook:** `lib/use-own-profile.ts` loads the signed-in member's own profile via `ProfileRepository.getOwn` when Firebase is configured; stays `null` in preview (prompts completion rather than blocking).
+- **Overview:** `components/profile/profile-overview.tsx` at `/[locale]/app/me` — profile summary (display name, city · country) with an edit/complete CTA back into the reusable onboarding builder, a live completion meter driven by `computeProfileCompletion`, and the `PhotoManager` below.
+- **Completion gate (soft):** `components/profile/completion-banner.tsx` renders a gentle app-wide nudge (with the live percentage and a link to finish) mounted in `MemberShell` below the header; it self-hides while loading, when there is no profile yet, and once completion reaches 100%. Real (hard) gating on `/app` stays server-side via rules once the backend is wired (A-008/O-001).
+- **i18n:** `Me` namespace (title, completion label, edit/complete CTAs, not-set, banner) across ar/en/tr; added a `SparkIcon` to the outline icon family.
+- **Verified:** `pnpm check` (typecheck + lint + format + 20 unit tests) and `next build` (71 routes) green; RTL screenshot of `/ar/app/me`.
 
 ## Unit 2.5 — completed (delivered to `main`)
 
@@ -199,7 +209,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 2 / Unit 2.6: own-profile review/edit and completion gates** — reuse the builder steps for editing, surface `computeProfileCompletion`, and gate `/app` on completion end-to-end. Closes Phase 2 (gate G2, pending the deferred real wiring).
+**Phase 3 / Unit 3.1: discovery feed and eligibility filtering** — begin Phase 3 (discovery & connection requests): surface eligible, verified, completed profiles with photo-privacy treatment, honoring blocks/visibility, behind a backend-agnostic discovery port (real query wiring deferred per O-001). Then connection requests (3.2+).
 
 ### Deferred to the final "production wiring" step (O-001)
 

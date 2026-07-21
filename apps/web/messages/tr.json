@@ -240,6 +240,14 @@
     },
     "pendingNote": "Firebase bağlandığında hesabına kaydedilecek; ilerlemen şimdilik yerel olarak saklanıyor."
   },
+  "Me": {
+    "title": "Profilim",
+    "completionLabel": "Profil tamamlanması",
+    "editCta": "Profili düzenle",
+    "completeCta": "Profilini tamamla",
+    "notSet": "Profilini henüz tamamlamadın.",
+    "bannerText": "Profilin %{completion} tamamlandı. Uygun üyelerin görebilmesi için tamamla."
+  },
   "Photos": {
     "title": "Fotoğrafların",
     "subtitle": "Fotoğrafların korumalı: üyeler yalnızca bulanık bir sürüm görür, karşılıklı onayla açılır.",

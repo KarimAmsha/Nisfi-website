@@ -240,6 +240,14 @@
     },
     "pendingNote": "This will save to your account when Firebase is connected; your progress is stored locally for now."
   },
+  "Me": {
+    "title": "My profile",
+    "completionLabel": "Profile completion",
+    "editCta": "Edit profile",
+    "completeCta": "Complete your profile",
+    "notSet": "You haven't completed your profile yet.",
+    "bannerText": "Your profile is {completion}% complete. Finish it so eligible members can see it."
+  },
   "Photos": {
     "title": "Your photos",
     "subtitle": "Your photos are protected: members see only a blurred version, revealed by mutual consent.",

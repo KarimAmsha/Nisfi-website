@@ -12,6 +12,7 @@ import {
   SettingsIcon,
   ShieldCheckIcon,
 } from "@/components/ui/icon";
+import { ProfileCompletionBanner } from "@/components/profile/completion-banner";
 
 type NavItem = {
   href: string;
@@ -75,6 +76,8 @@ export function MemberShell({ title, children }: { title?: string; children: Rea
           </Link>
         </div>
       </header>
+
+      <ProfileCompletionBanner />
 
       <div className="mx-auto flex max-w-6xl gap-6 px-4 py-6">
         {/* Desktop sidebar */}
