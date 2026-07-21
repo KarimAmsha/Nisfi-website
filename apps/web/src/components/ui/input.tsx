@@ -5,7 +5,7 @@ import { cn } from "@/lib/cn";
 type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   hint?: ReactNode;
-  error?: string;
+  error?: string | undefined;
   optional?: boolean;
   optionalLabel?: string;
 };

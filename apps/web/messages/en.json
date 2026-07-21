@@ -119,6 +119,46 @@
       "s3Body": "You can manage and delete your account; violating accounts may be restricted under our safety policies."
     }
   },
+  "Auth": {
+    "login": {
+      "title": "Log in",
+      "subtitle": "Welcome back to Nisfi.",
+      "submit": "Log in",
+      "forgotLink": "Forgot your password?",
+      "noAccount": "Don't have an account?",
+      "registerLink": "Create one"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Begin your journey — private and verified.",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Log in"
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "Enter your email and we'll send a reset link.",
+      "submit": "Send reset link",
+      "backToLogin": "Back to log in"
+    },
+    "fields": {
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "At least 8 characters",
+      "confirmPassword": "Confirm password"
+    },
+    "errors": {
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordRequired": "Password is required.",
+      "passwordMin": "At least 8 characters.",
+      "confirmMismatch": "Passwords do not match."
+    },
+    "legalNote": "By continuing you agree to the Terms and Privacy Policy.",
+    "pendingNote": "Authentication will connect when Firebase is wired in the next step.",
+    "forgotSent": "If that email is registered, you'll receive a reset message."
+  },
   "LocaleSwitcher": {
     "label": "Language",
     "ar": "Arabic",

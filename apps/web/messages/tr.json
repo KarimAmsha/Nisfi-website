@@ -119,6 +119,46 @@
       "s3Body": "Hesabınızı yönetebilir ve silebilirsiniz; ihlal eden hesaplar güvenlik politikalarımız uyarınca kısıtlanabilir."
     }
   },
+  "Auth": {
+    "login": {
+      "title": "Giriş yap",
+      "subtitle": "Nisfi'ye tekrar hoş geldin.",
+      "submit": "Giriş yap",
+      "forgotLink": "Şifreni mi unuttun?",
+      "noAccount": "Hesabın yok mu?",
+      "registerLink": "Oluştur"
+    },
+    "register": {
+      "title": "Hesabını oluştur",
+      "subtitle": "Yolculuğuna başla — gizli ve doğrulanmış.",
+      "submit": "Hesap oluştur",
+      "haveAccount": "Zaten hesabın var mı?",
+      "loginLink": "Giriş yap"
+    },
+    "forgot": {
+      "title": "Şifreni sıfırla",
+      "subtitle": "E-postanı gir, sana bir sıfırlama bağlantısı gönderelim.",
+      "submit": "Sıfırlama bağlantısı gönder",
+      "backToLogin": "Girişe dön"
+    },
+    "fields": {
+      "email": "E-posta",
+      "emailPlaceholder": "you@example.com",
+      "password": "Şifre",
+      "passwordPlaceholder": "En az 8 karakter",
+      "confirmPassword": "Şifreyi onayla"
+    },
+    "errors": {
+      "emailRequired": "E-posta gerekli.",
+      "emailInvalid": "Geçerli bir e-posta girin.",
+      "passwordRequired": "Şifre gerekli.",
+      "passwordMin": "En az 8 karakter.",
+      "confirmMismatch": "Şifreler eşleşmiyor."
+    },
+    "legalNote": "Devam ederek Şartlar'ı ve Gizlilik Politikası'nı kabul edersin.",
+    "pendingNote": "Kimlik doğrulama, bir sonraki adımda Firebase bağlandığında etkinleşecek.",
+    "forgotSent": "Bu e-posta kayıtlıysa, bir sıfırlama mesajı alacaksın."
+  },
   "LocaleSwitcher": {
     "label": "Dil",
     "ar": "Arapça",
