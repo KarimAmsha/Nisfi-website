@@ -338,7 +338,7 @@
     "sentTitle": "İstek gönderildi",
     "sentBody": "İsteğin {name} kişisine ulaşacak; yanıt verdiğinde bilgilendirileceksin.",
     "sentPreview": "Bu önizlemede gerçekte gönderilmez — sonradan sunucuya bağlanır.",
-    "errorBody": "İstek gönderilemedi. Lütfen tekrar deneyin.",
+    "errorBody": "Bir hata oluştu. Lütfen tekrar deneyin.",
     "deny": {
       "self": "Kendine istek gönderemezsin.",
       "senderNotEligible": "İstek göndermeden önce hesabın doğrulanmalı.",
@@ -348,6 +348,27 @@
       "declineCooldown": "Bu üyeye şu anda yeniden gönderemezsin.",
       "pendingLimit": "Bekleyen istek sınırına ({count}) ulaştın. Yanıt bekle ya da birini geri çek.",
       "dailyLimit": "Bugünkü gönderme sınırına ulaştın. Yarın tekrar dene."
+    },
+    "title": "İstekler",
+    "subtitle": "Aldığın ve gönderdiğin istekler ve durumları.",
+    "receivedTab": "Gelen",
+    "sentTab": "Giden",
+    "accept": "Kabul et",
+    "decline": "Reddet",
+    "withdraw": "Geri çek",
+    "aMember": "Doğrulanmış bir üye",
+    "previewNote": "Örnek verilerle önizleme",
+    "errorTitle": "İstekler yüklenemedi",
+    "emptyReceivedTitle": "Gelen istek yok",
+    "emptyReceivedBody": "Bir üye sana istek gönderdiğinde, kabul veya ret için burada görünür.",
+    "emptySentTitle": "Giden istek yok",
+    "emptySentBody": "Doğrulanmış üyelere göz at ve yazılı bir istekle başla.",
+    "status": {
+      "pending": "Beklemede",
+      "accepted": "Kabul edildi",
+      "declined": "Reddedildi",
+      "withdrawn": "Geri çekildi",
+      "expired": "Süresi doldu"
     }
   },
   "Matches": {

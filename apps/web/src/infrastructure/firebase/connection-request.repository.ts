@@ -13,6 +13,7 @@ import { httpsCallable } from "firebase/functions";
 import { makePairKey, type ConnectionRequest, type ConnectionRequestStatus } from "@nisfi/shared";
 import type {
   ConnectionRequestRepository,
+  RespondAction,
   SendRequestInput,
 } from "@/core/ports/connection-request";
 import { firebaseFirestore, firebaseFunctions } from "./client";
@@ -69,6 +70,41 @@ class FirestoreConnectionRequestRepository implements ConnectionRequestRepositor
     );
     const first = snap.docs[0];
     return first ? toRequest(first.id, first.data()) : null;
+  }
+
+  private async listBy(field: "toUid" | "fromUid", uid: string): Promise<ConnectionRequest[]> {
+    const snap = await getDocs(
+      query(
+        collection(firebaseFirestore(), "connectionRequests"),
+        where(field, "==", uid),
+        orderBy("createdAt", "desc"),
+      ),
+    );
+    return snap.docs.map((d) => toRequest(d.id, d.data()));
+  }
+
+  listReceived(uid: string): Promise<ConnectionRequest[]> {
+    return this.listBy("toUid", uid);
+  }
+
+  listSent(uid: string): Promise<ConnectionRequest[]> {
+    return this.listBy("fromUid", uid);
+  }
+
+  async respond(id: string, action: RespondAction, reason?: string): Promise<void> {
+    const callable = httpsCallable<{ id: string; action: RespondAction; reason?: string }, void>(
+      firebaseFunctions(),
+      "respondToConnectionRequest",
+    );
+    await callable(reason !== undefined ? { id, action, reason } : { id, action });
+  }
+
+  async withdraw(id: string): Promise<void> {
+    const callable = httpsCallable<{ id: string }, void>(
+      firebaseFunctions(),
+      "withdrawConnectionRequest",
+    );
+    await callable({ id });
   }
 }
 

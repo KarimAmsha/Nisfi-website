@@ -109,3 +109,51 @@ export function canSendRequest(ctx: SendRequestContext): SendRequestDecision {
   if (ctx.sentToday >= ctx.limits.dailySends) return { ok: false, reason: "dailyLimit" };
   return { ok: true };
 }
+
+/** Recipient-driven and sender-driven transitions on a pending request (CF7). */
+export const REQUEST_ACTIONS = ["accept", "decline", "withdraw"] as const;
+export type RequestAction = (typeof REQUEST_ACTIONS)[number];
+
+const ACTION_RESULT: Record<RequestAction, ConnectionRequestStatus> = {
+  accept: "accepted",
+  decline: "declined",
+  withdraw: "withdrawn",
+};
+
+export interface TransitionContext {
+  actorUid: string;
+  fromUid: string;
+  toUid: string;
+  status: ConnectionRequestStatus;
+}
+
+export type TransitionDecision =
+  | { ok: true; nextStatus: ConnectionRequestStatus }
+  | { ok: false; reason: "notParticipant" | "notAuthorizedForAction" | "notPending" };
+
+/**
+ * The authoritative transition decision (CF7). Accept/decline are the
+ * recipient's; withdraw is the sender's; only a `pending` request can move. On
+ * accept the callable also creates the match (`matches/{pairKey}`, Unit 4.1).
+ */
+export function canTransitionRequest(
+  action: RequestAction,
+  ctx: TransitionContext,
+): TransitionDecision {
+  const isSender = ctx.actorUid === ctx.fromUid;
+  const isRecipient = ctx.actorUid === ctx.toUid;
+  if (!isSender && !isRecipient) return { ok: false, reason: "notParticipant" };
+  if (ctx.status !== "pending") return { ok: false, reason: "notPending" };
+  if ((action === "accept" || action === "decline") && !isRecipient) {
+    return { ok: false, reason: "notAuthorizedForAction" };
+  }
+  if (action === "withdraw" && !isSender) {
+    return { ok: false, reason: "notAuthorizedForAction" };
+  }
+  return { ok: true, nextStatus: ACTION_RESULT[action] };
+}
+
+/** A pending request older than the expiry window (CF14 scheduled sweep). */
+export function isRequestExpired(createdAt: string, now: Date = new Date()): boolean {
+  return (now.getTime() - new Date(createdAt).getTime()) / DAY_MS > REQUEST_EXPIRY_DAYS;
+}

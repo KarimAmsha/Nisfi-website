@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { evaluateSendRequest, type SendRequestReadState } from "./connection-requests";
+import {
+  evaluateSendRequest,
+  evaluateTransition,
+  type SendRequestReadState,
+} from "./connection-requests";
 
 const state: SendRequestReadState = {
   senderUid: "omar",
@@ -36,6 +40,26 @@ describe("evaluateSendRequest (CF6 core)", () => {
     expect(evaluateSendRequest({ ...state, recipientUid: "omar" }, "hi")).toMatchObject({
       ok: false,
       reason: "self",
+    });
+  });
+});
+
+describe("evaluateTransition (CF7 core)", () => {
+  const pending = {
+    actorUid: "aisha",
+    fromUid: "omar",
+    toUid: "aisha",
+    status: "pending" as const,
+  };
+
+  it("resolves the next status for an authorized recipient accept", () => {
+    expect(evaluateTransition("accept", pending)).toEqual({ ok: true, nextStatus: "accepted" });
+  });
+
+  it("denies a sender accepting their own request", () => {
+    expect(evaluateTransition("accept", { ...pending, actorUid: "omar" })).toMatchObject({
+      ok: false,
+      reason: "notAuthorizedForAction",
     });
   });
 });

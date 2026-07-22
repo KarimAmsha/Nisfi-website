@@ -1,10 +1,13 @@
 import {
   canSendRequest,
+  canTransitionRequest,
   makePairKey,
   REQUEST_LIMITS_FALLBACK,
   type ConnectionRequest,
+  type RequestAction,
   type RequestLimits,
   type SendRequestDecision,
+  type TransitionDecision,
 } from "@nisfi/shared";
 
 /**
@@ -63,4 +66,31 @@ export function evaluateSendRequest(
       respondedAt: null,
     },
   };
+}
+
+/**
+ * CF7 `respondToConnectionRequest` / `withdrawConnectionRequest` core. The
+ * deployed callable re-reads the request inside a transaction, calls this, and
+ * on `ok` writes `{ status: nextStatus, respondedAt }` and updates counters —
+ * plus, on `accept`, creates `matches/{pairKey}` idempotently (Unit 4.1). Only
+ * a `pending` request transitions; permissions are role-based (recipient
+ * accepts/declines, sender withdraws).
+ */
+export interface TransitionReadState {
+  actorUid: string;
+  fromUid: string;
+  toUid: string;
+  status: ConnectionRequest["status"];
+}
+
+export function evaluateTransition(
+  action: RequestAction,
+  state: TransitionReadState,
+): TransitionDecision {
+  return canTransitionRequest(action, {
+    actorUid: state.actorUid,
+    fromUid: state.fromUid,
+    toUid: state.toUid,
+    status: state.status,
+  });
 }

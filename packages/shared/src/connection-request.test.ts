@@ -1,12 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
   canSendRequest,
+  canTransitionRequest,
   connectionMessageSchema,
+  isRequestExpired,
   makePairKey,
   REQUEST_LIMITS_FALLBACK,
   DECLINE_COOLDOWN_DAYS,
   type ConnectionRequest,
   type SendRequestContext,
+  type TransitionContext,
 } from "./connection-request";
 
 const base: SendRequestContext = {
@@ -125,5 +128,65 @@ describe("canSendRequest", () => {
     const atCap = { ...base, pendingSentCount: REQUEST_LIMITS_FALLBACK.maxPendingSent };
     expect(canSendRequest(atCap)).toMatchObject({ reason: "pendingLimit" });
     expect(canSendRequest(atCap)).toMatchObject({ reason: "pendingLimit" });
+  });
+});
+
+describe("canTransitionRequest (CF7) — two-user permissions", () => {
+  const pending: TransitionContext = {
+    actorUid: "aisha",
+    fromUid: "omar",
+    toUid: "aisha",
+    status: "pending",
+  };
+
+  it("lets the recipient accept or decline a pending request", () => {
+    expect(canTransitionRequest("accept", pending)).toEqual({ ok: true, nextStatus: "accepted" });
+    expect(canTransitionRequest("decline", pending)).toEqual({ ok: true, nextStatus: "declined" });
+  });
+
+  it("lets the sender withdraw a pending request", () => {
+    expect(canTransitionRequest("withdraw", { ...pending, actorUid: "omar" })).toEqual({
+      ok: true,
+      nextStatus: "withdrawn",
+    });
+  });
+
+  it("forbids the sender from accepting/declining their own request", () => {
+    expect(canTransitionRequest("accept", { ...pending, actorUid: "omar" })).toMatchObject({
+      reason: "notAuthorizedForAction",
+    });
+  });
+
+  it("forbids the recipient from withdrawing", () => {
+    expect(canTransitionRequest("withdraw", pending)).toMatchObject({
+      reason: "notAuthorizedForAction",
+    });
+  });
+
+  it("forbids a non-participant from any transition", () => {
+    expect(canTransitionRequest("accept", { ...pending, actorUid: "zaid" })).toMatchObject({
+      reason: "notParticipant",
+    });
+  });
+
+  it("forbids transitioning a request that is no longer pending", () => {
+    expect(canTransitionRequest("accept", { ...pending, status: "declined" })).toMatchObject({
+      reason: "notPending",
+    });
+    expect(
+      canTransitionRequest("withdraw", { ...pending, actorUid: "omar", status: "accepted" }),
+    ).toMatchObject({
+      reason: "notPending",
+    });
+  });
+});
+
+describe("isRequestExpired", () => {
+  const now = new Date("2026-06-15T00:00:00Z");
+  it("expires a pending request only after the 14-day window", () => {
+    expect(isRequestExpired(new Date("2026-06-14T00:00:00Z").toISOString(), now)).toBe(false);
+    expect(isRequestExpired(new Date("2026-05-31T00:00:00Z").toISOString(), now)).toBe(true);
+    // exactly 14 days is not yet expired (strictly greater)
+    expect(isRequestExpired(new Date("2026-06-01T00:00:00Z").toISOString(), now)).toBe(false);
   });
 });

@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 3 — Discovery and intentional connection requests |
-| Current unit | Unit 3.4 — connection-request composer, limits, dedupe, cooldown, server enforcement (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 3 on emulators/mocks; next is Unit 3.5 (received/sent request center; accept/decline/withdraw/expire). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 3.5 — received/sent request center; accept/decline/withdraw/expire (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 3 on emulators/mocks; next is Unit 3.6 (blocking foundation + in-app notifications) which closes Phase 3 / gate G3. Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 3.5 — completed (delivered to `main`; CF7 callables deployed in the wiring step, O-001)
+
+The request center with Received | Sent tabs and the accept / decline / withdraw / expire transitions.
+
+- **Shared:** `canTransitionRequest` (accept/decline are the recipient's, withdraw the sender's, only `pending` moves; reasons: notParticipant / notAuthorizedForAction / notPending) and `isRequestExpired` (14-day window). **7 unit tests** for the two-user permission matrix + expiry boundary (shared suite now **53**).
+- **Server core:** `functions/src/connection-requests.ts` `evaluateTransition` (CF7 core) resolves the next status for the deployed callables, which write `{ status, respondedAt }` + counters, and on accept create `matches/{pairKey}` (Unit 4.1). Functions suite now **5**.
+- **Port + adapter:** `ConnectionRequestRepository` gains `listReceived` / `listSent` (indexed queries) and `respond` / `withdraw` (CF7 callables).
+- **UI (`components/requests/request-center.tsx`):** `/app/requests` with Received | Sent tabs; each request shows the counterparty, message, and a status badge; received-pending gets accept/decline, sent-pending gets withdraw; per-tab empty, loading, and error states. A preview seed makes the transitions demonstrable (local state) with a visible preview badge.
+- **Rules:** unchanged from 3.4 — client transitions stay denied (server-only); the deny-transition test still holds.
+- **Verified:** `pnpm check` + `next build` (72 routes) + `pnpm test:rules` (34) green; RTL Received + Sent screenshots.
 
 ## Unit 3.4 — completed (delivered to `main`; CF6 callable deployed in the wiring step, O-001)
 
@@ -250,7 +261,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 3 / Unit 3.5: received/sent request center; accept/decline/withdraw/expire** — the `/app/requests` center with Received | Sent tabs showing each request with the counterparty's profile + message and status, wired to the server transitions (CF7 accept/decline/withdraw; scheduled expire). Accept atomically creates the match (Unit 4.1). Transition permissions/state tested with two users.
+**Phase 3 / Unit 3.6: blocking foundation and in-app notifications** — the block relationship (instant, unilateral, silent) that removes both directions from discovery and prevents/closes applicable interaction, managed in `/app/settings/blocked`, plus the in-app notifications surface for request events. Closes Phase 3 / gate G3.
 
 ### Deferred to the final "production wiring" step (O-001)
 

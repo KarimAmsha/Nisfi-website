@@ -338,7 +338,7 @@
     "sentTitle": "Request sent",
     "sentBody": "Your request will reach {name}; you'll be notified when they respond.",
     "sentPreview": "In this preview nothing is actually sent — it connects to the server later.",
-    "errorBody": "Couldn't send the request. Please try again.",
+    "errorBody": "Something went wrong. Please try again.",
     "deny": {
       "self": "You can't send a request to yourself.",
       "senderNotEligible": "Your account must be verified before sending requests.",
@@ -348,6 +348,27 @@
       "declineCooldown": "You can't re-send to this member right now.",
       "pendingLimit": "You've reached the pending-request limit ({count}). Wait for a reply or withdraw one.",
       "dailyLimit": "You've reached today's send limit. Try again tomorrow."
+    },
+    "title": "Requests",
+    "subtitle": "Your received and sent requests and their status.",
+    "receivedTab": "Received",
+    "sentTab": "Sent",
+    "accept": "Accept",
+    "decline": "Decline",
+    "withdraw": "Withdraw",
+    "aMember": "A verified member",
+    "previewNote": "Preview with sample data",
+    "errorTitle": "Couldn't load requests",
+    "emptyReceivedTitle": "No received requests",
+    "emptyReceivedBody": "When a member sends you a request, it appears here to accept or decline.",
+    "emptySentTitle": "No sent requests",
+    "emptySentBody": "Browse verified members and start with a written request.",
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "withdrawn": "Withdrawn",
+      "expired": "Expired"
     }
   },
   "Matches": {

@@ -6,6 +6,9 @@ export interface SendRequestInput {
   message: string;
 }
 
+/** Recipient actions (`accept`/`decline`) — withdraw is a separate sender op. */
+export type RespondAction = "accept" | "decline";
+
 /**
  * ConnectionRequestRepository port (master spec Sections 5.2, F5). Sends go
  * through the server (CF6 `sendConnectionRequest`) which atomically enforces
@@ -20,4 +23,12 @@ export interface ConnectionRequestRepository {
   countPendingSent(uid: string): Promise<number>;
   /** The most recent request for a pair, or null — used for dedupe/cooldown. */
   getLatestForPair(pairKey: string): Promise<ConnectionRequest | null>;
+  /** Requests where the member is the recipient (Received tab). */
+  listReceived(uid: string): Promise<ConnectionRequest[]>;
+  /** Requests the member sent (Sent tab). */
+  listSent(uid: string): Promise<ConnectionRequest[]>;
+  /** Recipient accepts/declines a pending request (server transaction, CF7). */
+  respond(id: string, action: RespondAction, reason?: string): Promise<void>;
+  /** Sender withdraws their pending request (server transaction, CF7). */
+  withdraw(id: string): Promise<void>;
 }
