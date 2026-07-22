@@ -183,3 +183,11 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 |---|---|---|---|
 | U43-001 | Close-match is a server transition (`closeMatch` callable via `evaluateCloseMatch`); the client optimistically reflects the closed state but the match doc write is server-only. A closed match keeps message history read-only and blocks new sends (the message-create rule already requires `match.status == active`). | Implemented (SDK wiring deferred, O-001) | Master spec F6: closing must be atomic and unforgeable, and history must remain. |
 | U43-002 | The soft-delete affordance (own message, 15-min window) shipped in 4.2 is retained; 4.3 adds the close flow and the closed/empty/loading conversation states. | Implemented under owner-authorized scope | Keeps the conversation states robust without re-litigating soft-delete. |
+
+### Unit 4.4 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U44-001 | Photo reveal is per-side and revocable (`matches.photoReveal[uid]`); the flag is set via the `setPhotoReveal` callable (match writes are server-only), and originals are fetched only through `getRevealedPhotoUrls`, which enforces membership + the counterparty's reveal flag and returns short-lived signed Cloudinary URLs. | Implemented (Cloudinary signing + SDK wiring deferred, O-001/O-002) | Master spec F7: originals never public, never cached in Firestore; revoke denies the next request. |
+| U44-002 | The reveal-relevant pure helpers accept a loosened structural match projection (`{ uids: readonly string[]; … }`) so both the web client and the Function cores share them without tuple friction. | Implemented under owner-authorized scope | Keeps one authority for reveal access across surfaces. |
+| U44-003 | In preview the counterparty is seeded as having revealed, so both the "reveal mine" toggle and the "they revealed" state are demonstrable; revealed originals show a signed-link placeholder until Cloudinary is wired. | Implemented (originals deferred, O-002) | Honest, demonstrable UX without exposing any real originals. |

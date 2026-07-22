@@ -551,5 +551,14 @@
     "cancel": "Cancel",
     "closedBadge": "Closed",
     "closedNote": "This match is closed. History is read-only."
+  },
+  "Reveal": {
+    "myTitle": "Reveal my photos",
+    "myHint": "Let {name} see your original photos.",
+    "theirHidden": "{name}'s photos are hidden",
+    "theirRevealed": "{name} revealed their photos to you",
+    "mutualHint": "Originals appear when the other side reveals.",
+    "theirRevealedHint": "Originals open via a short-lived link (wired later).",
+    "revealedBadge": "Revealed"
   }
 }

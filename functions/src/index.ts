@@ -37,3 +37,7 @@ export {
   type MessageModeration,
   type MatchUpdateOnMessage,
 } from "./chat";
+
+// Photo-reveal cores: setPhotoReveal + getRevealedPhotoUrls authorization
+// (Cloudinary signing + SDK wiring deferred, O-001/O-002).
+export { evaluateSetPhotoReveal, evaluateRevealAccess, type SetRevealResult } from "./reveal";

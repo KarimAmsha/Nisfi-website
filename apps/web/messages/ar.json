@@ -551,5 +551,14 @@
     "cancel": "إلغاء",
     "closedBadge": "مغلق",
     "closedNote": "أُغلق هذا التوافق. السجل متاح للقراءة فقط."
+  },
+  "Reveal": {
+    "myTitle": "كشف صوري",
+    "myHint": "اسمح لـ{name} برؤية صورك الأصلية.",
+    "theirHidden": "صور {name} محجوبة",
+    "theirRevealed": "كشفت {name} صورها لك",
+    "mutualHint": "تُكشف الأصلية عندما يكشف الطرف الآخر.",
+    "theirRevealedHint": "تُفتح الأصلية عبر رابط موقّت (يُوصَل لاحقًا).",
+    "revealedBadge": "مكشوفة"
   }
 }

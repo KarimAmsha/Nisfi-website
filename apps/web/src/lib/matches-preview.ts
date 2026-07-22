@@ -3,7 +3,14 @@ import { PREVIEW_VIEWER } from "@/lib/discovery-preview";
 
 const me = PREVIEW_VIEWER.uid;
 
-function match(other: string, name: string, preview: string | null, unread: number, at: string | null): Match {
+function match(
+  other: string,
+  name: string,
+  preview: string | null,
+  unread: number,
+  at: string | null,
+  otherRevealed = false,
+): Match {
   const uids = [me, other].sort() as [string, string];
   return {
     pairKey: makePairKey(me, other),
@@ -15,7 +22,7 @@ function match(other: string, name: string, preview: string | null, unread: numb
     status: "active",
     closedBy: null,
     closedReason: null,
-    photoReveal: { [uids[0]]: false, [uids[1]]: false },
+    photoReveal: { [me]: false, [other]: otherRevealed },
     lastMessageAt: at,
     lastMessagePreview: preview,
     unread: { [me]: unread, [other]: 0 },
@@ -26,7 +33,8 @@ function match(other: string, name: string, preview: string | null, unread: numb
 
 /** Preview seed (no backend) so the match list is demonstrable. */
 export const PREVIEW_MATCHES: Match[] = [
-  match("p1", "سُمَيّة", "وعليكم السلام، تشرّفت بمعرفتك.", 2, "2026-03-19T18:30:00.000Z"),
+  // سُمَيّة has revealed her photos to demonstrate the revealed state.
+  match("p1", "سُمَيّة", "وعليكم السلام، تشرّفت بمعرفتك.", 2, "2026-03-19T18:30:00.000Z", true),
   match("p6", "فاطمة", null, 0, "2026-03-18T09:15:00.000Z"),
 ];
 

@@ -61,6 +61,23 @@ class FirestoreMatchRepository implements MatchRepository {
     const callable = httpsCallable<{ pairKey: string }, void>(firebaseFunctions(), "closeMatch");
     await callable({ pairKey });
   }
+
+  async setPhotoReveal(pairKey: string, reveal: boolean): Promise<void> {
+    const callable = httpsCallable<{ pairKey: string; reveal: boolean }, void>(
+      firebaseFunctions(),
+      "setPhotoReveal",
+    );
+    await callable({ pairKey, reveal });
+  }
+
+  async getRevealedPhotoUrls(pairKey: string): Promise<string[]> {
+    const callable = httpsCallable<{ pairKey: string }, { urls: string[] }>(
+      firebaseFunctions(),
+      "getRevealedPhotoUrls",
+    );
+    const result = await callable({ pairKey });
+    return result.data.urls;
+  }
 }
 
 export const matchRepository: MatchRepository = new FirestoreMatchRepository();

@@ -33,13 +33,13 @@ export interface Match {
 }
 
 /** The counterparty's uid for a viewer, or null if the viewer isn't a member. */
-export function otherUid(match: Pick<Match, "uids">, viewerUid: string): string | null {
+export function otherUid(match: { uids: readonly string[] }, viewerUid: string): string | null {
   if (!match.uids.includes(viewerUid)) return null;
   return match.uids.find((u) => u !== viewerUid) ?? null;
 }
 
 /** Whether a uid is one of the two match participants. */
-export function isParticipant(match: Pick<Match, "uids">, uid: string): boolean {
+export function isParticipant(match: { uids: readonly string[] }, uid: string): boolean {
   return match.uids.includes(uid);
 }
 

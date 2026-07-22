@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   canCloseMatch,
   canDeleteMessage,
+  canSetPhotoReveal,
   isValidMessageText,
   type ChatMessage,
   type Match,
@@ -25,6 +26,7 @@ export interface UseConversationResult {
   send: (text: string) => Promise<void>;
   remove: (message: ChatMessage) => Promise<void>;
   close: () => Promise<void>;
+  setReveal: (reveal: boolean) => Promise<void>;
 }
 
 export function useConversation(matchId: string): UseConversationResult {
@@ -98,5 +100,27 @@ export function useConversation(matchId: string): UseConversationResult {
     if (configured) await matchRepository.close(matchId);
   }, [viewerUid, configured, match, matchId]);
 
-  return { messages, match, viewerUid, loading, preview: !configured, closed, send, remove, close };
+  const setReveal = useCallback(
+    async (reveal: boolean) => {
+      if (!viewerUid || !match || !canSetPhotoReveal(match, viewerUid)) return;
+      setMatch((prev) =>
+        prev ? { ...prev, photoReveal: { ...prev.photoReveal, [viewerUid]: reveal } } : prev,
+      );
+      if (configured) await matchRepository.setPhotoReveal(matchId, reveal);
+    },
+    [viewerUid, configured, match, matchId],
+  );
+
+  return {
+    messages,
+    match,
+    viewerUid,
+    loading,
+    preview: !configured,
+    closed,
+    send,
+    remove,
+    close,
+    setReveal,
+  };
 }

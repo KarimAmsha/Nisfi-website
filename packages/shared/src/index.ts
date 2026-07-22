@@ -134,3 +134,11 @@ export {
   messagePreview,
   type ChatMessage,
 } from "./chat";
+
+export {
+  isRevealingOwn,
+  counterpartyRevealed,
+  canAccessRevealedPhotos,
+  canSetPhotoReveal,
+  type RevealAccessDecision,
+} from "./reveal";

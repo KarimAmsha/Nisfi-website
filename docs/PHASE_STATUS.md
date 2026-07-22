@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 4 — Matches, chat, photo reveal, and push |
-| Current unit | Unit 4.3 — soft-delete window, close-match flow, robust conversation states (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 4 on emulators/mocks; next is Unit 4.4 (photo reveal controls + short-lived original access). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 4.4 — independent photo reveal controls and short-lived original access (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 4 on emulators/mocks; next is Unit 4.5 (FCM permission education, token lifecycle, throttled push). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 4.4 — completed (delivered to `main`)
+
+Independent, revocable photo-reveal controls and the authorization for short-lived original access.
+
+- **Shared (`reveal.ts`):** `isRevealingOwn`, `counterpartyRevealed`, `canAccessRevealedPhotos` (member + counterparty revealed; reasons notParticipant / notRevealed), and `canSetPhotoReveal` (participant of an active match). **6 unit tests** including a revocation-denies-next-request case (shared suite now **72**).
+- **Server cores:** `functions/src/reveal.ts` `evaluateSetPhotoReveal` (targets the actor's own `photoReveal.{uid}`) and `evaluateRevealAccess` (the authority `getRevealedPhotoUrls` enforces before returning short-lived signed Cloudinary URLs — originals never public, never cached). Functions suite now **18**.
+- **Port + adapter:** `MatchRepository.setPhotoReveal` and `getRevealedPhotoUrls` via callables.
+- **UI:** a `PhotoRevealPanel` in the conversation — an independent "reveal my photos" switch (disabled when the match is closed) and the counterparty's photo state (blurred/locked by default, or a "revealed" state with a signed-link note). Preview seeds the counterparty as revealed to demonstrate both sides.
+- **Deferred (O-001/O-002):** Cloudinary signed-URL generation and the `setPhotoReveal`/`getRevealedPhotoUrls` callables' Admin SDK wiring; originals remain private/authenticated on Cloudinary.
+- **Verified:** `pnpm check` + `next build` (74 routes) + `pnpm test:rules` (54) green; RTL reveal-panel screenshots (toggle off/on).
 
 ## Unit 4.3 — completed (delivered to `main`)
 
@@ -306,7 +317,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 4 / Unit 4.4: independent photo reveal controls and short-lived original access** — per-side `matches.photoReveal[uid]` toggle (revocable) in the conversation header, and the `getRevealedPhotoUrls(matchId)` callable that validates membership + reveal flag and returns short-lived signed URLs. Originals never public, never cached in Firestore; revocation + unauthorized URL requests fail. (Cloudinary signed delivery per O-002; real wiring deferred O-001.)
+**Phase 4 / Unit 4.5: FCM permission education, token lifecycle, throttled message push** — request web-push permission AFTER a first meaningful action (not on load), store FCM tokens as private per-device docs under `users/{uid}/devices/{deviceId}` (pruned on invalid-token errors), and throttle message push (max 1 per match per 5 min). Closes Phase 4 / gate G4. (Real FCM/VAPID wiring deferred O-001.)
 
 ### Deferred to the final "production wiring" step (O-001)
 

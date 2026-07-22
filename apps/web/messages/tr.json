@@ -551,5 +551,14 @@
     "cancel": "İptal",
     "closedBadge": "Kapalı",
     "closedNote": "Bu eşleşme kapatıldı. Geçmiş yalnızca okunabilir."
+  },
+  "Reveal": {
+    "myTitle": "Fotoğraflarımı göster",
+    "myHint": "{name} kişisinin orijinal fotoğraflarını görmesine izin ver.",
+    "theirHidden": "{name} kişisinin fotoğrafları gizli",
+    "theirRevealed": "{name} fotoğraflarını sana açtı",
+    "mutualHint": "Karşı taraf açınca orijinaller görünür.",
+    "theirRevealedHint": "Orijinaller kısa ömürlü bir bağlantıyla açılır (sonra bağlanır).",
+    "revealedBadge": "Açıldı"
   }
 }

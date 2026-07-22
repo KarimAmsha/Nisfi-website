@@ -17,6 +17,7 @@ import { cn } from "@/lib/cn";
 import { useConversation } from "@/lib/use-conversation";
 import { getPreviewProfile } from "@/lib/discovery-preview";
 import { DEMO_BANNED_WORDS } from "@/lib/chat-preview";
+import { PhotoRevealPanel } from "@/components/matches/photo-reveal-panel";
 
 function Bubble({
   message,
@@ -62,7 +63,7 @@ function Bubble({
 
 export function Conversation({ matchId }: { matchId: string }) {
   const t = useTranslations("Chat");
-  const { messages, match, viewerUid, loading, preview, closed, send, remove, close } =
+  const { messages, match, viewerUid, loading, preview, closed, send, remove, close, setReveal } =
     useConversation(matchId);
   const [text, setText] = useState("");
   const [confirmClose, setConfirmClose] = useState(false);
@@ -134,6 +135,18 @@ export function Conversation({ matchId }: { matchId: string }) {
           ) : null}
         </div>
       </header>
+
+      {match && viewerUid ? (
+        <div className="pt-3">
+          <PhotoRevealPanel
+            match={match}
+            viewerUid={viewerUid}
+            otherName={otherName}
+            disabled={closed}
+            onToggle={(reveal) => void setReveal(reveal)}
+          />
+        </div>
+      ) : null}
 
       <div className="flex flex-1 flex-col gap-3 overflow-y-auto py-4">
         {loading ? (
