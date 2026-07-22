@@ -433,7 +433,8 @@
       "reports": "Reports",
       "photos": "Photos",
       "questions": "Questions",
-      "config": "Configuration"
+      "config": "Configuration",
+      "broadcasts": "Broadcasts"
     },
     "dashboard": {
       "title": "Admin dashboard",
@@ -652,6 +653,41 @@
         "announcement": "Announcement banner",
         "onboardingIntro": "Onboarding intro"
       }
+    },
+    "broadcasts": {
+      "title": "Broadcasts",
+      "composeTitle": "Compose a broadcast",
+      "audience": "Audience",
+      "audiences": {
+        "all": "All members",
+        "verified": "Verified",
+        "unverified": "Unverified",
+        "male": "Men",
+        "female": "Women"
+      },
+      "titleLabel": "Title",
+      "bodyLabel": "Message",
+      "dryRun": "Dry-run audience",
+      "dryRunResult": "This broadcast would reach {count} members.",
+      "send": "Send",
+      "confirmPrompt": "Send to {count} members? This cannot be undone.",
+      "confirmSend": "Confirm send",
+      "cancel": "Cancel",
+      "sentNote": "Sending started; the result will appear in the history.",
+      "sendHint": "Dry-run the audience first; sending is high-impact and is written to the audit log.",
+      "historyTitle": "Recent broadcasts",
+      "previewNote": "Preview data",
+      "status": {
+        "draft": "Draft",
+        "sending": "Sending",
+        "sent": "Sent",
+        "failed": "Partial failure"
+      },
+      "deliveryCounts": "{sent}/{targeted} delivered · {failed} failed",
+      "emptyTitle": "No broadcasts yet",
+      "emptyDesc": "Compose the first broadcast to see it here.",
+      "errorTitle": "Couldn’t load broadcasts",
+      "errorBody": "Something went wrong fetching them. Try again."
     }
   },
   "ProfileDetail": {

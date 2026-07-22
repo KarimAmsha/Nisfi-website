@@ -6,6 +6,7 @@ import { roleAtLeast, type Role } from "@nisfi/shared";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 import {
+  BellIcon,
   FlagIcon,
   GaugeIcon,
   LockIcon,
@@ -19,7 +20,15 @@ import { useAdmin } from "@/lib/use-admin";
 
 type AdminNav = {
   href: string;
-  key: "dashboard" | "verifications" | "photos" | "users" | "reports" | "questions" | "config";
+  key:
+    | "dashboard"
+    | "verifications"
+    | "photos"
+    | "users"
+    | "reports"
+    | "questions"
+    | "config"
+    | "broadcasts";
   Icon: ComponentType<{ size?: number }>;
   countKey?: keyof AdminQueueCounts;
   minRole: Role;
@@ -50,6 +59,7 @@ const NAV: AdminNav[] = [
     minRole: "moderator",
   },
   { href: "/admin/questions", key: "questions", Icon: SparkIcon, minRole: "admin" },
+  { href: "/admin/broadcasts", key: "broadcasts", Icon: BellIcon, minRole: "admin" },
   { href: "/admin/config", key: "config", Icon: SettingsIcon, minRole: "admin" },
 ];
 

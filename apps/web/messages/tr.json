@@ -433,7 +433,8 @@
       "reports": "Raporlar",
       "photos": "Fotoğraflar",
       "questions": "Sorular",
-      "config": "Yapılandırma"
+      "config": "Yapılandırma",
+      "broadcasts": "Yayınlar"
     },
     "dashboard": {
       "title": "Yönetim paneli",
@@ -652,6 +653,41 @@
         "announcement": "Duyuru afişi",
         "onboardingIntro": "Kayıt girişi"
       }
+    },
+    "broadcasts": {
+      "title": "Yayınlar",
+      "composeTitle": "Yayın oluştur",
+      "audience": "Hedef kitle",
+      "audiences": {
+        "all": "Tüm üyeler",
+        "verified": "Doğrulanmış",
+        "unverified": "Doğrulanmamış",
+        "male": "Erkekler",
+        "female": "Kadınlar"
+      },
+      "titleLabel": "Başlık",
+      "bodyLabel": "Mesaj",
+      "dryRun": "Kitle denemesi",
+      "dryRunResult": "Bu yayın {count} üyeye ulaşır.",
+      "send": "Gönder",
+      "confirmPrompt": "{count} üyeye gönderilsin mi? Geri alınamaz.",
+      "confirmSend": "Göndermeyi onayla",
+      "cancel": "İptal",
+      "sentNote": "Gönderim başladı; sonuç geçmişte görünecek.",
+      "sendHint": "Önce kitleyi deneyin; gönderim yüksek etkili bir işlemdir ve denetim günlüğüne yazılır.",
+      "historyTitle": "Son yayınlar",
+      "previewNote": "Önizleme verisi",
+      "status": {
+        "draft": "Taslak",
+        "sending": "Gönderiliyor",
+        "sent": "Gönderildi",
+        "failed": "Kısmi hata"
+      },
+      "deliveryCounts": "{sent}/{targeted} iletildi · {failed} başarısız",
+      "emptyTitle": "Henüz yayın yok",
+      "emptyDesc": "Burada görmek için ilk yayını oluşturun.",
+      "errorTitle": "Yayınlar yüklenemedi",
+      "errorBody": "Alınırken bir sorun oluştu. Tekrar deneyin."
     }
   },
   "ProfileDetail": {

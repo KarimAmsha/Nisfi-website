@@ -84,3 +84,11 @@ export {
 // App-config core: allow-listed flag/limit/content change with old→new audit
 // (admin-only; Admin SDK + audit wiring deferred, O-001).
 export { evaluateConfigChange, type ConfigWriteResult } from "./config";
+
+// Broadcast cores: idempotent dispatch (admin-only, validated) + delivery
+// summary (Admin SDK batched fan-out + audit deferred, O-001).
+export {
+  evaluateBroadcastDispatch,
+  summarizeDelivery,
+  type BroadcastDispatchResult,
+} from "./broadcasts";

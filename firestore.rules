@@ -153,6 +153,15 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // broadcasts/{id}: admin-only staff surface (the composer + history). ALL
+    // writes are server-only (admin via the broadcast CF, which validates,
+    // fans out per-recipient notifications idempotently, and records the
+    // delivery summary + audit; clients never write broadcasts). Section 6.3.
+    match /broadcasts/{id} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
     // connectionRequests: the two participants + staff may read; ALL writes are
     // server-only (CF6 sendConnectionRequest / CF7 respond/withdraw via the Admin
     // SDK, which bypasses these rules). Clients never create or transition a

@@ -9,12 +9,24 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 6 — Complete control panel |
-| Current unit | Unit 6.2 — runtime content & app configuration (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 6 on emulators/mocks; next is Unit 6.3 (broadcast composer). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 6.3 — broadcast composer (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 6 on emulators/mocks; next is Unit 6.4 (plans/entitlements read model). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 6.3 — completed (delivered to `main`)
+
+The staff broadcast composer: a localized message to an allow-listed audience, an audience dry-run before sending, idempotent batched dispatch, and a delivery summary (master spec Section 6.3).
+
+- **Shared:** `broadcast.ts` — `BROADCAST_AUDIENCES` (all/verified/unverified/male/female), `Broadcast` + `AudienceMember`, `broadcastInputSchema` (localized title ≤80 / body ≤600, all locales required), `canSendBroadcast` (admin+), `matchesAudience` / `estimateAudience` (dry-run count; suspended/banned never receive), `canDispatch` (idempotency: only draft/failed may dispatch). New `broadcast.test.ts` (shared suite now **114**).
+- **Server core:** `functions/src/broadcasts.ts` — `evaluateBroadcastDispatch` (CF `sendBroadcast`; admin-gated, validated, idempotent → `sending` + `targetedCount`; reasons notAllowed/invalid/alreadyDispatched) and `summarizeDelivery` (sent only when every recipient succeeded, else failed). Functions suite now **46**.
+- **Rules:** `broadcasts/{id}` — admin-only read; all writes server-only (the broadcast CF composes/dispatches with audit). New `broadcast.rules.test.ts` (admin read, moderator/member denied, admin client write denied). Rules suite now **73**.
+- **Port + adapter:** `BroadcastRepository.listBroadcasts` (admin read, newest-first), `estimateAudience` (CF dry-run callable), `sendBroadcast` (CF callable).
+- **UI:** `/admin/broadcasts` — a composer (audience select, localized ar RTL / en·tr LTR title + body) with a **dry-run** that shows "N members would receive this", a **confirm-before-send** high-impact guard, and a recent-broadcasts history (status badge + delivery counts). New **Broadcasts** nav item (admin+). Preview seed with two past broadcasts + a seeded audience for the dry-run.
+- **Deferred (O-001):** the `estimateBroadcastAudience` / `sendBroadcast` callables (server-side audience query, batched per-recipient notification fan-out, delivery summary + audit) are wired at the final production step; the console runs on the preview seed until then.
+- **Verified:** `pnpm check` (shared 114, functions 46) + `next build` (86 routes) + `pnpm test:rules` (73) green; RTL composer screenshot with a live dry-run count.
 
 ## Unit 6.2 — completed (delivered to `main`)
 
@@ -408,7 +420,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 6 / Unit 6.3: broadcast composer** — a staff broadcast composer with a localized message, an audience dry-run (who would receive it) before sending, batched server-side sending with idempotency, and a delivery summary — with authorization, localization, and failure-path handling (master spec Section 6.3).
+**Phase 6 / Unit 6.4: plans & entitlements read model** — a read model of members' plan/entitlement state and a controlled, superAdmin-only manual management path, with the subscription/billing flag staying off (V1 has no paid tier) and every mutation audited (master spec Section 6.4).
 
 ### Deferred to the final "production wiring" step (O-001)
 

@@ -433,7 +433,8 @@
       "reports": "البلاغات",
       "photos": "الصور",
       "questions": "الأسئلة",
-      "config": "الإعدادات"
+      "config": "الإعدادات",
+      "broadcasts": "البث"
     },
     "dashboard": {
       "title": "لوحة الإدارة",
@@ -652,6 +653,41 @@
         "announcement": "شريط الإعلان",
         "onboardingIntro": "مقدمة التسجيل"
       }
+    },
+    "broadcasts": {
+      "title": "البث",
+      "composeTitle": "إنشاء بثّ",
+      "audience": "الجمهور",
+      "audiences": {
+        "all": "كل الأعضاء",
+        "verified": "الموثّقون",
+        "unverified": "غير الموثّقين",
+        "male": "الرجال",
+        "female": "النساء"
+      },
+      "titleLabel": "العنوان",
+      "bodyLabel": "النص",
+      "dryRun": "تجربة الجمهور",
+      "dryRunResult": "سيصل هذا البثّ إلى {count} عضواً.",
+      "send": "إرسال",
+      "confirmPrompt": "تأكيد الإرسال إلى {count} عضواً؟ لا يمكن التراجع.",
+      "confirmSend": "تأكيد الإرسال",
+      "cancel": "إلغاء",
+      "sentNote": "بدأ الإرسال؛ ستظهر النتيجة في السجلّ.",
+      "sendHint": "جرّب الجمهور أولاً؛ الإرسال إجراء عالي التأثير ويُسجَّل في التدقيق.",
+      "historyTitle": "آخر عمليات البث",
+      "previewNote": "بيانات تجريبية",
+      "status": {
+        "draft": "مسودة",
+        "sending": "قيد الإرسال",
+        "sent": "تم الإرسال",
+        "failed": "فشل جزئي"
+      },
+      "deliveryCounts": "{sent}/{targeted} وصلت · {failed} فشلت",
+      "emptyTitle": "لا عمليات بثّ بعد",
+      "emptyDesc": "أنشئ أول بثّ ليظهر هنا.",
+      "errorTitle": "تعذّر تحميل عمليات البث",
+      "errorBody": "حدث خطأ أثناء الجلب. حاول مجدداً."
     }
   },
   "ProfileDetail": {
