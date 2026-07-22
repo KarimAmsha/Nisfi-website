@@ -100,3 +100,7 @@ export { evaluateEntitlementGrant, type EntitlementGrantResult } from "./plans";
 // Ops cores: privacy-safe export (CF18: role/table/row/column limits + audit)
 // and sanitized health summary (CF20). Admin SDK wiring deferred (O-001).
 export { evaluateExport, buildHealthSummary, type ExportResult } from "./ops";
+
+// Privacy-rights cores: member self-export + account deletion plan (self-only,
+// irreversible; Admin SDK/Cloudinary cascade + audit deferred, O-001/O-002).
+export { buildMemberExport, evaluateAccountDeletion, type AccountDeletionResult } from "./privacy";

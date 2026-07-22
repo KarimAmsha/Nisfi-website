@@ -453,7 +453,10 @@
     "deleteRequested": "Silme istendi; onay adımlarını alacaksınız.",
     "confirm": "Onayla",
     "cancel": "İptal",
-    "privacyNote": "Dışa aktarma ve silme, doğrulama ile sunucu tarafında güvenle işlenir; tam akış gizlilik hakları biriminde yer alır."
+    "privacyNote": "Dışa aktarma ve silme, doğrulama ile sunucu tarafında güvenle işlenir; tam akış gizlilik hakları biriminde yer alır.",
+    "exportReady": "Verileriniz hazırlandı ve JSON dosyası olarak indirildi.",
+    "deleteAcknowledge": "Bunun kalıcı olduğunu ve geri alınamayacağını anlıyorum.",
+    "deleteFinal": "Hesabımı kalıcı olarak sil"
   },
   "Admin": {
     "nav": {

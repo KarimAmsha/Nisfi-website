@@ -9,12 +9,24 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 7 — Settings, privacy rights, hardening & launch |
-| Current unit | Unit 7.1 — member settings & account controls (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 7 on emulators/mocks; next is Unit 7.2 (privacy rights — data export & account deletion flow). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 7.2 — privacy rights (data export & account deletion) (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 7 on emulators/mocks; next is Unit 7.3 (suspended/banned/deleted status screen & app-wide lockout routing). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 7.2 — completed (delivered to `main`)
+
+Member privacy rights: self-service data export and irreversible account deletion (master spec Section 7 / F11).
+
+- **Shared:** `privacy.ts` — `MemberExport` + `assembleMemberExport` (a privacy-safe bundle of the member's OWN data only), `ANONYMIZED_DISPLAY_NAME` + `buildDeletionAnonymization` (displayName → "Deleted member", cleared about/answers/photos, visibility hidden), `canRequestDeletion` (any non-deleted account). Added `"deleted"` to `ACCOUNT_STATUSES` and made a deleted account terminal in `canSetAccountStatus`. New `privacy.test.ts` (shared suite now **137**).
+- **Server core:** `functions/src/privacy.ts` — `buildMemberExport` and `evaluateAccountDeletion` (self-only, not-already-deleted → the anonymization + cascade plan: `users.status="deleted"`, close matches `closedReason:"deletion"`, remove tokens/notifications, disable auth). Functions suite now **54**.
+- **Rules:** a `deleted`-status member is locked out of every product write (`isActive()` false) — new `privacy.rules.test.ts` proves report create + verification submit are denied. Rules suite now **84**.
+- **Port + adapter:** `PrivacyRepository.exportMyData` (returns the bundle) and `deleteMyAccount`; the 7.1 placeholder export/delete methods were removed from `MemberSettingsRepository`.
+- **UI:** `/app/settings` account section now does a real **data export** (downloads `nisfi-my-data.json`; in preview the bundle is assembled locally) and a **double-confirmation** account deletion (a danger panel with an "I understand this is permanent" acknowledgement gating the final delete, which then signs out and returns to the landing).
+- **Deferred (O-001/O-002):** the `exportMyData` / `deleteMyAccount` callables (server gather + the anonymization/cascade transaction, Cloudinary asset deletion, audit) are wired at the final production step; the flow runs on the preview bundle until then.
+- **Verified:** `pnpm check` (shared 137, functions 54) + `next build` (98 routes) + `pnpm test:rules` (84) green; RTL two-step-deletion screenshot.
 
 ## Unit 7.1 — completed (delivered to `main`)
 
@@ -466,7 +478,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 7 / Unit 7.2: privacy rights — data export & account deletion** — the real member data-export (privacy-safe bundle of own data) and account-deletion flow (verification + grace period + cascade), server-side and audited, behind the entry points Unit 7.1 surfaced (master spec Section 7 / privacy rights).
+**Phase 7 / Unit 7.3: status screen & lockout routing** — the `/[locale]/status` screen for suspended / banned / deleted members and the app-wide routing that sends non-active members there (they can authenticate only to see status; all product surfaces locked), completing the account-status lifecycle surfaced by 5.5 / 7.2 (master spec Sections 169, 322, 479).
 
 ### Deferred to the final "production wiring" step (O-001)
 

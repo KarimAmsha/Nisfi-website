@@ -11,6 +11,7 @@ import { cn } from "@/lib/cn";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { useMemberSettings } from "@/lib/use-member-settings";
+import { usePrivacy } from "@/lib/use-privacy";
 
 const LOCALES: readonly Locale[] = ["ar", "en", "tr"];
 
@@ -64,22 +65,40 @@ export function SettingsPanel() {
   const t = useTranslations("Settings");
   const router = useRouter();
   const { signOut } = useAuth();
-  const {
-    preferences,
-    locale,
-    visibility,
-    preview,
-    toggleNotification,
-    setLocale,
-    setVisibility,
-    requestExport,
-    requestDeletion,
-  } = useMemberSettings();
-  const [confirm, setConfirm] = useState<null | "export" | "delete">(null);
-  const [notice, setNotice] = useState<null | "export" | "delete">(null);
+  const { preferences, locale, visibility, preview, toggleNotification, setLocale, setVisibility } =
+    useMemberSettings();
+  const { exportData, deleteAccount } = usePrivacy();
+  const [exporting, setExporting] = useState(false);
+  const [exported, setExported] = useState(false);
+  const [deletePhase, setDeletePhase] = useState<"idle" | "confirm" | "deleting">("idle");
+  const [acknowledged, setAcknowledged] = useState(false);
 
   async function doSignOut() {
     await signOut();
+    router.push("/");
+  }
+
+  async function doExport() {
+    setExporting(true);
+    try {
+      const bundle = await exportData();
+      const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "nisfi-my-data.json";
+      a.click();
+      URL.revokeObjectURL(url);
+      setExported(true);
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  async function doDelete() {
+    setDeletePhase("deleting");
+    await deleteAccount();
+    await signOut().catch(() => undefined);
     router.push("/");
   }
 
@@ -142,40 +161,58 @@ export function SettingsPanel() {
 
           <div className="flex flex-col gap-2 border-t border-border pt-3">
             <p className="text-xs font-semibold text-ink-600">{t("privacyTitle")}</p>
-            {notice ? (
-              <p className="rounded-md border border-info/25 bg-info/10 px-3 py-2.5 text-sm text-info">
-                {t(notice === "export" ? "exportRequested" : "deleteRequested")}
+
+            {exported ? (
+              <p className="rounded-md border border-success/25 bg-success/10 px-3 py-2.5 text-sm text-success">
+                {t("exportReady")}
               </p>
             ) : null}
-            {confirm ? (
-              <div className="flex flex-col gap-2 rounded-md border border-warning/30 bg-warning/10 p-3">
-                <p className="text-sm text-warning">
-                  {t(confirm === "export" ? "exportConfirm" : "deleteConfirm")}
-                </p>
+
+            {deletePhase !== "idle" ? (
+              <div className="flex flex-col gap-2 rounded-md border border-danger/30 bg-danger/5 p-3">
+                <p className="text-sm text-danger">{t("deleteConfirm")}</p>
+                <label className="flex items-start gap-2 text-sm text-ink">
+                  <input
+                    type="checkbox"
+                    checked={acknowledged}
+                    onChange={(e) => setAcknowledged(e.target.checked)}
+                    className="mt-0.5 size-4 accent-[var(--color-danger)]"
+                  />
+                  {t("deleteAcknowledge")}
+                </label>
                 <div className="flex gap-2">
                   <Button
                     size="sm"
-                    variant={confirm === "delete" ? "danger" : "primary"}
+                    variant="danger"
+                    disabled={!acknowledged || deletePhase === "deleting"}
+                    loading={deletePhase === "deleting"}
+                    onClick={() => void doDelete()}
+                  >
+                    {t("deleteFinal")}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
                     onClick={() => {
-                      const which = confirm;
-                      void (which === "export" ? requestExport() : requestDeletion());
-                      setNotice(which);
-                      setConfirm(null);
+                      setDeletePhase("idle");
+                      setAcknowledged(false);
                     }}
                   >
-                    {t("confirm")}
-                  </Button>
-                  <Button size="sm" variant="ghost" onClick={() => setConfirm(null)}>
                     {t("cancel")}
                   </Button>
                 </div>
               </div>
             ) : (
               <div className="flex flex-wrap gap-2">
-                <Button size="sm" variant="ghost" onClick={() => setConfirm("export")}>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  loading={exporting}
+                  onClick={() => void doExport()}
+                >
                   {t("exportData")}
                 </Button>
-                <Button size="sm" variant="danger" onClick={() => setConfirm("delete")}>
+                <Button size="sm" variant="danger" onClick={() => setDeletePhase("confirm")}>
                   {t("deleteAccount")}
                 </Button>
               </div>

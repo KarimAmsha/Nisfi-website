@@ -453,7 +453,10 @@
     "deleteRequested": "Deletion requested; you will receive the confirmation steps.",
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "privacyNote": "Export and deletion are processed securely server-side with verification; the full flow lives in the privacy-rights unit."
+    "privacyNote": "Export and deletion are processed securely server-side with verification; the full flow lives in the privacy-rights unit.",
+    "exportReady": "Your data was prepared and downloaded as a JSON file.",
+    "deleteAcknowledge": "I understand this is permanent and cannot be undone.",
+    "deleteFinal": "Permanently delete my account"
   },
   "Admin": {
     "nav": {

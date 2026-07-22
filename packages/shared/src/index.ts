@@ -154,6 +154,15 @@ export {
 } from "./member-settings";
 
 export {
+  ANONYMIZED_DISPLAY_NAME,
+  assembleMemberExport,
+  buildDeletionAnonymization,
+  canRequestDeletion,
+  type MemberExport,
+  type DeletionAnonymization,
+} from "./privacy";
+
+export {
   PHOTO_MODERATION,
   PHOTO_DECISIONS,
   MAX_PHOTOS,

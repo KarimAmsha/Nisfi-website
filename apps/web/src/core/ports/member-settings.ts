@@ -9,16 +9,11 @@ export interface MemberSettings {
 /**
  * MemberSettingsRepository port (master spec Section 7). Reads/writes the
  * owner-editable `users.locale` and `users.preferences` (the security rules
- * allow exactly those fields for the owner). Account data export and deletion
- * are privacy-rights actions handled server-side (Cloud Functions), never a
- * direct client write.
+ * allow exactly those fields for the owner). Data export and account deletion
+ * are separate privacy-rights actions on `PrivacyRepository`.
  */
 export interface MemberSettingsRepository {
   getSettings(uid: string): Promise<MemberSettings>;
   savePreferences(uid: string, preferences: MemberPreferences): Promise<void>;
   saveLocale(uid: string, locale: Locale): Promise<void>;
-  /** Request a privacy-safe export of the member's own data (server-side). */
-  requestDataExport(uid: string): Promise<void>;
-  /** Request account deletion (server-side; verification + grace handled there). */
-  requestAccountDeletion(uid: string): Promise<void>;
 }

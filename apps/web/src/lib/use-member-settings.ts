@@ -21,8 +21,6 @@ export interface UseMemberSettingsResult {
   toggleNotification: (category: NotificationCategory) => Promise<void>;
   setLocale: (locale: Locale) => Promise<void>;
   setVisibility: (visibility: ProfileVisibility) => Promise<void>;
-  requestExport: () => Promise<void>;
-  requestDeletion: () => Promise<void>;
 }
 
 export function useMemberSettings(): UseMemberSettingsResult {
@@ -86,14 +84,6 @@ export function useMemberSettings(): UseMemberSettingsResult {
     [configured, user],
   );
 
-  const requestExport = useCallback(async () => {
-    if (configured && user) await memberSettingsRepository.requestDataExport(user.uid);
-  }, [configured, user]);
-
-  const requestDeletion = useCallback(async () => {
-    if (configured && user) await memberSettingsRepository.requestAccountDeletion(user.uid);
-  }, [configured, user]);
-
   return {
     preferences,
     locale,
@@ -103,7 +93,5 @@ export function useMemberSettings(): UseMemberSettingsResult {
     toggleNotification,
     setLocale,
     setVisibility,
-    requestExport,
-    requestDeletion,
   };
 }

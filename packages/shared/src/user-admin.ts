@@ -9,7 +9,7 @@ import { isSuperAdminRole, roleAtLeast, ROLES, type Role } from "./role";
  * writes and lock suspended/banned members out (`isActive()`). These pure
  * predicates keep the console gating and the server enforcement aligned.
  */
-export const ACCOUNT_STATUSES = ["active", "suspended", "banned"] as const;
+export const ACCOUNT_STATUSES = ["active", "suspended", "banned", "deleted"] as const;
 export type AccountStatus = (typeof ACCOUNT_STATUSES)[number];
 
 /** A staff-facing member record for the user console. */
@@ -64,6 +64,8 @@ export function canSetAccountStatus(
 ): StatusChangeCheck {
   if (!roleAtLeast(actorRole, "admin")) return { ok: false, reason: "notAdmin" };
   if (actorUid === target.uid) return { ok: false, reason: "self" };
+  // A deleted (anonymized) account is terminal — its status never changes again.
+  if (target.status === "deleted") return { ok: false, reason: "protectedTarget" };
   // Never act on a peer at or above the actor's own rank (superAdmin excepted so
   // one superAdmin can still contain another; that path is separately audited).
   if (roleAtLeast(target.role, actorRole) && !isSuperAdminRole(actorRole)) {

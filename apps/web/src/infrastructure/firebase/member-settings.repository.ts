@@ -1,8 +1,7 @@
 import { doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { httpsCallable } from "firebase/functions";
 import { mergeMemberPreferences, type Locale, type MemberPreferences } from "@nisfi/shared";
 import type { MemberSettings, MemberSettingsRepository } from "@/core/ports/member-settings";
-import { firebaseFirestore, firebaseFunctions } from "./client";
+import { firebaseFirestore } from "./client";
 
 const LOCALES: readonly Locale[] = ["ar", "en", "tr"];
 
@@ -33,19 +32,6 @@ class FirestoreMemberSettingsRepository implements MemberSettingsRepository {
       locale,
       updatedAt: serverTimestamp(),
     });
-  }
-
-  async requestDataExport(uid: string): Promise<void> {
-    const callable = httpsCallable<{ uid: string }, void>(firebaseFunctions(), "requestDataExport");
-    await callable({ uid });
-  }
-
-  async requestAccountDeletion(uid: string): Promise<void> {
-    const callable = httpsCallable<{ uid: string }, void>(
-      firebaseFunctions(),
-      "requestAccountDeletion",
-    );
-    await callable({ uid });
   }
 }
 
