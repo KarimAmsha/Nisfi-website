@@ -77,6 +77,7 @@ export function evaluateSendRequest(
  * accepts/declines, sender withdraws).
  */
 export interface TransitionReadState {
+  requestId: string;
   actorUid: string;
   fromUid: string;
   toUid: string;

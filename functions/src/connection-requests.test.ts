@@ -46,6 +46,7 @@ describe("evaluateSendRequest (CF6 core)", () => {
 
 describe("evaluateTransition (CF7 core)", () => {
   const pending = {
+    requestId: "req1",
     actorUid: "aisha",
     fromUid: "omar",
     toUid: "aisha",

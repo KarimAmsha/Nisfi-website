@@ -109,3 +109,15 @@ export {
 } from "./notification";
 
 export { canBlock, type Block, type BlockDecision } from "./block";
+
+export {
+  MATCH_STATUSES,
+  otherUid,
+  isParticipant,
+  buildAcceptedMatch,
+  type MatchStatus,
+  type MatchCloseReason,
+  type MatchParticipant,
+  type Match,
+  type NewMatch,
+} from "./match";

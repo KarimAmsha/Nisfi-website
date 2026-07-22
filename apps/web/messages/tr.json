@@ -373,7 +373,18 @@
   },
   "Matches": {
     "emptyTitle": "Henüz eşleşme yok",
-    "emptyDesc": "Bir istek iki tarafça kabul edildiğinde sakin bir sohbet başlar. İlk saygılı teması başlatmak için üyelere göz atın."
+    "emptyDesc": "Bir istek iki tarafça kabul edildiğinde sakin bir sohbet başlar. İlk saygılı teması başlatmak için üyelere göz atın.",
+    "title": "Eşleşmeler",
+    "subtitle": "Karşılıklı kabulden sonraki sohbetlerin.",
+    "previewNote": "Örnek verilerle önizleme",
+    "aMember": "Bir üye",
+    "noMessages": "Henüz mesaj yok — selam ver.",
+    "emptyBody": "Bir istek karşılıklı kabul edilince eşleşme ve sakin bir sohbet başlar.",
+    "errorTitle": "Eşleşmeler yüklenemedi",
+    "errorBody": "Bir hata oluştu. Lütfen tekrar deneyin.",
+    "chatSoonTitle": "Sohbet yakında",
+    "chatSoonBody": "Bu eşleşmedeki gerçek zamanlı sohbet bir sonraki birimde geliyor.",
+    "backToMatches": "Eşleşmelere dön"
   },
   "Notifications": {
     "emptyTitle": "Bildirim yok",

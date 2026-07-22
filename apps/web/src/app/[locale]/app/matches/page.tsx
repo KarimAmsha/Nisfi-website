@@ -1,22 +1,9 @@
-import { useTranslations } from "next-intl";
-import { EmptyState } from "@/components/ui/empty-state";
-import { ChatIcon } from "@/components/ui/icon";
-import { buttonVariants } from "@/components/ui/button";
-import { Link } from "@/i18n/navigation";
+import type { Locale } from "@nisfi/shared";
+import { setRequestLocale } from "next-intl/server";
+import { MatchList } from "@/components/matches/match-list";
 
-export default function MatchesPage() {
-  const t = useTranslations("Matches");
-  const c = useTranslations("Common");
-  return (
-    <EmptyState
-      icon={<ChatIcon size={22} />}
-      title={t("emptyTitle")}
-      description={t("emptyDesc")}
-      action={
-        <Link href="/app/discover" className={buttonVariants({ size: "sm" })}>
-          {c("browseMembers")}
-        </Link>
-      }
-    />
-  );
+export default async function MatchesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale as Locale);
+  return <MatchList />;
 }

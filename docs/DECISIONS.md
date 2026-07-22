@@ -158,3 +158,13 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U36-001 | Blocks are stored at `blocks/{uid}/blocked/{targetUid}` and are **read-only to the owner**; block/unblock go through CF10 callables (Admin SDK), which also close any active match. Discovery already excludes blocked members both directions via the viewer's pre-unioned `blockedUids`. | Implemented (SDK wiring deferred, O-001) | Master spec F6/11.4: instant, unilateral, silent; unforgeable; consistent with the discovery eligibility from Unit 3.1. |
 | U36-002 | Notifications are created only by Cloud Functions; the owner reads and may flip only `read`. Copy is carried as i18n `titleKey`/`bodyKey` + `params` and resolved client-side against a `NotificationCatalog` namespace. | Implemented under owner-authorized scope | Localized, server-agnostic copy (Section 13/10.8); the rule already existed and is now covered by tests. |
 | U36-003 | The unread badge is derived on the client from the notifications list (`unreadCount`); a dedicated counter/denormalized field can be added if read cost warrants it during wiring. | Implemented under owner-authorized scope | Simple and correct for launch volumes; avoids a premature counter. |
+
+## K. Decisions in Phase 4
+
+### Unit 4.1 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U41-001 | The match document is built by a shared `buildAcceptedMatch` keyed by `pairKey`; the CF7 accept transaction (`evaluateAccept`) writes it and flips the request in one atomic step. Clients can never create matches (`matches` writes denied by rules). | Implemented (SDK wiring deferred, O-001) | Master spec F6/10.5/12: match id = pairKey makes accept idempotent and unforgeable. |
+| U41-002 | The match list queries active matches via the existing `matches` composite index (uids CONTAINS + status + lastMessageAt DESC); closed-match history is surfaced with the close flow (Unit 4.3). | Implemented under owner-authorized scope | Uses the index from Unit 0.5 without adding a new one; scopes 4.1 to the primary list. |
+| U41-003 | `/app/matches/[id]` ships as an honest "chat coming next" placeholder so match links resolve rather than 404; the real-time conversation is Unit 4.2. | Implemented under owner-authorized scope | Keeps navigation truthful between units without pre-building chat. |

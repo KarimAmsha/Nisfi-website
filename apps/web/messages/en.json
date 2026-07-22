@@ -373,7 +373,18 @@
   },
   "Matches": {
     "emptyTitle": "No matches yet",
-    "emptyDesc": "When a request is accepted by both sides, a calm conversation begins. Browse members to start your first respectful contact."
+    "emptyDesc": "When a request is accepted by both sides, a calm conversation begins. Browse members to start your first respectful contact.",
+    "title": "Matches",
+    "subtitle": "Your conversations after a mutual accept.",
+    "previewNote": "Preview with sample data",
+    "aMember": "A member",
+    "noMessages": "No messages yet — say salaam.",
+    "emptyBody": "When a request is mutually accepted, a match and a calm conversation begin.",
+    "errorTitle": "Couldn't load matches",
+    "errorBody": "Something went wrong. Please try again.",
+    "chatSoonTitle": "Chat coming soon",
+    "chatSoonBody": "Real-time chat inside this match is built in the next unit.",
+    "backToMatches": "Back to matches"
   },
   "Notifications": {
     "emptyTitle": "No notifications",

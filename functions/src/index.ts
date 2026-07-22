@@ -25,3 +25,6 @@ export {
 
 // CF10 block enforcement core (SDK wiring deferred, O-001).
 export { evaluateBlock } from "./blocks";
+
+// CF7 accept → match-creation core (SDK wiring deferred, O-001).
+export { evaluateAccept, type AcceptResult } from "./matches";

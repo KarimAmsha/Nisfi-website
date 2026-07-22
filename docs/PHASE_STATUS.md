@@ -8,13 +8,24 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 
 | Field | Value |
 |---|---|
-| Current phase | Phase 3 — Discovery and intentional connection requests (complete; gate G3 met pending deferred wiring) |
-| Current unit | Unit 3.6 — blocking foundation and in-app notifications (delivered to `main`) |
-| Implementation state | Delivered to `main`. Phase 3 complete on emulators/mocks; next is Phase 4 (matches, chat, photo reveal, push). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current phase | Phase 4 — Matches, chat, photo reveal, and push |
+| Current unit | Unit 4.1 — accepted-request transaction and match list (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 4 on emulators/mocks; next is Unit 4.2 (real-time text chat). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 4.1 — completed (delivered to `main`; opens Phase 4)
+
+The accepted-request transaction that creates the match, and the member match list.
+
+- **Shared (`match.ts`):** `Match` type (uids, denormalized participants, status, photoReveal, unread, lastMessage*, requestId), `MATCH_STATUSES`, `otherUid`/`isParticipant`, and `buildAcceptedMatch` — the match document the CF7 accept writes, keyed by `pairKey` so a replayed accept is idempotent. **4 unit tests** (shared suite now **59**).
+- **Server core:** `functions/src/matches.ts` `evaluateAccept` composes `evaluateTransition("accept")` + `buildAcceptedMatch` — no match doc is produced unless the transition is authorized and pending. Functions suite now **10** (idempotency + unauthorized/non-pending covered).
+- **Port + adapter:** `MatchRepository` (`listMatches` via the `matches` composite index — uids CONTAINS + status + lastMessageAt DESC; `getMatch`).
+- **Rules:** `matches/{pairKey}` — the two participants may read; **all writes denied** to clients (match creation is server-only). **5 emulator tests** (participant read, non-participant + unauth deny, client-create deny, client-update deny) — rules suite now **47**.
+- **UI:** `/app/matches` list (counterparty, last-message preview, unread badge, protected avatar) linking to `/app/matches/[id]`, which is an honest "chat coming next" placeholder until Unit 4.2. Preview seed makes the list demonstrable.
+- **Verified:** `pnpm check` + `next build` (74 routes) + `pnpm test:rules` (47) green; RTL match-list screenshot.
 
 ## Unit 3.6 — completed (delivered to `main`; closes Phase 3 / gate G3, pending deferred wiring)
 
@@ -273,7 +284,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 4 / Unit 4.1: accepted-request transaction and match list** — the accept transaction that atomically creates `matches/{pairKey}` (clients can never create matches; idempotency + pair-membership enforced), and the member match list at `/app/matches`. Backed by a `MatchRepository` port, `matches/{pairKey}` rules, and transaction/idempotency tests.
+**Phase 4 / Unit 4.2: real-time text chat, unread behavior, message moderation metadata** — the conversation view at `/app/matches/[id]` with a Firestore listener, text messages (1–1000 chars) written by active participants under the exact message schema, unread counts, and moderation metadata. Backed by a `ChatRepository` port, `matches/{pairKey}/messages/{id}` rules, and send/list/unread/authorization tests.
 
 ### Deferred to the final "production wiring" step (O-001)
 

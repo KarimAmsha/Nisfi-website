@@ -126,6 +126,16 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    // matches/{pairKey}: the two participants may read; ALL writes are server-
+    // only (the accepted-request transaction / CF7 via the Admin SDK creates the
+    // match — clients can never create matches; reveal/unread/close are also
+    // server-managed). Messages are handled in their own unit (4.2), still denied
+    // here (master spec Sections F6, 10.5, 11.4).
+    match /matches/{pairKey} {
+      allow read: if signedIn() && request.auth.uid in resource.data.uids;
+      allow create, update, delete: if false;
+    }
+
     // blocks/{uid}/blocked/{targetUid}: owner reads their own block list; ALL
     // writes are server-only (CF10 blockUser/unblockUser via the Admin SDK,
     // which also closes any active match). Instant, unilateral, silent — the
