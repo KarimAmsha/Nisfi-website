@@ -496,8 +496,47 @@
     },
     "reports": {
       "title": "Raporlar",
+      "heading": "Açık raporlar",
+      "previewNote": "Örnek veri",
+      "drawerTitle": "Rapor ayrıntıları",
+      "reason": "Neden",
+      "targetType": "Bildirilen",
+      "reporter": "Bildiren",
+      "triage": "Ayıklama",
+      "startReview": "İncelemeyi başlat",
+      "dismiss": "Reddet",
+      "sanctions": "Yaptırımlar",
+      "auditNote": "Her işlem denetim günlüğüne yazılır.",
+      "selectHint": "İncelemek için bir rapor seç.",
+      "errorTitle": "Yüklenemedi",
+      "errorBody": "Bir hata oluştu. Lütfen tekrar deneyin.",
       "emptyTitle": "Açık rapor yok",
-      "emptyDesc": "Güvenlik raporları burada incelenir; kanıt ve raporlayan gizliliği korunur."
+      "emptyBody": "İncelenmeyi bekleyen rapor yok.",
+      "status": {
+        "open": "Açık",
+        "in_review": "İncelemede",
+        "resolved": "Çözüldü",
+        "dismissed": "Reddedildi"
+      },
+      "targets": {
+        "profile": "Profil",
+        "message": "Mesaj",
+        "request": "İstek"
+      },
+      "sanction": {
+        "warn": "Uyar",
+        "unpublish": "Yayından kaldır",
+        "suspend": "Askıya al",
+        "ban": "Yasakla"
+      },
+      "reasons": {
+        "fake_profile": "Sahte profil",
+        "inappropriate_photos": "Uygunsuz fotoğraflar",
+        "harassment": "Taciz",
+        "scam": "Dolandırıcılık",
+        "underage": "Reşit değil",
+        "other": "Diğer"
+      }
     },
     "roles": {
       "user": "Üye",
@@ -613,5 +652,22 @@
     "previewNote": "Önizleme",
     "enable": "Etkinleştir",
     "dismiss": "Sonra"
+  },
+  "Report": {
+    "cta": "Bu üyeyi bildir",
+    "reasonLabel": "Neden",
+    "detailsPlaceholder": "Ek ayrıntılar (isteğe bağlı)…",
+    "submit": "Raporu gönder",
+    "cancel": "İptal",
+    "error": "Gönderilemedi. Lütfen tekrar deneyin.",
+    "sentNote": "Teşekkürler. Ekip bu raporu inceleyecek.",
+    "reasons": {
+      "fake_profile": "Sahte profil",
+      "inappropriate_photos": "Uygunsuz fotoğraflar",
+      "harassment": "Taciz",
+      "scam": "Dolandırıcılık",
+      "underage": "Reşit değil",
+      "other": "Diğer"
+    }
   }
 }

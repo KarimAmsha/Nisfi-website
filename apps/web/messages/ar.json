@@ -496,8 +496,47 @@
     },
     "reports": {
       "title": "البلاغات",
+      "heading": "بلاغات مفتوحة",
+      "previewNote": "بيانات تجريبية",
+      "drawerTitle": "تفاصيل البلاغ",
+      "reason": "السبب",
+      "targetType": "المُبلَّغ عنه",
+      "reporter": "المُبلِّغ",
+      "triage": "الفرز",
+      "startReview": "بدء المراجعة",
+      "dismiss": "تجاهل",
+      "sanctions": "العقوبات",
+      "auditNote": "كل إجراء يُسجَّل في سجلّ التدقيق.",
+      "selectHint": "اختر بلاغًا لمراجعته.",
+      "errorTitle": "تعذّر التحميل",
+      "errorBody": "حدث خطأ. حاول مرة أخرى.",
       "emptyTitle": "لا بلاغات مفتوحة",
-      "emptyDesc": "تظهر هنا بلاغات السلامة للمراجعة مع حفظ الأدلّة وسريّة المُبلِّغ."
+      "emptyBody": "لا توجد بلاغات بانتظار المراجعة.",
+      "status": {
+        "open": "مفتوح",
+        "in_review": "قيد المراجعة",
+        "resolved": "محلول",
+        "dismissed": "مرفوض"
+      },
+      "targets": {
+        "profile": "ملف",
+        "message": "رسالة",
+        "request": "طلب"
+      },
+      "sanction": {
+        "warn": "تحذير",
+        "unpublish": "إخفاء المحتوى",
+        "suspend": "تعليق",
+        "ban": "حظر"
+      },
+      "reasons": {
+        "fake_profile": "ملف مزيّف",
+        "inappropriate_photos": "صور غير لائقة",
+        "harassment": "مضايقة",
+        "scam": "احتيال",
+        "underage": "قاصر",
+        "other": "أخرى"
+      }
     },
     "roles": {
       "user": "عضو",
@@ -613,5 +652,22 @@
     "previewNote": "معاينة",
     "enable": "تفعيل",
     "dismiss": "لاحقًا"
+  },
+  "Report": {
+    "cta": "الإبلاغ عن هذا العضو",
+    "reasonLabel": "سبب البلاغ",
+    "detailsPlaceholder": "تفاصيل إضافية (اختياري)…",
+    "submit": "إرسال البلاغ",
+    "cancel": "إلغاء",
+    "error": "تعذّر الإرسال. حاول مجددًا.",
+    "sentNote": "شكرًا لك. سيراجع الفريق البلاغ.",
+    "reasons": {
+      "fake_profile": "ملف مزيّف",
+      "inappropriate_photos": "صور غير لائقة",
+      "harassment": "مضايقة",
+      "scam": "احتيال",
+      "underage": "قاصر",
+      "other": "أخرى"
+    }
   }
 }

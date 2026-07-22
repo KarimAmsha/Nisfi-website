@@ -496,8 +496,47 @@
     },
     "reports": {
       "title": "Reports",
+      "heading": "Open reports",
+      "previewNote": "Sample data",
+      "drawerTitle": "Report details",
+      "reason": "Reason",
+      "targetType": "Reported",
+      "reporter": "Reporter",
+      "triage": "Triage",
+      "startReview": "Start review",
+      "dismiss": "Dismiss",
+      "sanctions": "Sanctions",
+      "auditNote": "Every action is written to the audit log.",
+      "selectHint": "Select a report to review.",
+      "errorTitle": "Couldn't load",
+      "errorBody": "Something went wrong. Please try again.",
       "emptyTitle": "No open reports",
-      "emptyDesc": "Safety reports appear here for review, preserving evidence and reporter confidentiality."
+      "emptyBody": "No reports are waiting for review.",
+      "status": {
+        "open": "Open",
+        "in_review": "In review",
+        "resolved": "Resolved",
+        "dismissed": "Dismissed"
+      },
+      "targets": {
+        "profile": "Profile",
+        "message": "Message",
+        "request": "Request"
+      },
+      "sanction": {
+        "warn": "Warn",
+        "unpublish": "Unpublish",
+        "suspend": "Suspend",
+        "ban": "Ban"
+      },
+      "reasons": {
+        "fake_profile": "Fake profile",
+        "inappropriate_photos": "Inappropriate photos",
+        "harassment": "Harassment",
+        "scam": "Scam",
+        "underage": "Underage",
+        "other": "Other"
+      }
     },
     "roles": {
       "user": "Member",
@@ -613,5 +652,22 @@
     "previewNote": "Preview",
     "enable": "Enable",
     "dismiss": "Later"
+  },
+  "Report": {
+    "cta": "Report this member",
+    "reasonLabel": "Reason",
+    "detailsPlaceholder": "Additional details (optional)…",
+    "submit": "Submit report",
+    "cancel": "Cancel",
+    "error": "Couldn't submit. Please try again.",
+    "sentNote": "Thank you. The team will review this report.",
+    "reasons": {
+      "fake_profile": "Fake profile",
+      "inappropriate_photos": "Inappropriate photos",
+      "harassment": "Harassment",
+      "scam": "Scam",
+      "underage": "Underage",
+      "other": "Other"
+    }
   }
 }

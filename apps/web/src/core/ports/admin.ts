@@ -1,6 +1,9 @@
 import type {
   Photo,
   PhotoDecision,
+  Report,
+  ReportStatus,
+  Sanction,
   VerificationDecision,
   VerificationRequest,
 } from "@nisfi/shared";
@@ -35,4 +38,10 @@ export interface AdminRepository {
     decision: PhotoDecision,
     reason?: string,
   ): Promise<void>;
+  /** Reports in a status (default `open`), newest first (staff read). */
+  listReports(status?: ReportStatus): Promise<Report[]>;
+  /** Move a report to a new status (server transaction + audit, CF). */
+  transitionReport(id: string, next: ReportStatus): Promise<void>;
+  /** Apply a sanction to a member (server transaction + audit, CF). */
+  applySanction(targetUid: string, sanction: Sanction, note?: string): Promise<void>;
 }

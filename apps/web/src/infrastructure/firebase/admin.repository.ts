@@ -13,6 +13,11 @@ import { httpsCallable } from "firebase/functions";
 import type {
   PhotoDecision,
   PhotoModeration,
+  Report,
+  ReportReason,
+  ReportStatus,
+  ReportTargetType,
+  Sanction,
   VerificationDecision,
   VerificationRequest,
   VerificationRequestStatus,
@@ -44,16 +49,21 @@ function toRequest(id: string, data: DocumentData): VerificationRequest {
  */
 class FirestoreAdminRepository implements AdminRepository {
   async getQueueCounts(): Promise<AdminQueueCounts> {
-    const pendingVerifications = await getCountFromServer(
-      query(
-        collection(firebaseFirestore(), "verificationRequests"),
-        where("status", "==", "pending"),
+    const [pendingVerifications, openReports] = await Promise.all([
+      getCountFromServer(
+        query(
+          collection(firebaseFirestore(), "verificationRequests"),
+          where("status", "==", "pending"),
+        ),
       ),
-    );
+      getCountFromServer(
+        query(collection(firebaseFirestore(), "reports"), where("status", "==", "open")),
+      ),
+    ]);
     return {
       pendingVerifications: pendingVerifications.data().count,
       pendingPhotos: 0,
-      openReports: 0,
+      openReports: openReports.data().count,
     };
   }
 
@@ -118,6 +128,51 @@ class FirestoreAdminRepository implements AdminRepository {
     await callable(
       reason !== undefined ? { uid, photoId, decision, reason } : { uid, photoId, decision },
     );
+  }
+
+  async listReports(status: ReportStatus = "open"): Promise<Report[]> {
+    // Matches the reports composite index (status ASC, createdAt ASC) — oldest
+    // open case first, a fair moderation FIFO.
+    const snap = await getDocs(
+      query(
+        collection(firebaseFirestore(), "reports"),
+        where("status", "==", status),
+        orderBy("createdAt", "asc"),
+      ),
+    );
+    return snap.docs.map((d) => {
+      const data = d.data();
+      return {
+        id: d.id,
+        reporterUid: (data.reporterUid as string | undefined) ?? "",
+        targetUid: (data.targetUid as string | undefined) ?? "",
+        targetType: (data.targetType as ReportTargetType | undefined) ?? "profile",
+        reason: (data.reason as ReportReason | undefined) ?? "other",
+        details: (data.details as string | undefined) ?? "",
+        status: (data.status as ReportStatus | undefined) ?? "open",
+        handledBy: (data.handledBy as string | null | undefined) ?? null,
+        resolutionNote: (data.resolutionNote as string | null | undefined) ?? null,
+        createdAt: tsToIso(data.createdAt),
+        resolvedAt:
+          data.resolvedAt instanceof Timestamp ? data.resolvedAt.toDate().toISOString() : null,
+      };
+    });
+  }
+
+  async transitionReport(id: string, next: ReportStatus): Promise<void> {
+    const callable = httpsCallable<{ id: string; next: ReportStatus }, void>(
+      firebaseFunctions(),
+      "transitionReport",
+    );
+    await callable({ id, next });
+  }
+
+  async applySanction(targetUid: string, sanction: Sanction, note?: string): Promise<void> {
+    const callable = httpsCallable<{ targetUid: string; sanction: Sanction; note?: string }, void>(
+      firebaseFunctions(),
+      "applySanction",
+    );
+    await callable(note !== undefined ? { targetUid, sanction, note } : { targetUid, sanction });
   }
 }
 

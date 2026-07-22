@@ -115,6 +115,26 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // reports/{id}: an active member may create a strictly-shaped `open` report
+    // about someone else; staff read all; transitions/sanctions are server-only
+    // (no client update/delete). Master spec Sections F8, 10.7, 11.4.
+    match /reports/{id} {
+      allow read: if isStaff();
+      allow create: if isActive()
+        && request.resource.data.reporterUid == uid()
+        && request.resource.data.targetUid != uid()
+        && request.resource.data.status == 'open'
+        && request.resource.data.handledBy == null
+        && request.resource.data.resolutionNote == null
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.targetType in ['profile', 'message', 'request']
+        && request.resource.data.reason in
+             ['fake_profile', 'inappropriate_photos', 'harassment', 'scam', 'underage', 'other']
+        && request.resource.data.details is string
+        && request.resource.data.details.size() <= 500;
+      allow update, delete: if false;
+    }
+
     // connectionRequests: the two participants + staff may read; ALL writes are
     // server-only (CF6 sendConnectionRequest / CF7 respond/withdraw via the Admin
     // SDK, which bypasses these rules). Clients never create or transition a

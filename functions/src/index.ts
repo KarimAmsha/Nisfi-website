@@ -52,3 +52,11 @@ export { evaluateVerificationDecision, type DecideVerificationResult } from "./v
 // decidePhoto core: photo moderation → publish blurred on approve (Cloudinary/
 // SDK wiring deferred, O-001/O-002).
 export { evaluatePhotoDecision, type DecidePhotoResult } from "./photos";
+
+// Report transition + sanction cores (Admin SDK + audit wiring deferred, O-001).
+export {
+  evaluateReportTransition,
+  evaluateSanction,
+  type ReportTransitionResult,
+  type SanctionResult,
+} from "./reports";

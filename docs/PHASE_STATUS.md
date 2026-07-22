@@ -9,12 +9,24 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 5 — Operations & moderation console |
-| Current unit | Unit 5.3 — photo moderation queue (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 5 on emulators/mocks; next is Unit 5.4 (reports queue + sanctions). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 5.4 — reports queue and sanctions (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 5 on emulators/mocks; next is Unit 5.5 (questions/content/config). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 5.4 — completed (delivered to `main`)
+
+The member report affordance, the moderator reports queue, and the sanction actions.
+
+- **Shared:** `report.ts` — `REPORT_REASONS` / `REPORT_STATUSES` / `REPORT_TARGET_TYPES`, `reportInputSchema` (`REPORT_DETAILS_MAX` 500), `canCreateReport` (not self), `canTransitionReport` (staff + non-terminal → in_review/resolved/dismissed; reasons notStaff / terminal / invalidTarget), `SANCTIONS` (dismiss/warn/unpublish/suspend/ban), `canApplySanction` (ban is admin+, the rest any staff), `sanctionAccountStatus` (suspend→suspended, ban→banned). New `report.test.ts` (shared suite now **88**).
+- **Server core:** `functions/src/reports.ts` — `evaluateReportTransition(current,next,actor)` (CF `transitionReport`) emits `{status, handledBy, resolvedAt}` (`resolvedAt` set only on terminal), and `evaluateSanction(actorRole,sanction)` (CF `applySanction`) yields the `users.status` + audited sanction, refusing ban below admin. Functions suite now **30**.
+- **Rules:** `reports/{id}` — an active member creates the exact `open` shape (`reporterUid == self`, `targetUid != self`); staff read; client update/delete denied (transitions + sanctions are server-only). `firebase/tests/report.rules.test.ts` (6 tests); rules suite now **62**.
+- **Ports + adapters:** `ReportRepository.createReport` (member `addDoc` of the open shape); `AdminRepository.listReports` (staff read, oldest-open-first FIFO via the `reports` index), `transitionReport` + `applySanction` via callables; `getQueueCounts` now also counts open reports.
+- **UI:** `report-button.tsx` on the profile detail (reason + details → files an open report); `/admin/reports` — a reports list + triage detail (startReview / dismiss) and role-gated sanction buttons (`canApplySanction`), with the audit note. **Reports** nav badge = open count. Loading/empty/error + preview seed states.
+- **Deferred (O-001):** the `transitionReport` / `applySanction` callables and the `users.status`-enforcing rules are wired at the final production step; the console reads empty when configured until then, with the preview seed keeping it reviewable.
+- **Verified:** `pnpm check` (shared 88, functions 30) + `next build` + `pnpm test:rules` (62) green; RTL reports-queue screenshot with role-gated sanctions.
 
 ## Unit 5.3 — completed (delivered to `main`)
 
@@ -360,7 +372,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 5 / Unit 5.4: reports queue and sanctions** — the moderator reports queue at `/admin/reports` (open → in_review → resolved|dismissed), the `reports/{id}` create rule (active reporter, exact `open` shape) + staff reads, and the sanction actions (dismiss/warn/unpublish/suspend/ban) via callables that write `users.status` + audit logs. Report create + transition/permission tests.
+**Phase 5 / Unit 5.5: content, questions & config** — the admin-managed content the app reads (profile questions/prompts, reasons/enums, static content blocks) plus platform config/feature flags, on staff-writable / member-readable collections with rules + tests. (Per F10 / master spec Sections 10–11; exact scope confirmed at unit start.)
 
 ### Deferred to the final "production wiring" step (O-001)
 

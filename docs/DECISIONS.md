@@ -224,3 +224,11 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 |---|---|---|---|
 | U53-001 | Photo decisions use a shared authority (`canDecidePhoto` + `photoModerationOutcome`); the CF `decidePhoto` core (`evaluatePhotoDecision`) sets the moderation state and, only on approve, `publishBlurred: true`. A rejected photo is never published; originals are never staff-cached. | Implemented (Cloudinary/SDK wiring deferred, O-001/O-002) | Master spec F8/F7: the blurred variant becomes readable only after approval; originals stay private. |
 | U53-002 | The queue is a staff collection-group read of pending photos under `profiles/{uid}/photos`; it reads empty when configured until the photo-metadata collection + index + Cloudinary land (O-002), with a preview seed keeping the console reviewable. | Implemented (photo metadata deferred, O-002) | Honest, audit-safe reads consistent with the deferred media stack. |
+
+### Unit 5.4 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U54-001 | Report creation is a member write with the exact `open` shape enforced by rules (`reporterUid == self`, `targetUid != self`, active member); triage transitions and sanctions are server-only (client update/delete denied). The decision authority lives in `@nisfi/shared` (`canCreateReport`, `canTransitionReport`, `canApplySanction`) so client preflight and server enforcement never drift. | Implemented (CF callables deferred, O-001) | Master spec F8/A-008: members can flag, but state changes and sanctions are audited server actions. |
+| U54-002 | `canApplySanction` gates ban to admin+ and every other sanction (warn/unpublish/suspend/dismiss) to any staff; `sanctionAccountStatus` maps suspend→`suspended`, ban→`banned`. The CF `applySanction` core (`evaluateSanction`) writes `users.status` (rules-enforced) and an audit record. | Implemented (CF + audit wiring deferred, O-001) | Master spec F8/11: proportional, role-gated, audited enforcement. |
+| U54-003 | `AdminRepository.listReports` reads open reports oldest-first (a fair moderation FIFO) via the `reports` composite index (status ASC, createdAt ASC); it reads empty when configured until reports accrue, with a preview seed keeping the console reviewable. | Implemented | Honest, index-backed reads consistent with the rest of the console. |
