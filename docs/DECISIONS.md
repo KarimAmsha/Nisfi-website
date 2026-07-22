@@ -199,3 +199,13 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U45-001 | Web-push permission is requested only on an explicit user action (the `PushPrompt` Enable button on `/app/notifications`), never on load; in-app notifications never depend on push. | Implemented under owner-authorized scope | Master spec F9: permission timing after a meaningful action, not on page load. |
 | U45-002 | FCM tokens live as private per-device docs under `users/{uid}/devices/{deviceId}` (owner-only rules); a Function prunes them on invalid-token FCM errors (`isInvalidTokenError`). | Implemented (FCM/SDK wiring deferred, O-001) | Token privacy + a self-healing token lifecycle. |
 | U45-003 | Message push is throttled to ≤1 per match per 5 minutes (`shouldSendMessagePush`), enforced server-side; the in-app center is always updated. | Implemented (trigger wiring deferred, O-001) | Master spec F9 throttle; avoids push spam while keeping the in-app record complete. |
+
+## L. Decisions in Phase 5
+
+### Unit 5.1 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U51-001 | A single role ordering lives in `@nisfi/shared` (`role.ts`, `roleAtLeast` etc.), consumed by the web console gating and the Functions; the security rules mirror the same order. Console gating is UX only — the rules remain the authorization boundary (A-008). | Implemented under owner-authorized scope | One source of truth for roles across surfaces; server stays authoritative. |
+| U51-002 | The dashboard counts only what is staff-readable now (pending verifications via `getCountFromServer`); photo/report queues count 0 until their units (5.2/5.3) rather than displaying invented numbers. | Implemented under owner-authorized scope | Honest, audit-safe reads; no fabricated operational figures. |
+| U51-003 | System-health tiles are shown as "pending wiring" until the production step; real health probes connect with O-001. | Implemented (health probes deferred, O-001) | Truthful console without fake green checks. |

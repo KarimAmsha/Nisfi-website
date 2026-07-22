@@ -438,7 +438,20 @@
       "pendingVerifications": "Pending verifications",
       "openReports": "Open reports",
       "matches": "Matches this week",
-      "trendNote": "Sample figures for preview — computed from real sources in the approved unit."
+      "trendNote": "Sample figures for preview — computed from real sources in the approved unit.",
+      "queuesTitle": "Queues",
+      "pendingPhotos": "Pending photos",
+      "previewNote": "Sample data",
+      "error": "Couldn't load counts.",
+      "healthTitle": "System health",
+      "pendingWiring": "Pending wiring",
+      "healthNote": "Real health checks are connected in the production step.",
+      "health": {
+        "auth": "Auth",
+        "database": "Database",
+        "functions": "Functions",
+        "media": "Media"
+      }
     },
     "verifications": {
       "title": "Verification queue",
@@ -474,6 +487,12 @@
       "title": "Reports",
       "emptyTitle": "No open reports",
       "emptyDesc": "Safety reports appear here for review, preserving evidence and reporter confidentiality."
+    },
+    "roles": {
+      "user": "Member",
+      "moderator": "Moderator",
+      "admin": "Admin",
+      "superAdmin": "Super admin"
     }
   },
   "ProfileDetail": {

@@ -149,3 +149,5 @@ export {
   type DeviceToken,
   type PushPermission,
 } from "./push";
+
+export { ROLES, isStaffRole, isAdminRole, isSuperAdminRole, roleAtLeast, type Role } from "./role";

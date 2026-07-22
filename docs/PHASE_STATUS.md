@@ -8,13 +8,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 
 | Field | Value |
 |---|---|
-| Current phase | Phase 4 — Matches, chat, photo reveal, and push (complete; gate G4 met pending deferred wiring) |
-| Current unit | Unit 4.5 — FCM permission education, token lifecycle, throttled message push (delivered to `main`) |
-| Implementation state | Delivered to `main`. Phase 4 complete on emulators/mocks; next is Phase 5 (operations/admin panel). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current phase | Phase 5 — Operations & moderation console |
+| Current unit | Unit 5.1 — admin shell, role-gated routing, and the operations dashboard (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 5 on emulators/mocks; next is Unit 5.2 (verification review queue with decisions). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 5.1 — completed (delivered to `main`; opens Phase 5)
+
+The role-gated operations console shell and the dashboard.
+
+- **Shared (`role.ts`):** `ROLES`, `isStaffRole`/`isAdminRole`/`isSuperAdminRole`, and `roleAtLeast` — one role ordering shared by the web app, Functions, and (mirrored) the rules. **2 unit tests** (shared suite now **77**).
+- **Port + adapter:** `AdminRepository.getQueueCounts` (staff-scoped aggregate reads) — counts pending verifications via `getCountFromServer` (staff-readable, Unit 2.5); photo/report queues count 0 until their units (5.2/5.3) rather than guessing.
+- **Console:** `AdminShell` now role-gates the sidebar (`minRole` per item — e.g. Users is admin+), drives badges from live queue counts, and shows the signed-in staff role. The dashboard (`components/admin/admin-dashboard.tsx`) shows queue tiles + a system-health grid (each area marked "pending wiring" until O-001) with honest loading/error/preview states. Role gating is UX only — authorization stays server-side via custom-claim rules (A-008).
+- **Auth:** the admin layout keeps `RequireAdmin`; roles come from custom claims (`AuthUser.role`). In preview the console assumes an `admin` so it stays navigable.
+- **Verified:** `pnpm check` + `next build` (74 routes) + `pnpm test:rules` (56) green; RTL admin-dashboard screenshot (role badge, gated nav, live counts).
 
 ## Unit 4.5 — completed (delivered to `main`; closes Phase 4 / gate G4, pending deferred wiring)
 
@@ -328,7 +338,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 5 / Unit 5.1: admin shell, role-gated routing, and the dashboard** — begin Phase 5 (operations/admin panel): a role-gated admin layout (moderator/admin/superAdmin), the operations dashboard with queue counts and health tiles, and the audit-safe read patterns. Backed by role checks in rules (already established) and staff-scoped repositories. Then the verification/photo/report queues (5.2+).
+**Phase 5 / Unit 5.2: verification review queue and decisions** — the moderator verification queue at `/admin/verifications` (pending list + detail with the privately-uploaded selfie/ID via short-lived staff URLs), and the `decideVerification` callable (approve/reject → mirror to `profiles.verification`, notify, audit log). Decisions are server-only + audited; queue/permission tests with staff roles.
 
 ### Deferred to the final "production wiring" step (O-001)
 

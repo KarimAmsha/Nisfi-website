@@ -438,7 +438,20 @@
       "pendingVerifications": "Bekleyen doğrulamalar",
       "openReports": "Açık raporlar",
       "matches": "Bu haftaki eşleşmeler",
-      "trendNote": "Önizleme için örnek rakamlar — onaylı birimde gerçek kaynaklardan hesaplanır."
+      "trendNote": "Önizleme için örnek rakamlar — onaylı birimde gerçek kaynaklardan hesaplanır.",
+      "queuesTitle": "Kuyruklar",
+      "pendingPhotos": "Bekleyen fotoğraflar",
+      "previewNote": "Örnek veri",
+      "error": "Sayılar yüklenemedi.",
+      "healthTitle": "Sistem sağlığı",
+      "pendingWiring": "Bağlantı bekleniyor",
+      "healthNote": "Gerçek sağlık kontrolleri üretim adımında bağlanır.",
+      "health": {
+        "auth": "Kimlik",
+        "database": "Veritabanı",
+        "functions": "İşlevler",
+        "media": "Medya"
+      }
     },
     "verifications": {
       "title": "Doğrulama kuyruğu",
@@ -474,6 +487,12 @@
       "title": "Raporlar",
       "emptyTitle": "Açık rapor yok",
       "emptyDesc": "Güvenlik raporları burada incelenir; kanıt ve raporlayan gizliliği korunur."
+    },
+    "roles": {
+      "user": "Üye",
+      "moderator": "Moderatör",
+      "admin": "Yönetici",
+      "superAdmin": "Süper yönetici"
     }
   },
   "ProfileDetail": {
