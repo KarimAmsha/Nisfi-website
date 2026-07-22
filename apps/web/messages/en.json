@@ -560,5 +560,13 @@
     "mutualHint": "Originals appear when the other side reveals.",
     "theirRevealedHint": "Originals open via a short-lived link (wired later).",
     "revealedBadge": "Revealed"
+  },
+  "Push": {
+    "title": "Turn on notifications",
+    "body": "So we can alert you to new requests and messages as they arrive.",
+    "unsupported": "Your browser doesn't support push notifications.",
+    "previewNote": "Preview",
+    "enable": "Enable",
+    "dismiss": "Later"
   }
 }

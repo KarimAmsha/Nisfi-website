@@ -10,6 +10,7 @@ import { BellIcon } from "@/components/ui/icon";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 import { useNotifications } from "@/lib/use-notifications";
+import { PushPrompt } from "@/components/notifications/push-prompt";
 
 function Row({ item, onOpen }: { item: AppNotification; onOpen: (item: AppNotification) => void }) {
   const nc = useTranslations("NotificationCatalog");
@@ -65,6 +66,8 @@ export function NotificationCenter() {
         </div>
         {preview ? <Badge tone="info">{t("previewNote")}</Badge> : null}
       </header>
+
+      <PushPrompt />
 
       {loading ? (
         <ul className="flex flex-col gap-3">

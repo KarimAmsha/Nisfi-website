@@ -8,13 +8,24 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 
 | Field | Value |
 |---|---|
-| Current phase | Phase 4 — Matches, chat, photo reveal, and push |
-| Current unit | Unit 4.4 — independent photo reveal controls and short-lived original access (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 4 on emulators/mocks; next is Unit 4.5 (FCM permission education, token lifecycle, throttled push). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current phase | Phase 4 — Matches, chat, photo reveal, and push (complete; gate G4 met pending deferred wiring) |
+| Current unit | Unit 4.5 — FCM permission education, token lifecycle, throttled message push (delivered to `main`) |
+| Implementation state | Delivered to `main`. Phase 4 complete on emulators/mocks; next is Phase 5 (operations/admin panel). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 4.5 — completed (delivered to `main`; closes Phase 4 / gate G4, pending deferred wiring)
+
+FCM permission education, the device-token lifecycle, and throttled message push.
+
+- **Shared (`push.ts`):** `shouldSendMessagePush` (throttle: ≤1 push per match per 5 min; in-app notifications are never throttled), `PUSH_THROTTLE_MINUTES`, `DeviceToken`, and `PushPermission`. **3 unit tests** (shared suite now **75**).
+- **Server cores:** `functions/src/push.ts` `shouldPushMessage` (throttle) and `isInvalidTokenError` / `INVALID_TOKEN_CODES` (device-token pruning on FCM errors). Functions suite now **20**.
+- **Port + adapter:** `PushService` (`isSupported`, `currentPermission`, `enable`, `disable`); the FCM adapter requests the browser permission on the user's action and defers token registration (VAPID + service worker, O-001).
+- **UI:** a `PushPrompt` education card on `/app/notifications` — permission is requested only when the member clicks **Enable**, never on load; hides once granted/denied/dismissed. Honest preview simulation.
+- **Rules:** device tokens confirmed owner-only (private per-device docs under `users/{uid}/devices/{deviceId}`). **2 emulator tests** added — rules suite now **56**.
+- **Verified:** `pnpm check` + `next build` (74 routes) + `pnpm test:rules` (56) green; RTL push-prompt screenshot.
 
 ## Unit 4.4 — completed (delivered to `main`)
 
@@ -317,7 +328,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 4 / Unit 4.5: FCM permission education, token lifecycle, throttled message push** — request web-push permission AFTER a first meaningful action (not on load), store FCM tokens as private per-device docs under `users/{uid}/devices/{deviceId}` (pruned on invalid-token errors), and throttle message push (max 1 per match per 5 min). Closes Phase 4 / gate G4. (Real FCM/VAPID wiring deferred O-001.)
+**Phase 5 / Unit 5.1: admin shell, role-gated routing, and the dashboard** — begin Phase 5 (operations/admin panel): a role-gated admin layout (moderator/admin/superAdmin), the operations dashboard with queue counts and health tiles, and the audit-safe read patterns. Backed by role checks in rules (already established) and staff-scoped repositories. Then the verification/photo/report queues (5.2+).
 
 ### Deferred to the final "production wiring" step (O-001)
 

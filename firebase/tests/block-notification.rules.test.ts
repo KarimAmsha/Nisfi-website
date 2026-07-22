@@ -104,3 +104,27 @@ describe("notifications rules — Unit 3.6", () => {
     );
   });
 });
+
+describe("device token rules — Unit 4.5", () => {
+  it("lets the owner register and read their own device token", async () => {
+    const db = testEnv.authenticatedContext("omar").firestore();
+    await assertSucceeds(
+      setDoc(doc(db, "users/omar/devices/dev1"), {
+        token: "fcm-token",
+        platform: "web",
+        createdAt: new Date(),
+        lastSeenAt: new Date(),
+      }),
+    );
+    await assertSucceeds(getDoc(doc(db, "users/omar/devices/dev1")));
+  });
+
+  it("denies reading or writing another member's device token", async () => {
+    await testEnv.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), "users/omar/devices/dev1"), { token: "x" });
+    });
+    const db = testEnv.authenticatedContext("zaid").firestore();
+    await assertFails(getDoc(doc(db, "users/omar/devices/dev1")));
+    await assertFails(setDoc(doc(db, "users/omar/devices/dev2"), { token: "y" }));
+  });
+});

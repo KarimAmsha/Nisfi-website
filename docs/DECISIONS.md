@@ -191,3 +191,11 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U44-001 | Photo reveal is per-side and revocable (`matches.photoReveal[uid]`); the flag is set via the `setPhotoReveal` callable (match writes are server-only), and originals are fetched only through `getRevealedPhotoUrls`, which enforces membership + the counterparty's reveal flag and returns short-lived signed Cloudinary URLs. | Implemented (Cloudinary signing + SDK wiring deferred, O-001/O-002) | Master spec F7: originals never public, never cached in Firestore; revoke denies the next request. |
 | U44-002 | The reveal-relevant pure helpers accept a loosened structural match projection (`{ uids: readonly string[]; … }`) so both the web client and the Function cores share them without tuple friction. | Implemented under owner-authorized scope | Keeps one authority for reveal access across surfaces. |
 | U44-003 | In preview the counterparty is seeded as having revealed, so both the "reveal mine" toggle and the "they revealed" state are demonstrable; revealed originals show a signed-link placeholder until Cloudinary is wired. | Implemented (originals deferred, O-002) | Honest, demonstrable UX without exposing any real originals. |
+
+### Unit 4.5 additions (closes Phase 4 / gate G4)
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U45-001 | Web-push permission is requested only on an explicit user action (the `PushPrompt` Enable button on `/app/notifications`), never on load; in-app notifications never depend on push. | Implemented under owner-authorized scope | Master spec F9: permission timing after a meaningful action, not on page load. |
+| U45-002 | FCM tokens live as private per-device docs under `users/{uid}/devices/{deviceId}` (owner-only rules); a Function prunes them on invalid-token FCM errors (`isInvalidTokenError`). | Implemented (FCM/SDK wiring deferred, O-001) | Token privacy + a self-healing token lifecycle. |
+| U45-003 | Message push is throttled to ≤1 per match per 5 minutes (`shouldSendMessagePush`), enforced server-side; the in-app center is always updated. | Implemented (trigger wiring deferred, O-001) | Master spec F9 throttle; avoids push spam while keeping the in-app record complete. |

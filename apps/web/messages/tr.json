@@ -560,5 +560,13 @@
     "mutualHint": "Karşı taraf açınca orijinaller görünür.",
     "theirRevealedHint": "Orijinaller kısa ömürlü bir bağlantıyla açılır (sonra bağlanır).",
     "revealedBadge": "Açıldı"
+  },
+  "Push": {
+    "title": "Bildirimleri aç",
+    "body": "Yeni istek ve mesajları anında bildirebilmemiz için.",
+    "unsupported": "Tarayıcın anlık bildirimleri desteklemiyor.",
+    "previewNote": "Önizleme",
+    "enable": "Etkinleştir",
+    "dismiss": "Sonra"
   }
 }
