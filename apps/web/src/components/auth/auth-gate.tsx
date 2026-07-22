@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
+import { isLockedOut } from "@nisfi/shared";
 import { isStaff } from "@/core/domain/auth";
 import { useAuth } from "@/lib/auth-context";
+import { useAccountStatus } from "@/lib/use-account-status";
 import { useRouter } from "@/i18n/navigation";
 
 function FullScreenLoading() {
@@ -28,9 +30,12 @@ function FullScreenLoading() {
  */
 function AuthGate({ children, staffOnly = false }: { children: ReactNode; staffOnly?: boolean }) {
   const { user, loading, configured } = useAuth();
+  const { status, loading: statusLoading } = useAccountStatus();
   const router = useRouter();
 
-  const blocked = configured && (!user || !user.emailVerified || (staffOnly && !isStaff(user)));
+  const lockedOut = user !== null && user.emailVerified && isLockedOut(status);
+  const blocked =
+    configured && (!user || !user.emailVerified || lockedOut || (staffOnly && !isStaff(user)));
 
   useEffect(() => {
     if (!configured || loading) return;
@@ -38,13 +43,18 @@ function AuthGate({ children, staffOnly = false }: { children: ReactNode; staffO
       router.replace("/auth/login");
     } else if (!user.emailVerified) {
       router.replace("/auth/verify-email");
+    } else if (statusLoading) {
+      // Wait for the status read before deciding on product access.
+    } else if (isLockedOut(status)) {
+      // Suspended / banned / deleted members can only see the status screen.
+      router.replace("/status");
     } else if (staffOnly && !isStaff(user)) {
       router.replace("/app");
     }
-  }, [configured, loading, user, staffOnly, router]);
+  }, [configured, loading, user, staffOnly, status, statusLoading, router]);
 
   if (!configured) return <>{children}</>;
-  if (loading || blocked) return <FullScreenLoading />;
+  if (loading || statusLoading || blocked) return <FullScreenLoading />;
   return <>{children}</>;
 }
 

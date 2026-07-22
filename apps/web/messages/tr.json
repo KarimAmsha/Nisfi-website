@@ -919,5 +919,22 @@
       "underage": "Reşit değil",
       "other": "Diğer"
     }
+  },
+  "Status": {
+    "previewNote": "Önizleme",
+    "supportNote": "Bunun bir hata olduğunu düşünüyorsanız iletişim sayfasından bize ulaşın.",
+    "signOut": "Çıkış yap",
+    "suspended": {
+      "title": "Hesabınız askıya alındı",
+      "body": "Hesabınız geçici olarak askıya alındı. Şu anda platformu kullanamazsınız; süre bitince askı otomatik olarak kalkar."
+    },
+    "banned": {
+      "title": "Hesabınız yasaklandı",
+      "body": "Hesabınız, kullanım koşullarını ihlal ettiği için kalıcı olarak yasaklandı. Platforma artık erişemezsiniz."
+    },
+    "deleted": {
+      "title": "Hesabınız silindi",
+      "body": "Hesabınız silindi ve verileriniz talebiniz üzerine anonimleştirildi. Bu işlem geri alınamaz."
+    }
   }
 }

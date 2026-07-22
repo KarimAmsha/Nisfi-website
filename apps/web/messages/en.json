@@ -919,5 +919,22 @@
       "underage": "Underage",
       "other": "Other"
     }
+  },
+  "Status": {
+    "previewNote": "Preview",
+    "supportNote": "If you believe this is a mistake, reach out via the contact page.",
+    "signOut": "Sign out",
+    "suspended": {
+      "title": "Your account is suspended",
+      "body": "Your account is temporarily suspended. You cannot use the platform right now; the suspension lifts automatically when its term ends."
+    },
+    "banned": {
+      "title": "Your account is banned",
+      "body": "Your account has been permanently banned for violating the terms of use. You can no longer access the platform."
+    },
+    "deleted": {
+      "title": "Your account was deleted",
+      "body": "Your account was deleted and your data anonymized at your request. This action cannot be undone."
+    }
   }
 }

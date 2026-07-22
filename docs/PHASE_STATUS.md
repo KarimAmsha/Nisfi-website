@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 7 — Settings, privacy rights, hardening & launch |
-| Current unit | Unit 7.2 — privacy rights (data export & account deletion) (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 7 on emulators/mocks; next is Unit 7.3 (suspended/banned/deleted status screen & app-wide lockout routing). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 7.3 — status screen & lockout routing (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 7 on emulators/mocks; next is Unit 7.4 (security hardening — App Check, headers/CSP, rate-limit review). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 7.3 — completed (delivered to `main`)
+
+The status screen for non-active members and the app-wide lockout routing (master spec Sections 169, 322, 479).
+
+- **Account status read:** `AccountRepository.getStatus` reads the owner's `users.status` (owner-readable), surfaced by the `useAccountStatus` hook (preview → `active` so shells stay viewable; a missing/unknown status fails open for UX — the rules remain the real gate).
+- **Lockout routing:** `AuthGate` now waits for the status read and, when a signed-in verified member is `isLockedOut` (suspended / banned / deleted), replaces to `/status`. Enforcement is still server-side (`isActive()` rules); this is UX-only (A-008).
+- **Status screen:** `/[locale]/status` (noindex, outside the auth-gated `/app`) — a centered card with a per-status title/body (suspended = temporary, banned = permanent, deleted = removed), a support pointer, sign-out, and the locale switcher. It redirects an unauthenticated visitor to login and an active member back to `/app`, so it can't trap anyone. Preview shows the suspended example.
+- **i18n:** `Status` namespace (per-status title/body + support/sign-out) across ar/en/tr.
+- **No** shared/functions/rules changes (the `deleted` status + `isLockedOut` + `isActive()` lockout already landed in 5.5 / 7.2) — suites unchanged (shared 137, functions 54, rules 84).
+- **Verified:** `pnpm check` + `next build` (101 routes) green; RTL status-screen screenshot.
 
 ## Unit 7.2 — completed (delivered to `main`)
 
@@ -478,7 +489,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 7 / Unit 7.3: status screen & lockout routing** — the `/[locale]/status` screen for suspended / banned / deleted members and the app-wide routing that sends non-active members there (they can authenticate only to see status; all product surfaces locked), completing the account-status lifecycle surfaced by 5.5 / 7.2 (master spec Sections 169, 322, 479).
+**Phase 7 / Unit 7.4: security hardening** — App Check enforcement points, secure response headers + a strict Content-Security-Policy, an upload type/size/content-validation review, and a server-side rate/limit-check pass across the callables, plus a lightweight threat-model note (master spec Section «Security» / Phase 7 hardening).
 
 ### Deferred to the final "production wiring" step (O-001)
 
