@@ -434,7 +434,8 @@
       "photos": "Photos",
       "questions": "Questions",
       "config": "Configuration",
-      "broadcasts": "Broadcasts"
+      "broadcasts": "Broadcasts",
+      "plans": "Plans"
     },
     "dashboard": {
       "title": "Admin dashboard",
@@ -642,7 +643,8 @@
       "flags": {
         "signupsEnabled": "Signups enabled",
         "discoveryEnabled": "Discovery enabled",
-        "chatEnabled": "Chat enabled"
+        "chatEnabled": "Chat enabled",
+        "subscriptionsEnabled": "Subscriptions enabled"
       },
       "limits": {
         "maxPendingSent": "Max pending sent requests",
@@ -688,6 +690,33 @@
       "emptyDesc": "Compose the first broadcast to see it here.",
       "errorTitle": "Couldn’t load broadcasts",
       "errorBody": "Something went wrong fetching them. Try again."
+    },
+    "plans": {
+      "title": "Plans & entitlements",
+      "previewNote": "Preview data",
+      "subsOn": "Subscriptions on",
+      "subsOff": "Subscriptions off",
+      "subsOffNote": "V1 is fully free; entitlement changes are manual, superAdmin-only, and audited.",
+      "subsOnNote": "Subscriptions are on; entitlements are managed by billing, not manually.",
+      "catalogTitle": "Plan catalog",
+      "active": "Active",
+      "inactive": "Inactive",
+      "free": "Free",
+      "perMonth": "{price} / mo",
+      "entitlementTitle": "Member entitlement",
+      "memberUid": "Member uid",
+      "memberUidPlaceholder": "uid_...",
+      "lookup": "Look up",
+      "noEntitlement": "No entitlement is recorded for this member.",
+      "currentPlan": "Current plan",
+      "grantedAt": "Granted at",
+      "grantedBy": "Granted by",
+      "grantPlan": "Grant plan",
+      "grant": "Grant",
+      "grantedNote": "Entitlement granted and written to the audit log.",
+      "subscriptionsOnNote": "Manual grants are unavailable while subscriptions are on; billing handles it.",
+      "manageLocked": "Granting entitlements is superAdmin-only.",
+      "auditNote": "Every entitlement change is written to an immutable audit log."
     }
   },
   "ProfileDetail": {

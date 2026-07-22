@@ -12,8 +12,14 @@ import { isAdminRole, type Role } from "./role";
  * value is missing, so the app never depends on the document existing.
  */
 
-/** Boolean feature flags (allow-listed). */
-export const CONFIG_FLAGS = ["signupsEnabled", "discoveryEnabled", "chatEnabled"] as const;
+/** Boolean feature flags (allow-listed). `subscriptionsEnabled` stays off in
+ * V1 — there is no paid tier or billing integration (master spec 6.4/10.11). */
+export const CONFIG_FLAGS = [
+  "signupsEnabled",
+  "discoveryEnabled",
+  "chatEnabled",
+  "subscriptionsEnabled",
+] as const;
 export type ConfigFlag = (typeof CONFIG_FLAGS)[number];
 
 /** Numeric tunables with inclusive integer bounds. */
@@ -44,7 +50,12 @@ const emptyText: LocalizedText = { ar: "", en: "", tr: "" };
 
 /** Fallback config — used when the `appConfig` document (or a key) is missing. */
 export const DEFAULT_APP_CONFIG: AppConfig = {
-  flags: { signupsEnabled: true, discoveryEnabled: true, chatEnabled: true },
+  flags: {
+    signupsEnabled: true,
+    discoveryEnabled: true,
+    chatEnabled: true,
+    subscriptionsEnabled: false,
+  },
   limits: {
     maxPendingSent: CONFIG_LIMITS.maxPendingSent.default,
     dailySends: CONFIG_LIMITS.dailySends.default,

@@ -434,7 +434,8 @@
       "photos": "الصور",
       "questions": "الأسئلة",
       "config": "الإعدادات",
-      "broadcasts": "البث"
+      "broadcasts": "البث",
+      "plans": "الخطط"
     },
     "dashboard": {
       "title": "لوحة الإدارة",
@@ -642,7 +643,8 @@
       "flags": {
         "signupsEnabled": "تفعيل التسجيلات",
         "discoveryEnabled": "تفعيل الاستكشاف",
-        "chatEnabled": "تفعيل المحادثة"
+        "chatEnabled": "تفعيل المحادثة",
+        "subscriptionsEnabled": "تفعيل الاشتراكات"
       },
       "limits": {
         "maxPendingSent": "أقصى طلبات معلّقة مُرسَلة",
@@ -688,6 +690,33 @@
       "emptyDesc": "أنشئ أول بثّ ليظهر هنا.",
       "errorTitle": "تعذّر تحميل عمليات البث",
       "errorBody": "حدث خطأ أثناء الجلب. حاول مجدداً."
+    },
+    "plans": {
+      "title": "الخطط والاستحقاقات",
+      "previewNote": "بيانات تجريبية",
+      "subsOn": "الاشتراكات مُفعّلة",
+      "subsOff": "الاشتراكات مُطفأة",
+      "subsOffNote": "الإصدار الأول مجاني بالكامل؛ تغييرات الاستحقاق يدوية وللمدير الأعلى فقط ومُدقَّقة.",
+      "subsOnNote": "الاشتراكات مُفعّلة؛ إدارة الاستحقاقات تتم عبر الفوترة، لا يدوياً.",
+      "catalogTitle": "كتالوج الخطط",
+      "active": "مُفعّلة",
+      "inactive": "غير مُفعّلة",
+      "free": "مجانية",
+      "perMonth": "{price} / شهر",
+      "entitlementTitle": "استحقاق العضو",
+      "memberUid": "معرّف العضو",
+      "memberUidPlaceholder": "uid_...",
+      "lookup": "بحث",
+      "noEntitlement": "لا يوجد استحقاق مُسجَّل لهذا العضو.",
+      "currentPlan": "الخطة الحالية",
+      "grantedAt": "تاريخ المنح",
+      "grantedBy": "مَنَحها",
+      "grantPlan": "منح خطة",
+      "grant": "منح",
+      "grantedNote": "تم منح الاستحقاق وتسجيله في التدقيق.",
+      "subscriptionsOnNote": "لا يمكن المنح اليدوي بينما الاشتراكات مُفعّلة؛ الفوترة تتكفّل بذلك.",
+      "manageLocked": "منح الاستحقاقات متاح للمدير الأعلى فقط.",
+      "auditNote": "كل تغيير للاستحقاق يُسجَّل في سجلّ تدقيق غير قابل للتعديل."
     }
   },
   "ProfileDetail": {

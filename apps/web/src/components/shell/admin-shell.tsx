@@ -9,6 +9,7 @@ import {
   BellIcon,
   FlagIcon,
   GaugeIcon,
+  InboxIcon,
   LockIcon,
   SettingsIcon,
   ShieldCheckIcon,
@@ -28,7 +29,8 @@ type AdminNav = {
     | "reports"
     | "questions"
     | "config"
-    | "broadcasts";
+    | "broadcasts"
+    | "plans";
   Icon: ComponentType<{ size?: number }>;
   countKey?: keyof AdminQueueCounts;
   minRole: Role;
@@ -60,6 +62,7 @@ const NAV: AdminNav[] = [
   },
   { href: "/admin/questions", key: "questions", Icon: SparkIcon, minRole: "admin" },
   { href: "/admin/broadcasts", key: "broadcasts", Icon: BellIcon, minRole: "admin" },
+  { href: "/admin/plans", key: "plans", Icon: InboxIcon, minRole: "admin" },
   { href: "/admin/config", key: "config", Icon: SettingsIcon, minRole: "admin" },
 ];
 

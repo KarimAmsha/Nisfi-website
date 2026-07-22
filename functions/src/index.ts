@@ -92,3 +92,7 @@ export {
   summarizeDelivery,
   type BroadcastDispatchResult,
 } from "./broadcasts";
+
+// Plans/entitlements core: superAdmin manual grant (subscriptions-off guard;
+// Admin SDK + audit wiring deferred, O-001).
+export { evaluateEntitlementGrant, type EntitlementGrantResult } from "./plans";

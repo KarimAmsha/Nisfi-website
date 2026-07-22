@@ -9,12 +9,24 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 6 — Complete control panel |
-| Current unit | Unit 6.3 — broadcast composer (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 6 on emulators/mocks; next is Unit 6.4 (plans/entitlements read model). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 6.4 — plans & entitlements read model (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 6 on emulators/mocks; next is Unit 6.5 (audit explorer, exports, health). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 6.4 — completed (delivered to `main`)
+
+The plans & entitlements read model and the controlled, superAdmin-only manual management path — with subscriptions staying off in V1 (master spec Sections 6.4, 10.11–10.12).
+
+- **Shared:** `plans.ts` — `Plan` / `Entitlement`, `FREE_PLAN` (the one V1 plan, granting the default config limits), `defaultEntitlement`, `canManageEntitlements` (superAdmin), `canGrantEntitlement` (superAdmin **and** subscriptions off **and** an active known plan; reasons notSuperAdmin/subscriptionsEnabled/unknownPlan/inactivePlan). Added `subscriptionsEnabled` to `CONFIG_FLAGS`/`DEFAULT_APP_CONFIG` (default **false**). New `plans.test.ts` (shared suite now **116**).
+- **Server core:** `functions/src/plans.ts` — `evaluateEntitlementGrant` (CF `grantEntitlement`; superAdmin + subscriptions-off guard, emits the `users.entitlements` update for the audited write). Functions suite now **48**.
+- **Rules:** `plans/{id}` — any signed-in member reads the catalog; all writes server-only (superAdmin via CF; entitlements live on `users.entitlements`, already server-only). New `plan.rules.test.ts` (member read, unauth denied, superAdmin client write denied). Rules suite now **76**.
+- **Port + adapter:** `PlanRepository.listPlans`, `getEntitlement(uid)` (reads `users.entitlements`), `grantEntitlement` via callable.
+- **UI:** `/admin/plans` — a "subscriptions off" status banner (V1 is free; entitlement changes are manual, superAdmin-only, audited), the plan catalog (free plan: name, price, limits, active), and an entitlement manager (uid lookup → current entitlement; superAdmin-only grant, disabled with a note when subscriptions are on). New **Plans** nav item (admin+). Preview seed with the free plan + two member entitlements.
+- **Deferred (O-001):** the `grantEntitlement` callable (custom write + audit) is wired at the final production step; the console runs on the preview seed until then.
+- **Verified:** `pnpm check` (shared 116, functions 48) + `next build` (89 routes) + `pnpm test:rules` (76) green; RTL plans-console screenshot with an entitlement lookup.
 
 ## Unit 6.3 — completed (delivered to `main`)
 
@@ -420,7 +432,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 6 / Unit 6.4: plans & entitlements read model** — a read model of members' plan/entitlement state and a controlled, superAdmin-only manual management path, with the subscription/billing flag staying off (V1 has no paid tier) and every mutation audited (master spec Section 6.4).
+**Phase 6 / Unit 6.5: audit explorer, exports & health** — a read-only immutable audit-log explorer (permission-gated), privacy-safe bounded exports (limits + redaction, no secrets), and an operational health view (master spec Section 6.5).
 
 ### Deferred to the final "production wiring" step (O-001)
 

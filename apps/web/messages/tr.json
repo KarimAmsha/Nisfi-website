@@ -434,7 +434,8 @@
       "photos": "Fotoğraflar",
       "questions": "Sorular",
       "config": "Yapılandırma",
-      "broadcasts": "Yayınlar"
+      "broadcasts": "Yayınlar",
+      "plans": "Planlar"
     },
     "dashboard": {
       "title": "Yönetim paneli",
@@ -642,7 +643,8 @@
       "flags": {
         "signupsEnabled": "Kayıtlar açık",
         "discoveryEnabled": "Keşfet açık",
-        "chatEnabled": "Sohbet açık"
+        "chatEnabled": "Sohbet açık",
+        "subscriptionsEnabled": "Abonelikler açık"
       },
       "limits": {
         "maxPendingSent": "Maks. bekleyen gönderilen istek",
@@ -688,6 +690,33 @@
       "emptyDesc": "Burada görmek için ilk yayını oluşturun.",
       "errorTitle": "Yayınlar yüklenemedi",
       "errorBody": "Alınırken bir sorun oluştu. Tekrar deneyin."
+    },
+    "plans": {
+      "title": "Planlar ve haklar",
+      "previewNote": "Önizleme verisi",
+      "subsOn": "Abonelikler açık",
+      "subsOff": "Abonelikler kapalı",
+      "subsOffNote": "V1 tamamen ücretsizdir; hak değişiklikleri manuel, yalnızca süper yönetici ve denetlenir.",
+      "subsOnNote": "Abonelikler açık; haklar manuel değil faturalandırma ile yönetilir.",
+      "catalogTitle": "Plan kataloğu",
+      "active": "Etkin",
+      "inactive": "Pasif",
+      "free": "Ücretsiz",
+      "perMonth": "{price} / ay",
+      "entitlementTitle": "Üye hakkı",
+      "memberUid": "Üye kimliği",
+      "memberUidPlaceholder": "uid_...",
+      "lookup": "Ara",
+      "noEntitlement": "Bu üye için kayıtlı bir hak yok.",
+      "currentPlan": "Mevcut plan",
+      "grantedAt": "Verilme tarihi",
+      "grantedBy": "Veren",
+      "grantPlan": "Plan ver",
+      "grant": "Ver",
+      "grantedNote": "Hak verildi ve denetim günlüğüne yazıldı.",
+      "subscriptionsOnNote": "Abonelikler açıkken manuel verme kullanılamaz; faturalandırma halleder.",
+      "manageLocked": "Hak verme yalnızca süper yöneticiye özeldir.",
+      "auditNote": "Her hak değişikliği değiştirilemez bir denetim günlüğüne yazılır."
     }
   },
   "ProfileDetail": {

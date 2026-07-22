@@ -162,6 +162,15 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // plans/{id}: any signed-in member reads plan catalog fields; ALL writes are
+    // server-only (superAdmin manual entitlement/plan management via CF + audit;
+    // no client writes, and subscriptions stay disabled in V1). Entitlements
+    // themselves live on `users.entitlements` (server-only). Sections 6.4, 10.12.
+    match /plans/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
     // connectionRequests: the two participants + staff may read; ALL writes are
     // server-only (CF6 sendConnectionRequest / CF7 respond/withdraw via the Admin
     // SDK, which bypasses these rules). Clients never create or transition a

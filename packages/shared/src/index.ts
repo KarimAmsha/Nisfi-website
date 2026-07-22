@@ -103,6 +103,16 @@ export {
 } from "./broadcast";
 
 export {
+  FREE_PLAN,
+  defaultEntitlement,
+  canManageEntitlements,
+  canGrantEntitlement,
+  type Plan,
+  type Entitlement,
+  type EntitlementGrantCheck,
+} from "./plans";
+
+export {
   PHOTO_MODERATION,
   PHOTO_DECISIONS,
   MAX_PHOTOS,
