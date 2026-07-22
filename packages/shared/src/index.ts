@@ -72,10 +72,15 @@ export {
 export {
   VERIFICATION_REQUEST_STATUSES,
   VERIFICATION_TYPES,
+  VERIFICATION_DECISIONS,
   canSubmitVerification,
+  canDecideVerification,
+  verificationOutcome,
   type VerificationRequest,
   type VerificationRequestStatus,
   type VerificationType,
+  type VerificationDecision,
+  type VerificationDecisionCheck,
 } from "./verification";
 
 export {

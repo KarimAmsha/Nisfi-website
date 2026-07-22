@@ -209,3 +209,11 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U51-001 | A single role ordering lives in `@nisfi/shared` (`role.ts`, `roleAtLeast` etc.), consumed by the web console gating and the Functions; the security rules mirror the same order. Console gating is UX only — the rules remain the authorization boundary (A-008). | Implemented under owner-authorized scope | One source of truth for roles across surfaces; server stays authoritative. |
 | U51-002 | The dashboard counts only what is staff-readable now (pending verifications via `getCountFromServer`); photo/report queues count 0 until their units (5.2/5.3) rather than displaying invented numbers. | Implemented under owner-authorized scope | Honest, audit-safe reads; no fabricated operational figures. |
 | U51-003 | System-health tiles are shown as "pending wiring" until the production step; real health probes connect with O-001. | Implemented (health probes deferred, O-001) | Truthful console without fake green checks. |
+
+### Unit 5.2 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U52-001 | The verification decision authority (`canDecideVerification` + `verificationOutcome`) lives in `@nisfi/shared` and is consumed by the CF5 core (`evaluateVerificationDecision`); the console calls the `decideVerification` callable. Client writes to `verificationRequests` decisions stay denied by rules. | Implemented (Admin SDK + audit wiring deferred, O-001) | Master spec F3/12: decisions are server-only, transactional, mirrored to the profile, notified, and audited. |
+| U52-002 | Selfie/ID evidence is shown as a private placeholder in the console; the real image loads via a short-lived staff-authorized URL, never stored in Firestore or made public. | Implemented (Cloudinary staff-URL signing deferred, O-002) | Master spec F3: verification media is sensitive and never member-visible. |
+| U52-003 | The queue lists only pending requests (oldest-first via the existing index) and decisions optimistically remove the item; a demo seed keeps the console reviewable in preview. | Implemented under owner-authorized scope | Focused, audit-safe reviewer workflow. |

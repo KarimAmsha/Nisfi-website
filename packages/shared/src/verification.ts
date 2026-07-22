@@ -23,3 +23,31 @@ export interface VerificationRequest {
 export function canSubmitVerification(request: VerificationRequest | null): boolean {
   return request === null || request.status === "rejected";
 }
+
+/** Staff decisions on a pending verification request (master spec F3, CF5). */
+export const VERIFICATION_DECISIONS = ["approve", "reject"] as const;
+export type VerificationDecision = (typeof VERIFICATION_DECISIONS)[number];
+
+export type VerificationDecisionCheck =
+  { ok: true } | { ok: false; reason: "notStaff" | "notPending" };
+
+/** Only staff may decide, and only while the request is `pending` (CF5 enforces
+ * this in a transaction; decisions are server-only). */
+export function canDecideVerification(
+  request: Pick<VerificationRequest, "status">,
+  actorIsStaff: boolean,
+): VerificationDecisionCheck {
+  if (!actorIsStaff) return { ok: false, reason: "notStaff" };
+  if (request.status !== "pending") return { ok: false, reason: "notPending" };
+  return { ok: true };
+}
+
+/** The resulting request status + mirrored profile verification for a decision. */
+export function verificationOutcome(decision: VerificationDecision): {
+  requestStatus: VerificationRequestStatus;
+  profileStatus: "verified" | "rejected";
+} {
+  return decision === "approve"
+    ? { requestStatus: "approved", profileStatus: "verified" }
+    : { requestStatus: "rejected", profileStatus: "rejected" };
+}

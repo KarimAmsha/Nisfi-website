@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 5 — Operations & moderation console |
-| Current unit | Unit 5.1 — admin shell, role-gated routing, and the operations dashboard (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 5 on emulators/mocks; next is Unit 5.2 (verification review queue with decisions). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 5.2 — verification review queue and decisions (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 5 on emulators/mocks; next is Unit 5.3 (photo moderation queue). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 5.2 — completed (delivered to `main`)
+
+The moderator verification review queue and the approve/reject decision path.
+
+- **Shared:** `canDecideVerification` (staff + pending; reasons notStaff / notPending), `verificationOutcome` (decision → request/profile status), `VERIFICATION_DECISIONS`. **verification.test.ts** covers submit/decide/outcome (shared suite now **80**).
+- **Server core:** `functions/src/verification.ts` `evaluateVerificationDecision` (CF5) — validates staff+pending, then emits the request update (status/reason/decidedBy), the mirrored `profiles.verification`, and the notification key. Functions suite now **23**.
+- **Port + adapter:** `AdminRepository.listVerificationQueue` (staff read of pending, oldest-first via the `verificationRequests` index) and `decideVerification` via the CF5 callable.
+- **UI:** `/admin/verifications` is now a live queue + detail — pending list (select), private evidence placeholder ("staff short-lived URL, never stored"), an audit note, and Approve / Reject (reject requires a reason). Decisions optimistically remove the item; loading/empty/error states covered. Preview seeds three pending requests.
+- **Rules:** unchanged — `verificationRequests` is staff-readable and client decisions are denied (server-only); the Unit 2.5 rules tests still hold.
+- **Verified:** `pnpm check` + `next build` (74 routes) + `pnpm test:rules` (56) green; RTL queue + reject-flow screenshots.
 
 ## Unit 5.1 — completed (delivered to `main`; opens Phase 5)
 
@@ -338,7 +349,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 5 / Unit 5.2: verification review queue and decisions** — the moderator verification queue at `/admin/verifications` (pending list + detail with the privately-uploaded selfie/ID via short-lived staff URLs), and the `decideVerification` callable (approve/reject → mirror to `profiles.verification`, notify, audit log). Decisions are server-only + audited; queue/permission tests with staff roles.
+**Phase 5 / Unit 5.3: photo moderation queue** — the moderator photo queue at `/admin/photos` (each pending photo approve/reject with a reason), backed by a `decidePhoto` callable that flips the photo's moderation state server-side and only then makes the blurred variant publicly readable per the storage rules. Staff-scoped reads + audited decisions; queue/permission tests. (Cloudinary media deferred O-002.)
 
 ### Deferred to the final "production wiring" step (O-001)
 

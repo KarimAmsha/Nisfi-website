@@ -476,7 +476,17 @@
       "valDays": "3 days",
       "approve": "Approve verification",
       "requestResend": "Request resend",
-      "auditNote": "Staff note: first selfie is under-lit; the second is clear and matches. — Moderator 2"
+      "auditNote": "Staff note: first selfie is under-lit; the second is clear and matches. — Moderator 2",
+      "previewNote": "Sample data",
+      "errorTitle": "Couldn't load the queue",
+      "errorBody": "Something went wrong. Please try again.",
+      "emptyTitle": "No pending requests",
+      "emptyBody": "No verification requests are waiting for review.",
+      "selectHint": "Select a request from the queue to review it.",
+      "reject": "Reject",
+      "confirmReject": "Confirm reject",
+      "cancel": "Cancel",
+      "reasonPlaceholder": "Reason for rejection (shown to the member)…"
     },
     "users": {
       "title": "Members",

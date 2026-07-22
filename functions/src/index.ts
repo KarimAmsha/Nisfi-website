@@ -45,3 +45,6 @@ export { evaluateSetPhotoReveal, evaluateRevealAccess, type SetRevealResult } fr
 // Push cores: message-push throttle + invalid-token pruning (FCM/SDK wiring
 // deferred, O-001).
 export { shouldPushMessage, isInvalidTokenError, INVALID_TOKEN_CODES } from "./push";
+
+// CF5 verification-decision core (Admin SDK + audit wiring deferred, O-001).
+export { evaluateVerificationDecision, type DecideVerificationResult } from "./verification";
