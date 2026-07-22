@@ -419,9 +419,41 @@
   },
   "Settings": {
     "title": "Settings",
-    "note": "Manage account, privacy, language, and blocking. Options are built in their approved unit.",
+    "previewNote": "Preview data",
+    "visibilityTitle": "Profile visibility",
+    "visibilityDesc": "When off, your profile is not shown in discovery to other members.",
+    "visibilityOn": "My profile is visible in discovery",
+    "visibilityOff": "My profile is hidden",
+    "languageTitle": "Communication language",
+    "languageDesc": "The language of notifications and messages sent to you.",
+    "languageAuto": "Automatic (from browser)",
+    "locales": {
+      "ar": "العربية",
+      "en": "English",
+      "tr": "Türkçe"
+    },
+    "notificationsTitle": "Notification preferences",
+    "notificationsDesc": "Choose what you want to be notified about.",
+    "categories": {
+      "requests": "Connection requests",
+      "matches": "Matches",
+      "messages": "Messages",
+      "announcements": "Platform announcements"
+    },
     "blockedLink": "Blocked list",
-    "blockedHint": "Manage the members you've blocked."
+    "blockedHint": "Manage the members you have blocked.",
+    "accountTitle": "Account",
+    "signOut": "Sign out",
+    "privacyTitle": "Privacy rights",
+    "exportData": "Export my data",
+    "deleteAccount": "Delete account",
+    "exportConfirm": "We will prepare a copy of your data and send you a download link. Continue?",
+    "deleteConfirm": "This starts permanent deletion of your account and data. It cannot be undone. Continue?",
+    "exportRequested": "Export requested; we will notify you when it is ready.",
+    "deleteRequested": "Deletion requested; you will receive the confirmation steps.",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "privacyNote": "Export and deletion are processed securely server-side with verification; the full flow lives in the privacy-rights unit."
   },
   "Admin": {
     "nav": {

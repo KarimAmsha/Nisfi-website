@@ -285,3 +285,10 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | ID | Decision | Status | Rationale |
 |---|---|---|---|
 | U66-001 | The admin console uses a desktop sidebar (`md+`) and a mobile overlay drawer (below `md`) sharing one nav list, replacing the previous crowded horizontal-scroll nav. The drawer is fully keyboard-accessible (skip link, `aria-expanded`/`aria-controls`, focus-on-open, Escape/backdrop/navigation close) and RTL-correct (anchors to the inline-start, slides from the right in Arabic). | Implemented | Master spec 6.6 / Gate G6: tablet/mobile-safe access, keyboard triage, RTL/LTR QA. Phase 6 (control panel) closed. |
+
+### Unit 7.1 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U71-001 | Member notification preferences and communication locale live on the owner-writable `users.preferences` / `users.locale` (the rules already allow exactly those keys), so the settings surface persists via direct owner writes — no Cloud Function needed. Profile visibility remains a `profiles.visibility` write via `saveOwn`. `mergeMemberPreferences` defaults every category to on, so a member opts out, never in. | Implemented | Master spec Section 7: least-surprise, owner-controlled preferences without extra server round-trips. |
+| U71-002 | Data export and account deletion are privacy-rights actions handled server-side (`requestDataExport` / `requestAccountDeletion` callables), never a client write, and are gated behind an explicit in-app confirm. Unit 7.1 surfaces the entry points + a working sign-out; the actual export bundle and the verified, grace-period deletion cascade are Unit 7.2. | Implemented (CF flow deferred to 7.2 / O-001) | Master spec Section 7: privacy rights are verified, audited, server-owned; the UI must not fake them. |

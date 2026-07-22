@@ -419,9 +419,41 @@
   },
   "Settings": {
     "title": "Ayarlar",
-    "note": "Hesap, gizlilik, dil ve engelleme yönetimi. Seçenekler kendi onaylı biriminde geliştirilir.",
+    "previewNote": "Önizleme verisi",
+    "visibilityTitle": "Profil görünürlüğü",
+    "visibilityDesc": "Kapalıyken profiliniz keşfette diğer üyelere gösterilmez.",
+    "visibilityOn": "Profilim keşfette görünür",
+    "visibilityOff": "Profilim gizli",
+    "languageTitle": "İletişim dili",
+    "languageDesc": "Size gönderilen bildirim ve mesajların dili.",
+    "languageAuto": "Otomatik (tarayıcıdan)",
+    "locales": {
+      "ar": "العربية",
+      "en": "English",
+      "tr": "Türkçe"
+    },
+    "notificationsTitle": "Bildirim tercihleri",
+    "notificationsDesc": "Neler için bildirim almak istediğinizi seçin.",
+    "categories": {
+      "requests": "Bağlantı istekleri",
+      "matches": "Eşleşmeler",
+      "messages": "Mesajlar",
+      "announcements": "Platform duyuruları"
+    },
     "blockedLink": "Engellenenler",
-    "blockedHint": "Engellediğin üyeleri yönet."
+    "blockedHint": "Engellediğiniz üyeleri yönetin.",
+    "accountTitle": "Hesap",
+    "signOut": "Çıkış yap",
+    "privacyTitle": "Gizlilik hakları",
+    "exportData": "Verilerimi dışa aktar",
+    "deleteAccount": "Hesabı sil",
+    "exportConfirm": "Verilerinizin bir kopyasını hazırlayıp size indirme bağlantısı göndereceğiz. Devam edilsin mi?",
+    "deleteConfirm": "Bu, hesabınızın ve verilerinizin kalıcı silinmesini başlatır. Geri alınamaz. Devam edilsin mi?",
+    "exportRequested": "Dışa aktarma istendi; hazır olduğunda sizi bilgilendireceğiz.",
+    "deleteRequested": "Silme istendi; onay adımlarını alacaksınız.",
+    "confirm": "Onayla",
+    "cancel": "İptal",
+    "privacyNote": "Dışa aktarma ve silme, doğrulama ile sunucu tarafında güvenle işlenir; tam akış gizlilik hakları biriminde yer alır."
   },
   "Admin": {
     "nav": {

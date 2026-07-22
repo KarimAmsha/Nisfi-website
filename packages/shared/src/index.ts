@@ -144,6 +144,16 @@ export {
 } from "./health";
 
 export {
+  NOTIFICATION_CATEGORIES,
+  DEFAULT_MEMBER_PREFERENCES,
+  memberPreferencesSchema,
+  mergeMemberPreferences,
+  notificationEnabled,
+  type NotificationCategory,
+  type MemberPreferences,
+} from "./member-settings";
+
+export {
   PHOTO_MODERATION,
   PHOTO_DECISIONS,
   MAX_PHOTOS,

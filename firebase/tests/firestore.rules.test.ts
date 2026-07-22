@@ -66,6 +66,26 @@ describe("firestore rules — Unit 0.5 baseline", () => {
     await assertFails(setDoc(doc(db, "users/alice"), { role: "admin" }, { merge: true }));
   });
 
+  it("allows an owner to update locale + preferences (Unit 7.1 settings)", async () => {
+    await seedActiveUser("alice");
+    const db = testEnv.authenticatedContext("alice").firestore();
+    await assertSucceeds(
+      setDoc(
+        doc(db, "users/alice"),
+        { locale: "en", preferences: { notifications: { messages: false } } },
+        { merge: true },
+      ),
+    );
+  });
+
+  it("denies an owner smuggling a status change alongside preferences (Unit 7.1)", async () => {
+    await seedActiveUser("alice");
+    const db = testEnv.authenticatedContext("alice").firestore();
+    await assertFails(
+      setDoc(doc(db, "users/alice"), { preferences: {}, status: "banned" }, { merge: true }),
+    );
+  });
+
   it("denies an owner writing their own account status (no self-reinstate, Unit 5.5)", async () => {
     // Seed suspended so writing `active` is a real change, not a no-op diff.
     await testEnv.withSecurityRulesDisabled(async (ctx) => {

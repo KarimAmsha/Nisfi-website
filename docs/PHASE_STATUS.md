@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 7 — Settings, privacy rights, hardening & launch |
-| Current unit | Unit 6.6 — admin responsiveness & QA polish (delivered to `main`) — closes Phase 6 |
-| Implementation state | Delivered to `main`. Phase 6 (control panel) complete; next is Phase 7 / Unit 7.1 (member settings & account controls). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 7.1 — member settings & account controls (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 7 on emulators/mocks; next is Unit 7.2 (privacy rights — data export & account deletion flow). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 7.1 — completed (delivered to `main`)
+
+The member settings surface: profile visibility, communication language, notification preferences, and account controls (master spec Section 7).
+
+- **Shared:** `member-settings.ts` — `NOTIFICATION_CATEGORIES` (requests/matches/messages/announcements), `MemberPreferences`, `DEFAULT_MEMBER_PREFERENCES` (all on — a member opts out, never in), `memberPreferencesSchema`, `mergeMemberPreferences` (defaults over stored/absent, ignores junk), `notificationEnabled`. New `member-settings.test.ts` (shared suite now **134**).
+- **Port + adapter:** `MemberSettingsRepository` — `getSettings`/`savePreferences`/`saveLocale` write the owner-allowed `users.locale` + `users.preferences` (rules already permit exactly those keys); `requestDataExport`/`requestAccountDeletion` are server-side callables (privacy-rights actions, never a client write).
+- **Rules:** no new collection — added positive/negative tests proving an owner may update `locale` + `preferences` but cannot smuggle a `status` change alongside. Rules suite now **82**.
+- **UI:** `/app/settings` fleshed out on the member shell — a profile-visibility toggle (writes `profiles.visibility` via `saveOwn`), a communication-language select (writes `users.locale`), notification-preference toggles per category, the existing blocked-list link, and an **Account** card with a working **sign-out** plus **privacy-rights** entry points (export my data / delete account) behind an explicit confirm, wired to CF callables (deferred).
+- **Deferred (O-001):** `requestDataExport` / `requestAccountDeletion` callables (the real export/deletion flow is Unit 7.2); preferences/locale/visibility persist directly (owner writes) and work fully once configured.
+- **Verified:** `pnpm check` (shared 134) + `next build` (98 routes) + `pnpm test:rules` (82) green; RTL settings screenshot.
 
 ## Unit 6.6 — completed (delivered to `main`) — closes Phase 6
 
@@ -455,7 +466,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 7 / Unit 7.1: member settings & account controls** — the member-facing settings surface: profile visibility, locale, notification preferences, and account controls (sign-out, and the entry points for data export / account deletion that Unit 7.2 fleshes out), on the member shell with rules + tests (master spec Section 7 / Phase 7).
+**Phase 7 / Unit 7.2: privacy rights — data export & account deletion** — the real member data-export (privacy-safe bundle of own data) and account-deletion flow (verification + grace period + cascade), server-side and audited, behind the entry points Unit 7.1 surfaced (master spec Section 7 / privacy rights).
 
 ### Deferred to the final "production wiring" step (O-001)
 
