@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import type { AuthUser } from "@/core/domain/auth";
 import type { Credentials } from "@/core/ports/auth";
 import { authService } from "@/infrastructure/firebase/auth.service";
+import { ensureAppCheck } from "@/infrastructure/firebase";
 import { isFirebaseConfigured } from "@/infrastructure/firebase/env";
 
 type AuthContextValue = {
@@ -27,6 +28,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!configured) return;
+    // Attest the app with App Check before other Firebase calls (inert until a
+    // reCAPTCHA site key is configured — production wiring, O-001).
+    ensureAppCheck();
     return authService.onAuthChange((next) => {
       setUser(next);
       setLoading(false);

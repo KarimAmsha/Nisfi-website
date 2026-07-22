@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 7 — Settings, privacy rights, hardening & launch |
-| Current unit | Unit 7.3 — status screen & lockout routing (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 7 on emulators/mocks; next is Unit 7.4 (security hardening — App Check, headers/CSP, rate-limit review). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 7.4 — security hardening (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 7 on emulators/mocks; next is Unit 7.5 (launch readiness — SEO/metadata/sitemap/robots, error & not-found pages, final QA). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 7.4 — completed (delivered to `main`)
+
+Security hardening: response headers + a strict CSP, App Check enforcement wiring, and a threat-model record (master spec «Security» / Phase 7).
+
+- **Secure headers + CSP:** `next.config.ts` now sets, on every route, a self-first Content-Security-Policy (Firebase/Cloudinary/reCAPTCHA allowances only, `object-src 'none'`, `frame-ancestors 'none'`, dev-only `'unsafe-eval'`/websocket relaxations for HMR, `upgrade-insecure-requests` in prod) plus `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` (camera=self, mic/geo off), `X-DNS-Prefetch-Control: off`, and HSTS. Verified live via `curl`.
+- **App Check:** `ensureAppCheck()` (already scaffolded, guarded by a reCAPTCHA site key) is now invoked at client startup in `AuthProvider` — the enforcement point exists and stays inert until the site key is provided (O-001).
+- **Upload validation (reviewed):** `validatePhotoUpload` already enforces type (jpeg/png/webp) / size (≤8 MB) / count (≤6) client-side, with the server re-validating bytes — captured in the checklist rather than re-implemented.
+- **Threat model:** new `docs/SECURITY.md` — a STRIDE-lite model, the hardening checklist (rules-as-authorization, headers/CSP, App Check, upload validation, server-side rate limits, redacted logs, secret handling), and the production-wiring deferrals (App Check enforcement, key rotation, CSP nonce tightening, budgets/scanning).
+- **No** shared/functions/rules changes — suites unchanged (shared 137, functions 54, rules 84).
+- **Verified:** `pnpm check` + `next build` (101 routes) green; `curl` confirms all seven security headers on responses.
 
 ## Unit 7.3 — completed (delivered to `main`)
 
@@ -489,7 +500,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 7 / Unit 7.4: security hardening** — App Check enforcement points, secure response headers + a strict Content-Security-Policy, an upload type/size/content-validation review, and a server-side rate/limit-check pass across the callables, plus a lightweight threat-model note (master spec Section «Security» / Phase 7 hardening).
+**Phase 7 / Unit 7.5: launch readiness** — final SEO/metadata sweep (per-locale titles/descriptions, canonical + hreflang, Open Graph, `sitemap.xml`, `robots.txt`), custom error / not-found pages, and a whole-app QA pass before the launch gate (master spec Phase 7 launch).
 
 ### Deferred to the final "production wiring" step (O-001)
 
