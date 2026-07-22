@@ -168,3 +168,11 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U41-001 | The match document is built by a shared `buildAcceptedMatch` keyed by `pairKey`; the CF7 accept transaction (`evaluateAccept`) writes it and flips the request in one atomic step. Clients can never create matches (`matches` writes denied by rules). | Implemented (SDK wiring deferred, O-001) | Master spec F6/10.5/12: match id = pairKey makes accept idempotent and unforgeable. |
 | U41-002 | The match list queries active matches via the existing `matches` composite index (uids CONTAINS + status + lastMessageAt DESC); closed-match history is surfaced with the close flow (Unit 4.3). | Implemented under owner-authorized scope | Uses the index from Unit 0.5 without adding a new one; scopes 4.1 to the primary list. |
 | U41-003 | `/app/matches/[id]` ships as an honest "chat coming next" placeholder so match links resolve rather than 404; the real-time conversation is Unit 4.2. | Implemented under owner-authorized scope | Keeps navigation truthful between units without pre-building chat. |
+
+### Unit 4.2 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U42-001 | Messages are created directly by active participants under `matches/{pairKey}/messages` (gated by rules that verify membership via a `get()` on the parent match, the exact schema, and `match.status == active`); the sender may soft-delete only their own within 15 min. Moderation flags, preview, and unread are server-managed. | Implemented (Function triggers deferred, O-001) | Master spec F6/11.4: real-time chat needs client writes, but the shape, membership, and window are unforgeable. |
+| U42-002 | The banned-word check is a shared `containsBannedWord` used as a client pre-check (with a small demo list in preview; the real list is `appConfig.bannedWords`), while the server re-checks and sets `moderation.flagged` authoritatively; flagged messages still deliver in V1. | Implemented (appConfig wiring deferred, O-001) | Matches the spec's two-layer moderation; keeps the client honest without trusting it. |
+| U42-003 | Typing indicators and read receipts are intentionally omitted (out of V1); unread counts only. | Implemented (by omission) | Explicit master spec F6 scope boundary. |

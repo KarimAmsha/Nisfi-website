@@ -28,3 +28,12 @@ export { evaluateBlock } from "./blocks";
 
 // CF7 accept → match-creation core (SDK wiring deferred, O-001).
 export { evaluateAccept, type AcceptResult } from "./matches";
+
+// Chat onCreate core: moderation flag + match preview/unread (SDK wiring
+// deferred, O-001).
+export {
+  evaluateMessageModeration,
+  buildMatchUpdateOnMessage,
+  type MessageModeration,
+  type MatchUpdateOnMessage,
+} from "./chat";

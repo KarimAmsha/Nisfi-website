@@ -121,3 +121,14 @@ export {
   type Match,
   type NewMatch,
 } from "./match";
+
+export {
+  MESSAGE_TEXT_MIN,
+  MESSAGE_TEXT_MAX,
+  MESSAGE_DELETE_WINDOW_MINUTES,
+  isValidMessageText,
+  canDeleteMessage,
+  containsBannedWord,
+  messagePreview,
+  type ChatMessage,
+} from "./chat";

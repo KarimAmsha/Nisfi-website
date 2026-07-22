@@ -533,5 +533,18 @@
     "confirmBlock": "Engellemeyi onayla",
     "cancel": "İptal",
     "doneNote": "Üye engellendi."
+  },
+  "Chat": {
+    "back": "← Eşleşmeler",
+    "aMember": "Bir üye",
+    "previewNote": "Önizleme",
+    "removed": "Mesaj kaldırıldı",
+    "flagged": "İncelemede",
+    "delete": "Sil",
+    "emptyBody": "Sohbete sıcak, saygılı bir selamla başla.",
+    "bannedWarning": "Telefon veya hesap paylaşma — iletişimi platformda tut.",
+    "placeholder": "Bir mesaj yaz…",
+    "send": "Gönder",
+    "privacyNote": "Saygılı ol; mesajlar güvenlik için incelenebilir."
   }
 }

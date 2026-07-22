@@ -134,6 +134,39 @@ service cloud.firestore {
     match /matches/{pairKey} {
       allow read: if signedIn() && request.auth.uid in resource.data.uids;
       allow create, update, delete: if false;
+
+      // messages/{id}: an active participant of the match may create an exact
+      // text-message document; the sender may soft-delete only their own message
+      // within 15 minutes (flip `deleted` to true). No hard delete, and clients
+      // never write moderation fields (Functions flag) or preview/unread (on the
+      // match doc). Master spec Sections F6, 10.5, 11.4.
+      match /messages/{id} {
+        function matchDoc() {
+          return get(/databases/$(database)/documents/matches/$(pairKey)).data;
+        }
+        function isMatchMember() {
+          return signedIn() && uid() in matchDoc().uids;
+        }
+        allow read: if isMatchMember();
+        allow create: if isActive()
+          && isMatchMember()
+          && matchDoc().status == 'active'
+          && request.resource.data.keys().hasOnly(
+               ['senderUid', 'text', 'deleted', 'moderation', 'createdAt'])
+          && request.resource.data.senderUid == uid()
+          && request.resource.data.text is string
+          && request.resource.data.text.size() >= 1
+          && request.resource.data.text.size() <= 1000
+          && request.resource.data.deleted == false
+          && request.resource.data.moderation.flagged == false
+          && request.resource.data.createdAt == request.time;
+        allow update: if isMatchMember()
+          && resource.data.senderUid == uid()
+          && changedKeys().hasOnly(['deleted'])
+          && request.resource.data.deleted == true
+          && request.time < resource.data.createdAt + duration.value(15, 'm');
+        allow delete: if false;
+      }
     }
 
     // blocks/{uid}/blocked/{targetUid}: owner reads their own block list; ALL

@@ -533,5 +533,18 @@
     "confirmBlock": "Confirm block",
     "cancel": "Cancel",
     "doneNote": "Member blocked."
+  },
+  "Chat": {
+    "back": "← Matches",
+    "aMember": "A member",
+    "previewNote": "Preview",
+    "removed": "Message removed",
+    "flagged": "Under review",
+    "delete": "Delete",
+    "emptyBody": "Start the conversation with a warm, respectful greeting.",
+    "bannedWarning": "Don't share phone numbers or handles — keep contact on the platform.",
+    "placeholder": "Write a message…",
+    "send": "Send",
+    "privacyNote": "Keep it respectful; messages may be reviewed for safety."
   }
 }
