@@ -60,3 +60,14 @@ export {
   type ReportTransitionResult,
   type SanctionResult,
 } from "./reports";
+
+// User-ops cores: role assignment (superAdmin) + account-status change
+// (suspend/reinstate/ban) with token revocation (Admin SDK + audit wiring
+// deferred, O-001).
+export {
+  evaluateRoleAssignment,
+  evaluateStatusChange,
+  type RoleAssignmentActor,
+  type RoleAssignmentResult,
+  type StatusChangeResult,
+} from "./users";

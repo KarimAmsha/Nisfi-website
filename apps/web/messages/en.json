@@ -491,8 +491,41 @@
     },
     "users": {
       "title": "Members",
-      "emptyTitle": "Member management tools",
-      "emptyDesc": "Search and filter members and review cases. Built in its approved unit."
+      "heading": "Members",
+      "previewNote": "Preview data",
+      "searchPlaceholder": "Search by uid, email, or name",
+      "filterRole": "Role",
+      "filterStatus": "Status",
+      "filterAll": "All",
+      "noName": "No name",
+      "email": "Email",
+      "role": "Role",
+      "joined": "Joined",
+      "roleAssign": "Assign role",
+      "roleAssignLocked": "Only a super admin can change roles.",
+      "statusActions": "Account actions",
+      "statusAction": {
+        "active": "Reinstate",
+        "suspended": "Suspend",
+        "banned": "Ban"
+      },
+      "auditNote": "Every role or status change is written to an immutable audit log.",
+      "selectHint": "Select a member to see details and actions.",
+      "status": {
+        "active": "Active",
+        "suspended": "Suspended",
+        "banned": "Banned"
+      },
+      "roles": {
+        "user": "Member",
+        "moderator": "Moderator",
+        "admin": "Admin",
+        "superAdmin": "Super admin"
+      },
+      "emptyTitle": "No matching members",
+      "emptyDesc": "Nothing matches your current search or filters.",
+      "errorTitle": "Couldn’t load members",
+      "errorBody": "Something went wrong fetching the member list. Try again."
     },
     "reports": {
       "title": "Reports",

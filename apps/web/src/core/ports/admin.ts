@@ -1,9 +1,13 @@
 import type {
+  AccountStatus,
+  AdminUser,
   Photo,
   PhotoDecision,
   Report,
   ReportStatus,
+  Role,
   Sanction,
+  UserFilter,
   VerificationDecision,
   VerificationRequest,
 } from "@nisfi/shared";
@@ -44,4 +48,10 @@ export interface AdminRepository {
   transitionReport(id: string, next: ReportStatus): Promise<void>;
   /** Apply a sanction to a member (server transaction + audit, CF). */
   applySanction(targetUid: string, sanction: Sanction, note?: string): Promise<void>;
+  /** Members for the user console, newest first (staff read; filtered client-side). */
+  listUsers(filter?: UserFilter): Promise<AdminUser[]>;
+  /** Assign a role (superAdmin-only; sets the custom claim + mirror, CF). */
+  assignRole(uid: string, role: Role): Promise<void>;
+  /** Change account status (suspend/reinstate/ban + token revocation, CF). */
+  setAccountStatus(uid: string, status: AccountStatus, note?: string): Promise<void>;
 }

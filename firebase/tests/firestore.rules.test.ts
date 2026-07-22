@@ -66,6 +66,22 @@ describe("firestore rules — Unit 0.5 baseline", () => {
     await assertFails(setDoc(doc(db, "users/alice"), { role: "admin" }, { merge: true }));
   });
 
+  it("denies an owner writing their own account status (no self-reinstate, Unit 5.5)", async () => {
+    // Seed suspended so writing `active` is a real change, not a no-op diff.
+    await testEnv.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), "users/alice"), { status: "suspended" });
+    });
+    const db = testEnv.authenticatedContext("alice").firestore();
+    await assertFails(setDoc(doc(db, "users/alice"), { status: "active" }, { merge: true }));
+  });
+
+  it("denies a staff client writing another member's role or status (server-only, Unit 5.5)", async () => {
+    await seedActiveUser("alice");
+    const admin = testEnv.authenticatedContext("boss", { role: "admin" }).firestore();
+    await assertFails(setDoc(doc(admin, "users/alice"), { role: "moderator" }, { merge: true }));
+    await assertFails(setDoc(doc(admin, "users/alice"), { status: "banned" }, { merge: true }));
+  });
+
   it("denies client writes to an undesigned collection (default deny)", async () => {
     const db = testEnv.authenticatedContext("alice").firestore();
     await assertFails(setDoc(doc(db, "matches/xyz"), { foo: 1 }));

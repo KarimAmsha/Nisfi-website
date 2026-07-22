@@ -491,8 +491,41 @@
     },
     "users": {
       "title": "Üyeler",
-      "emptyTitle": "Üye yönetim araçları",
-      "emptyDesc": "Üyeleri arayın, filtreleyin ve vakaları inceleyin. Onaylı biriminde geliştirilir."
+      "heading": "Üyeler",
+      "previewNote": "Önizleme verisi",
+      "searchPlaceholder": "Kimlik, e-posta veya ada göre ara",
+      "filterRole": "Rol",
+      "filterStatus": "Durum",
+      "filterAll": "Tümü",
+      "noName": "İsimsiz",
+      "email": "E-posta",
+      "role": "Rol",
+      "joined": "Katılım",
+      "roleAssign": "Rol ata",
+      "roleAssignLocked": "Rolleri yalnızca süper yönetici değiştirebilir.",
+      "statusActions": "Hesap işlemleri",
+      "statusAction": {
+        "active": "Yeniden etkinleştir",
+        "suspended": "Askıya al",
+        "banned": "Yasakla"
+      },
+      "auditNote": "Her rol veya durum değişikliği değiştirilemez bir denetim günlüğüne yazılır.",
+      "selectHint": "Ayrıntıları ve işlemleri görmek için bir üye seçin.",
+      "status": {
+        "active": "Etkin",
+        "suspended": "Askıda",
+        "banned": "Yasaklı"
+      },
+      "roles": {
+        "user": "Üye",
+        "moderator": "Moderatör",
+        "admin": "Yönetici",
+        "superAdmin": "Süper yönetici"
+      },
+      "emptyTitle": "Eşleşen üye yok",
+      "emptyDesc": "Mevcut arama veya filtrelerinizle eşleşen bir şey yok.",
+      "errorTitle": "Üyeler yüklenemedi",
+      "errorBody": "Üye listesi alınırken bir sorun oluştu. Tekrar deneyin."
     },
     "reports": {
       "title": "Raporlar",

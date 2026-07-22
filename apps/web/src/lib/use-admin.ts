@@ -24,8 +24,9 @@ export interface UseAdminResult {
  * it shows a demo admin with seeded counts so the console is navigable. */
 export function useAdmin(): UseAdminResult {
   const { configured, user } = useAuth();
-  // In preview there is no signed-in staff; assume `admin` so the console renders.
-  const role: Role = configured ? (user?.role ?? "user") : "admin";
+  // In preview there is no signed-in staff; assume `superAdmin` so the whole
+  // console — including role assignment and bans — is walkable (owner review).
+  const role: Role = configured ? (user?.role ?? "user") : "superAdmin";
   const [counts, setCounts] = useState<AdminQueueCounts>(PREVIEW_COUNTS);
   const [loading, setLoading] = useState(configured);
   const [error, setError] = useState(false);

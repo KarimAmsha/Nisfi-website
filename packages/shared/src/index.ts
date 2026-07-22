@@ -181,3 +181,17 @@ export {
   type ReportTransitionCheck,
   type Sanction,
 } from "./report";
+
+export {
+  ACCOUNT_STATUSES,
+  isLockedOut,
+  canAssignRole,
+  canSetAccountStatus,
+  matchesUserQuery,
+  matchesUserFilter,
+  type AccountStatus,
+  type AdminUser,
+  type RoleAssignmentCheck,
+  type StatusChangeCheck,
+  type UserFilter,
+} from "./user-admin";

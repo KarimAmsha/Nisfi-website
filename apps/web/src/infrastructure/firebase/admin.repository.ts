@@ -11,18 +11,23 @@ import {
 } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import type {
+  AccountStatus,
+  AdminUser,
   PhotoDecision,
   PhotoModeration,
   Report,
   ReportReason,
   ReportStatus,
   ReportTargetType,
+  Role,
   Sanction,
+  UserFilter,
   VerificationDecision,
   VerificationRequest,
   VerificationRequestStatus,
   VerificationType,
 } from "@nisfi/shared";
+import { matchesUserFilter } from "@nisfi/shared";
 import type { AdminQueueCounts, AdminRepository, PhotoQueueItem } from "@/core/ports/admin";
 import { firebaseFirestore, firebaseFunctions } from "./client";
 
@@ -173,6 +178,47 @@ class FirestoreAdminRepository implements AdminRepository {
       "applySanction",
     );
     await callable(note !== undefined ? { targetUid, sanction, note } : { targetUid, sanction });
+  }
+
+  async listUsers(filter: UserFilter = {}): Promise<AdminUser[]> {
+    // Staff read of `users`, newest first; role/status/text filters are applied
+    // in-memory so the console stays responsive without a per-combination index.
+    const snap = await getDocs(
+      query(collection(firebaseFirestore(), "users"), orderBy("createdAt", "desc")),
+    );
+    return snap.docs
+      .map((d) => {
+        const data = d.data();
+        return {
+          uid: d.id,
+          email: (data.email as string | null | undefined) ?? null,
+          displayName: (data.displayName as string | null | undefined) ?? null,
+          role: (data.role as Role | undefined) ?? "user",
+          status: (data.status as AccountStatus | undefined) ?? "active",
+          createdAt: tsToIso(data.createdAt),
+          lastActiveAt:
+            data.lastActiveAt instanceof Timestamp
+              ? data.lastActiveAt.toDate().toISOString()
+              : null,
+        } satisfies AdminUser;
+      })
+      .filter((u) => matchesUserFilter(u, filter));
+  }
+
+  async assignRole(uid: string, role: Role): Promise<void> {
+    const callable = httpsCallable<{ uid: string; role: Role }, void>(
+      firebaseFunctions(),
+      "assignRole",
+    );
+    await callable({ uid, role });
+  }
+
+  async setAccountStatus(uid: string, status: AccountStatus, note?: string): Promise<void> {
+    const callable = httpsCallable<{ uid: string; status: AccountStatus; note?: string }, void>(
+      firebaseFunctions(),
+      "setAccountStatus",
+    );
+    await callable(note !== undefined ? { uid, status, note } : { uid, status });
   }
 }
 

@@ -9,12 +9,24 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 5 — Operations & moderation console |
-| Current unit | Unit 5.4 — reports queue and sanctions (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 5 on emulators/mocks; next is Unit 5.5 (questions/content/config). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 5.5 — user operations and role assignment (delivered to `main`) |
+| Implementation state | Delivered to `main`. Phase 5 moderation console complete; next is Phase 6 (Unit 6.1 — compatibility question management). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 5.5 — completed (delivered to `main`)
+
+The user operations console: member search/filter, role assignment, and account-status changes (delivers master-spec unit 5.6; closes Phase 5's role-matrix + lockout, Gate G5).
+
+- **Shared:** `user-admin.ts` — `ACCOUNT_STATUSES` (active/suspended/banned), `AdminUser`, `isLockedOut`, `canAssignRole` (superAdmin-only, never self; reasons notSuperAdmin/self/invalidRole), `canSetAccountStatus` (admin+ suspend/reinstate, ban and lifting a ban superAdmin-only, self and equal/greater-rank peers protected), `matchesUserQuery` / `matchesUserFilter`. New `user-admin.test.ts` (shared suite now **95**).
+- **Server core:** `functions/src/users.ts` — `evaluateRoleAssignment` (CF `assignRole`; the claim is authoritative, the Firestore field a mirror) and `evaluateStatusChange` (CF `setAccountStatus`; emits the status + `revokeTokens` so a lockout kills open sessions, no revoke on reinstate). Functions suite now **34**.
+- **Rules:** unchanged model, now explicitly tested — an owner cannot write their own `status` (no self-reinstate) and even a staff client cannot write another member's `role`/`status` (server-only). Suspended/banned lockout was already enforced via `isActive()` across profiles/verification/reports. Rules suite now **64**.
+- **Port + adapter:** `AdminRepository.listUsers(filter)` (staff read of `users`, newest-first, filtered in-memory), `assignRole`, `setAccountStatus` via callables.
+- **UI:** `/admin/users` — a search + role/status filter toolbar, a members list (role + status badges), and a detail drawer with the role selector (superAdmin-only, otherwise a locked note) and status actions gated by `canSetAccountStatus`, plus the audit note. The preview console now assumes **superAdmin** so the whole owner walkthrough (role assignment, bans) is reviewable; preview seed of four members across roles/statuses.
+- **Deferred (O-001):** the `assignRole` / `setAccountStatus` callables (custom-claim writes, token revocation, audit) are wired at the final production step; the console reads empty when configured until members accrue, with the seed keeping it reviewable.
+- **Verified:** `pnpm check` (shared 95, functions 34) + `next build` (77 routes) + `pnpm test:rules` (64) green; RTL users-console screenshot with role selector and gated status actions.
 
 ## Unit 5.4 — completed (delivered to `main`)
 
@@ -372,7 +384,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 5 / Unit 5.5: content, questions & config** — the admin-managed content the app reads (profile questions/prompts, reasons/enums, static content blocks) plus platform config/feature flags, on staff-writable / member-readable collections with rules + tests. (Per F10 / master spec Sections 10–11; exact scope confirmed at unit start.)
+**Phase 6 / Unit 6.1: compatibility question management** — the admin-managed compatibility questions the profile/onboarding reads (localized prompts + options, ordering/reorder, active/archived), on a staff-writable / member-readable collection with rules + tests, plus the localized preview and an "affects existing answers" warning on edits (master spec F10 / Section 6.1). Phase 5's moderation console is complete; Phase 6 builds out the rest of the control panel.
 
 ### Deferred to the final "production wiring" step (O-001)
 
