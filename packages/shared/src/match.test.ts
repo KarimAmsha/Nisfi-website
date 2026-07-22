@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildAcceptedMatch, isParticipant, otherUid } from "./match";
+import { buildAcceptedMatch, canCloseMatch, isParticipant, otherUid } from "./match";
 
 const request = { id: "req1", fromUid: "omar", toUid: "aisha" };
 const participants = {
@@ -37,5 +37,20 @@ describe("otherUid / isParticipant", () => {
   it("checks membership", () => {
     expect(isParticipant(match, "omar")).toBe(true);
     expect(isParticipant(match, "zaid")).toBe(false);
+  });
+});
+
+describe("canCloseMatch", () => {
+  const active = { uids: ["aisha", "omar"] as [string, string], status: "active" as const };
+  it("lets a participant close an active match", () => {
+    expect(canCloseMatch(active, "omar")).toEqual({ ok: true });
+  });
+  it("denies a non-participant", () => {
+    expect(canCloseMatch(active, "zaid")).toMatchObject({ reason: "notParticipant" });
+  });
+  it("denies closing an already-closed match", () => {
+    expect(canCloseMatch({ ...active, status: "closed" }, "omar")).toMatchObject({
+      reason: "alreadyClosed",
+    });
   });
 });

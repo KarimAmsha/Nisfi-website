@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { evaluateAccept } from "./matches";
+import { evaluateAccept, evaluateCloseMatch } from "./matches";
 import type { TransitionReadState } from "./connection-requests";
 
 const participants = {
@@ -36,5 +36,24 @@ describe("evaluateAccept (CF7 accept → match)", () => {
     const result = evaluateAccept({ ...acceptState, status: "accepted" }, participants);
     expect(result.ok).toBe(false);
     expect(result.reason).toBe("notPending");
+  });
+});
+
+describe("evaluateCloseMatch (CF closeMatch core)", () => {
+  const active = { uids: ["aisha", "omar"], status: "active" as const };
+
+  it("produces the closed state for a participant", () => {
+    const result = evaluateCloseMatch(active, "omar");
+    expect(result).toEqual({
+      ok: true,
+      update: { status: "closed", closedBy: "omar", closedReason: "user_closed" },
+    });
+  });
+
+  it("refuses a non-participant and an already-closed match", () => {
+    expect(evaluateCloseMatch(active, "zaid")).toMatchObject({ reason: "notParticipant" });
+    expect(evaluateCloseMatch({ ...active, status: "closed" }, "omar")).toMatchObject({
+      reason: "alreadyClosed",
+    });
   });
 });

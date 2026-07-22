@@ -114,12 +114,14 @@ export {
   MATCH_STATUSES,
   otherUid,
   isParticipant,
+  canCloseMatch,
   buildAcceptedMatch,
   type MatchStatus,
   type MatchCloseReason,
   type MatchParticipant,
   type Match,
   type NewMatch,
+  type CloseMatchDecision,
 } from "./match";
 
 export {

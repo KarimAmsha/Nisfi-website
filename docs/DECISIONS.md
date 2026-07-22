@@ -176,3 +176,10 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U42-001 | Messages are created directly by active participants under `matches/{pairKey}/messages` (gated by rules that verify membership via a `get()` on the parent match, the exact schema, and `match.status == active`); the sender may soft-delete only their own within 15 min. Moderation flags, preview, and unread are server-managed. | Implemented (Function triggers deferred, O-001) | Master spec F6/11.4: real-time chat needs client writes, but the shape, membership, and window are unforgeable. |
 | U42-002 | The banned-word check is a shared `containsBannedWord` used as a client pre-check (with a small demo list in preview; the real list is `appConfig.bannedWords`), while the server re-checks and sets `moderation.flagged` authoritatively; flagged messages still deliver in V1. | Implemented (appConfig wiring deferred, O-001) | Matches the spec's two-layer moderation; keeps the client honest without trusting it. |
 | U42-003 | Typing indicators and read receipts are intentionally omitted (out of V1); unread counts only. | Implemented (by omission) | Explicit master spec F6 scope boundary. |
+
+### Unit 4.3 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U43-001 | Close-match is a server transition (`closeMatch` callable via `evaluateCloseMatch`); the client optimistically reflects the closed state but the match doc write is server-only. A closed match keeps message history read-only and blocks new sends (the message-create rule already requires `match.status == active`). | Implemented (SDK wiring deferred, O-001) | Master spec F6: closing must be atomic and unforgeable, and history must remain. |
+| U43-002 | The soft-delete affordance (own message, 15-min window) shipped in 4.2 is retained; 4.3 adds the close flow and the closed/empty/loading conversation states. | Implemented under owner-authorized scope | Keeps the conversation states robust without re-litigating soft-delete. |

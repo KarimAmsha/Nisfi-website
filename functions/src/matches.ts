@@ -1,4 +1,11 @@
-import { buildAcceptedMatch, type MatchParticipant, type NewMatch } from "@nisfi/shared";
+import {
+  buildAcceptedMatch,
+  canCloseMatch,
+  type CloseMatchDecision,
+  type MatchParticipant,
+  type MatchStatus,
+  type NewMatch,
+} from "@nisfi/shared";
 import { evaluateTransition, type TransitionReadState } from "./connection-requests";
 
 /**
@@ -27,4 +34,28 @@ export function evaluateAccept(
     participants,
   );
   return { ok: true, matchId: match.pairKey, match };
+}
+
+/**
+ * CF `closeMatch` core (master spec F6). The deployed callable re-reads the
+ * match in a transaction, calls this, and on `ok` writes the closed state,
+ * keeping message history read-only. A user-initiated close records the actor.
+ */
+export type CloseResult =
+  | { ok: true; update: { status: MatchStatus; closedBy: string; closedReason: "user_closed" } }
+  | (CloseMatchDecision & { ok: false });
+
+export function evaluateCloseMatch(
+  match: { uids: readonly string[]; status: MatchStatus },
+  actorUid: string,
+): CloseResult {
+  const decision = canCloseMatch(
+    { uids: [...match.uids] as [string, string], status: match.status },
+    actorUid,
+  );
+  if (!decision.ok) return decision;
+  return {
+    ok: true,
+    update: { status: "closed", closedBy: actorUid, closedReason: "user_closed" },
+  };
 }

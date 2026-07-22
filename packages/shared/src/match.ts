@@ -43,6 +43,20 @@ export function isParticipant(match: Pick<Match, "uids">, uid: string): boolean 
   return match.uids.includes(uid);
 }
 
+export type CloseMatchDecision =
+  { ok: true } | { ok: false; reason: "notParticipant" | "alreadyClosed" };
+
+/** Either participant may close an active match (master spec F6). Closing keeps
+ * history read-only; a closed match cannot be closed again. */
+export function canCloseMatch(
+  match: Pick<Match, "uids" | "status">,
+  actorUid: string,
+): CloseMatchDecision {
+  if (!match.uids.includes(actorUid)) return { ok: false, reason: "notParticipant" };
+  if (match.status !== "active") return { ok: false, reason: "alreadyClosed" };
+  return { ok: true };
+}
+
 /** The match document the CF7 accept transaction writes for a request. `uids`
  * are sorted and the id is the `pairKey`, so replays are idempotent. Server sets
  * `createdAt`; counters and reveal flags start clean. */

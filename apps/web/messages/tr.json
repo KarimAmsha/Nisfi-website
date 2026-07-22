@@ -545,6 +545,11 @@
     "bannedWarning": "Telefon veya hesap paylaşma — iletişimi platformda tut.",
     "placeholder": "Bir mesaj yaz…",
     "send": "Gönder",
-    "privacyNote": "Saygılı ol; mesajlar güvenlik için incelenebilir."
+    "privacyNote": "Saygılı ol; mesajlar güvenlik için incelenebilir.",
+    "closeMatch": "Eşleşmeyi kapat",
+    "confirmClose": "Kapatmayı onayla",
+    "cancel": "İptal",
+    "closedBadge": "Kapalı",
+    "closedNote": "Bu eşleşme kapatıldı. Geçmiş yalnızca okunabilir."
   }
 }

@@ -29,3 +29,8 @@ export const PREVIEW_MATCHES: Match[] = [
   match("p1", "سُمَيّة", "وعليكم السلام، تشرّفت بمعرفتك.", 2, "2026-03-19T18:30:00.000Z"),
   match("p6", "فاطمة", null, 0, "2026-03-18T09:15:00.000Z"),
 ];
+
+/** The preview match for a pairKey, or null. */
+export function getPreviewMatch(pairKey: string): Match | null {
+  return PREVIEW_MATCHES.find((m) => m.pairKey === pairKey) ?? null;
+}

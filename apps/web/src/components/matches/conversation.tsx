@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import {
   containsBannedWord,
   isValidMessageText,
+  otherUid,
   MESSAGE_TEXT_MAX,
   type ChatMessage,
 } from "@nisfi/shared";
@@ -61,14 +62,21 @@ function Bubble({
 
 export function Conversation({ matchId }: { matchId: string }) {
   const t = useTranslations("Chat");
-  const { messages, viewerUid, loading, preview, send, remove } = useConversation(matchId);
+  const { messages, match, viewerUid, loading, preview, closed, send, remove, close } =
+    useConversation(matchId);
   const [text, setText] = useState("");
+  const [confirmClose, setConfirmClose] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   const otherName = useMemo(() => {
-    const other = matchId.split("_").find((u) => u !== (viewerUid ?? ""));
+    const other =
+      (match && viewerUid && otherUid(match, viewerUid)) ??
+      matchId.split("_").find((u) => u !== (viewerUid ?? ""));
+    if (match && other && match.participants[other]?.displayName) {
+      return match.participants[other].displayName;
+    }
     return (other && getPreviewProfile(other)?.profile.displayName) || t("aMember");
-  }, [matchId, viewerUid, t]);
+  }, [match, matchId, viewerUid, t]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ block: "end" });
@@ -94,11 +102,37 @@ export function Conversation({ matchId }: { matchId: string }) {
           {t("back")}
         </Link>
         <span className="font-bold text-ink">{otherName}</span>
-        {preview ? (
-          <Badge tone="info" className="ms-auto">
-            {t("previewNote")}
-          </Badge>
-        ) : null}
+        {preview ? <Badge tone="info">{t("previewNote")}</Badge> : null}
+        <div className="ms-auto">
+          {closed ? (
+            <Badge tone="neutral">{t("closedBadge")}</Badge>
+          ) : confirmClose ? (
+            <span className="flex items-center gap-2 text-sm">
+              <button
+                type="button"
+                onClick={() => void close()}
+                className="font-semibold text-danger hover:underline"
+              >
+                {t("confirmClose")}
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmClose(false)}
+                className="text-ink-600 hover:underline"
+              >
+                {t("cancel")}
+              </button>
+            </span>
+          ) : match ? (
+            <button
+              type="button"
+              onClick={() => setConfirmClose(true)}
+              className="text-sm text-ink-600 hover:text-danger hover:underline"
+            >
+              {t("closeMatch")}
+            </button>
+          ) : null}
+        </div>
       </header>
 
       <div className="flex flex-1 flex-col gap-3 overflow-y-auto py-4">
@@ -123,35 +157,43 @@ export function Conversation({ matchId }: { matchId: string }) {
       </div>
 
       <div className="border-t border-border pt-3">
-        {banned ? (
-          <p className="mb-2 rounded-md border border-warning/30 bg-warning/10 p-2 text-xs text-warning">
-            {t("bannedWarning")}
+        {closed ? (
+          <p className="rounded-md border border-border bg-canvas p-3 text-center text-sm text-ink-600">
+            {t("closedNote")}
           </p>
-        ) : null}
-        <div className="flex items-end gap-2">
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                submit();
-              }
-            }}
-            rows={1}
-            maxLength={MESSAGE_TEXT_MAX}
-            placeholder={t("placeholder")}
-            aria-label={t("placeholder")}
-            className={cn(
-              "max-h-32 min-h-11 flex-1 resize-none rounded-md border border-border bg-surface px-3.5 py-2.5 text-sm text-ink",
-              "focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
-            )}
-          />
-          <Button onClick={submit} disabled={!canSend}>
-            {t("send")}
-          </Button>
-        </div>
-        <p className="mt-1.5 text-center text-xs text-ink-600">{t("privacyNote")}</p>
+        ) : (
+          <>
+            {banned ? (
+              <p className="mb-2 rounded-md border border-warning/30 bg-warning/10 p-2 text-xs text-warning">
+                {t("bannedWarning")}
+              </p>
+            ) : null}
+            <div className="flex items-end gap-2">
+              <textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    submit();
+                  }
+                }}
+                rows={1}
+                maxLength={MESSAGE_TEXT_MAX}
+                placeholder={t("placeholder")}
+                aria-label={t("placeholder")}
+                className={cn(
+                  "max-h-32 min-h-11 flex-1 resize-none rounded-md border border-border bg-surface px-3.5 py-2.5 text-sm text-ink",
+                  "focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+                )}
+              />
+              <Button onClick={submit} disabled={!canSend}>
+                {t("send")}
+              </Button>
+            </div>
+            <p className="mt-1.5 text-center text-xs text-ink-600">{t("privacyNote")}</p>
+          </>
+        )}
       </div>
     </div>
   );

@@ -9,9 +9,10 @@ import {
   where,
   type DocumentData,
 } from "firebase/firestore";
+import { httpsCallable } from "firebase/functions";
 import type { Match, MatchCloseReason, MatchParticipant, MatchStatus } from "@nisfi/shared";
 import type { MatchRepository } from "@/core/ports/match";
-import { firebaseFirestore } from "./client";
+import { firebaseFirestore, firebaseFunctions } from "./client";
 
 function tsToIso(value: unknown): string | null {
   return value instanceof Timestamp ? value.toDate().toISOString() : null;
@@ -54,6 +55,11 @@ class FirestoreMatchRepository implements MatchRepository {
   async getMatch(pairKey: string): Promise<Match | null> {
     const snap = await getDoc(doc(firebaseFirestore(), "matches", pairKey));
     return snap.exists() ? toMatch(snap.id, snap.data()) : null;
+  }
+
+  async close(pairKey: string): Promise<void> {
+    const callable = httpsCallable<{ pairKey: string }, void>(firebaseFunctions(), "closeMatch");
+    await callable({ pairKey });
   }
 }
 

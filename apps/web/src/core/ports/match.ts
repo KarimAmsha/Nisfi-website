@@ -8,4 +8,6 @@ import type { Match } from "@nisfi/shared";
 export interface MatchRepository {
   listMatches(uid: string): Promise<Match[]>;
   getMatch(pairKey: string): Promise<Match | null>;
+  /** Close an active match (server transaction, CF `closeMatch`). */
+  close(pairKey: string): Promise<void>;
 }

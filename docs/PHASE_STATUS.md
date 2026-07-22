@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 4 — Matches, chat, photo reveal, and push |
-| Current unit | Unit 4.2 — real-time text chat, unread behavior, message moderation metadata (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 4 on emulators/mocks; next is Unit 4.3 (soft-delete window, close-match flow, conversation states). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 4.3 — soft-delete window, close-match flow, robust conversation states (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 4 on emulators/mocks; next is Unit 4.4 (photo reveal controls + short-lived original access). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 4.3 — completed (delivered to `main`)
+
+The close-match flow and robust conversation states, on top of the 4.2 soft-delete window.
+
+- **Shared:** `canCloseMatch` (either participant may close an active match; reasons notParticipant / alreadyClosed). **3 unit tests** (shared suite now **67**).
+- **Server core:** `functions/src/matches.ts` `evaluateCloseMatch` — the CF `closeMatch` core producing `{ status:"closed", closedBy, closedReason:"user_closed" }` for a participant, refusing non-participants and already-closed matches. Functions suite now **14**.
+- **Port + adapter:** `MatchRepository.close` via the `closeMatch` callable.
+- **UI:** the conversation header gains a confirm-guarded **Close match** action; a closed match shows a "Closed" badge, keeps the message history **read-only**, and replaces the composer with a read-only notice. Sending is blocked client-side when closed (and server-side: the message-create rule already requires `match.status == active`).
+- **States covered:** loading skeletons, empty thread, closed (read-only), and preview.
+- **Verified:** `pnpm check` + `next build` (74 routes) + `pnpm test:rules` (54) green; RTL closed-conversation screenshot.
 
 ## Unit 4.2 — completed (delivered to `main`)
 
@@ -295,7 +306,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 4 / Unit 4.3: soft-delete window, close-match flow, robust conversation states** — surface the sender's 15-minute soft-delete affordance fully, add the "Close match" flow (closes chat for both, keeps history read-only) via a server transition, and cover conversation states (closed, empty, error, membership loss). Timing and ownership checks enforced server-side.
+**Phase 4 / Unit 4.4: independent photo reveal controls and short-lived original access** — per-side `matches.photoReveal[uid]` toggle (revocable) in the conversation header, and the `getRevealedPhotoUrls(matchId)` callable that validates membership + reveal flag and returns short-lived signed URLs. Originals never public, never cached in Firestore; revocation + unauthorized URL requests fail. (Cloudinary signed delivery per O-002; real wiring deferred O-001.)
 
 ### Deferred to the final "production wiring" step (O-001)
 

@@ -545,6 +545,11 @@
     "bannedWarning": "Don't share phone numbers or handles — keep contact on the platform.",
     "placeholder": "Write a message…",
     "send": "Send",
-    "privacyNote": "Keep it respectful; messages may be reviewed for safety."
+    "privacyNote": "Keep it respectful; messages may be reviewed for safety.",
+    "closeMatch": "Close match",
+    "confirmClose": "Confirm close",
+    "cancel": "Cancel",
+    "closedBadge": "Closed",
+    "closedNote": "This match is closed. History is read-only."
   }
 }
