@@ -9,12 +9,25 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 7 — Settings, privacy rights, hardening & launch |
-| Current unit | Unit 7.4 — security hardening (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 7 on emulators/mocks; next is Unit 7.5 (launch readiness — SEO/metadata/sitemap/robots, error & not-found pages, final QA). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 7.5 — launch readiness (delivered to `main`) — closes Phase 7 feature work |
+| Implementation state | Delivered to `main`. Phase 7 feature units complete; remaining before launch is the single final production-wiring step (O-001/O-002: real Firebase/Cloudinary keys, App Check enforcement, deploy Cloud Functions, rotate the leaked key). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 7.5 — completed (delivered to `main`) — closes Phase 7 feature work
+
+Launch readiness: SEO/metadata sweep, sitemap + robots, and custom not-found / error pages (master spec Section 7 launch).
+
+- **Metadata:** `[locale]/layout` now sets `metadataBase` (from `NEXT_PUBLIC_SITE_URL`, placeholder until O-001), a title template (`%s · نِصفي`), default Open Graph, and default `robots: index/follow`. Per-page localized titles/descriptions + canonical/hreflang from earlier units stand.
+- **Sitemap:** `app/sitemap.ts` — the public marketing paths (`/`, `/about`, `/contact`, `/privacy`, `/terms`) with per-locale hreflang alternates; member/admin/auth areas excluded.
+- **Robots:** `app/robots.ts` — allow public, **disallow** the private segments (`app`/`admin`/`auth`/`onboarding`/`status`) for every locale, with the sitemap + host. Verified live via `curl`.
+- **Not-found:** a branded, localized RTL `[locale]/not-found.tsx` (fired by a `[locale]/[...rest]` catch-all so unmatched sub-paths get the localized page inside the locale layout), plus a minimal bilingual root `app/not-found.tsx` for paths outside any locale.
+- **Error boundaries:** a localized client `[locale]/error.tsx` (generic message — no stack leaks — with retry) and a dependency-free bilingual root `app/global-error.tsx`.
+- **i18n:** `NotFound` + `ErrorPage` namespaces across ar/en/tr.
+- **No** shared/functions/rules changes — suites unchanged (shared 137, functions 54, rules 84).
+- **Verified:** `pnpm check` + `next build` (103 routes incl. sitemap.xml/robots.txt) green; `curl` confirms robots + sitemap; RTL branded-404 screenshot; unknown paths return HTTP 404.
 
 ## Unit 7.4 — completed (delivered to `main`)
 
@@ -500,7 +513,15 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 7 / Unit 7.5: launch readiness** — final SEO/metadata sweep (per-locale titles/descriptions, canonical + hreflang, Open Graph, `sitemap.xml`, `robots.txt`), custom error / not-found pages, and a whole-app QA pass before the launch gate (master spec Phase 7 launch).
+**Final production-wiring step (O-001 / O-002)** — the single remaining step before launch. Provide real environment secrets (Firebase web config `NEXT_PUBLIC_FIREBASE_*`, VAPID, reCAPTCHA App Check site key, `NEXT_PUBLIC_SITE_URL`; rotated `FIREBASE_*` server credentials; Cloudinary keys), connect the real Firebase project + Cloudinary, deploy the Cloud Functions (wrapping the SDK-free cores built across Phases 2–7), enable App Check enforcement, rotate the previously-leaked service-account key, and set budgets/region per `docs/SECURITY.md` + `docs/DECISIONS.md`. This closes gate G0 and enables production. See the checklist below.
+
+### Final production-wiring checklist (deferred throughout per O-001/O-002)
+
+- **Secrets:** `NEXT_PUBLIC_FIREBASE_*`, `NEXT_PUBLIC_FIREBASE_VAPID_KEY`, `NEXT_PUBLIC_APPCHECK_SITE_KEY`, `NEXT_PUBLIC_SITE_URL`; server `FIREBASE_*` (rotated); Cloudinary `CLOUDINARY_*`.
+- **Deploy Cloud Functions** consuming the cores in `functions/src/*` (CF5/CF6/CF7/CF10, decidePhoto, transitionReport/applySanction, assignRole/setAccountStatus, saveQuestion/reorderQuestion/setQuestionActive, updateConfig, sendBroadcast/estimateBroadcastAudience, grantEntitlement, exportAdminTable/refreshSystemHealth, exportMyData/deleteMyAccount) + Firestore composite indexes.
+- **App Check:** provide the reCAPTCHA site key and enable enforcement (Firestore/Functions).
+- **Rotate the leaked service-account key**; wire Cloudinary private/authenticated delivery + signed reveal URLs.
+- **Ops:** Firebase/Vercel budget alerts, Function concurrency/max-instance caps, region/data-residency (D-004), CSP nonce tightening.
 
 ### Deferred to the final "production wiring" step (O-001)
 

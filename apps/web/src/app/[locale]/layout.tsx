@@ -7,6 +7,7 @@ import { IBM_Plex_Sans_Arabic, Inter } from "next/font/google";
 import { directionForLocale } from "@nisfi/shared";
 import { routing } from "@/i18n/routing";
 import { AuthProvider } from "@/lib/auth-context";
+import { siteUrl } from "@/lib/seo";
 import "../globals.css";
 
 const arabicFont = IBM_Plex_Sans_Arabic({
@@ -23,8 +24,18 @@ const latinFont = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Nisfi — نِصفي",
+  metadataBase: new URL(siteUrl()),
+  title: {
+    default: "Nisfi — نِصفي",
+    template: "%s · نِصفي",
+  },
   description: "Privacy-first, verification-first marriage-intent matchmaking.",
+  applicationName: "Nisfi",
+  openGraph: {
+    siteName: "Nisfi — نِصفي",
+    type: "website",
+  },
+  robots: { index: true, follow: true },
 };
 
 export function generateStaticParams() {

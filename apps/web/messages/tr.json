@@ -936,5 +936,15 @@
       "title": "Hesabınız silindi",
       "body": "Hesabınız silindi ve verileriniz talebiniz üzerine anonimleştirildi. Bu işlem geri alınamaz."
     }
+  },
+  "NotFound": {
+    "title": "Sayfa bulunamadı",
+    "body": "İstediğiniz sayfa mevcut değil veya taşındı.",
+    "home": "Ana sayfaya dön"
+  },
+  "ErrorPage": {
+    "title": "Bir şeyler ters gitti",
+    "body": "Beklenmeyen bir sorun oluştu. Tekrar deneyebilirsiniz.",
+    "retry": "Tekrar dene"
   }
 }

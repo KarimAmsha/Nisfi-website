@@ -936,5 +936,15 @@
       "title": "Your account was deleted",
       "body": "Your account was deleted and your data anonymized at your request. This action cannot be undone."
     }
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "body": "The page you requested doesn’t exist or was moved.",
+    "home": "Go home"
+  },
+  "ErrorPage": {
+    "title": "Something went wrong",
+    "body": "We hit an unexpected problem. You can try again.",
+    "retry": "Try again"
   }
 }
