@@ -377,7 +377,12 @@
   },
   "Notifications": {
     "emptyTitle": "No notifications",
-    "emptyDesc": "We'll let you know here about new requests, matches, and verification updates — without noise."
+    "emptyDesc": "We'll let you know here about new requests, matches, and verification updates — without noise.",
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "previewNote": "Preview with sample data",
+    "errorTitle": "Couldn't load notifications",
+    "errorBody": "Something went wrong. Please try again."
   },
   "Verification": {
     "title": "Identity verification",
@@ -403,7 +408,9 @@
   },
   "Settings": {
     "title": "Settings",
-    "note": "Manage account, privacy, language, and blocking. Options are built in their approved unit."
+    "note": "Manage account, privacy, language, and blocking. Options are built in their approved unit.",
+    "blockedLink": "Blocked list",
+    "blockedHint": "Manage the members you've blocked."
   },
   "Admin": {
     "nav": {
@@ -469,5 +476,51 @@
     "compatibilityTitle": "Compatibility answers",
     "requestComingSoon": "Sending requests begins in the next unit",
     "requestNote": "Contact starts with a written request — no direct messages before acceptance."
+  },
+  "NotificationCatalog": {
+    "requestReceived": {
+      "title": "New connection request",
+      "body": "{name} sent you a connection request."
+    },
+    "requestAccepted": {
+      "title": "Your request was accepted",
+      "body": "{name} accepted your request — you can connect now."
+    },
+    "requestDeclined": {
+      "title": "Request not accepted",
+      "body": "Your request wasn't accepted this time."
+    },
+    "requestWithdrawn": {
+      "title": "A request was withdrawn",
+      "body": "{name} withdrew the connection request."
+    },
+    "verificationApproved": {
+      "title": "Your account is verified",
+      "body": "Your identity check is complete — you can connect now."
+    },
+    "verificationRejected": {
+      "title": "Re-verification needed",
+      "body": "Your verification wasn't accepted. You can try again."
+    },
+    "matchClosed": {
+      "title": "A match was closed",
+      "body": "One of your matches was closed."
+    }
+  },
+  "Blocked": {
+    "back": "← Settings",
+    "title": "Blocked list",
+    "subtitle": "Blocked members can't see you or contact you, and you won't see them.",
+    "previewNote": "Preview with sample data",
+    "emptyTitle": "No one blocked",
+    "emptyBody": "You haven't blocked any member yet.",
+    "errorTitle": "Couldn't load",
+    "errorBody": "Something went wrong. Please try again.",
+    "aMember": "A member",
+    "unblock": "Unblock",
+    "blockCta": "Block this member",
+    "confirmBlock": "Confirm block",
+    "cancel": "Cancel",
+    "doneNote": "Member blocked."
   }
 }

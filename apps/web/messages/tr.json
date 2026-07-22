@@ -377,7 +377,12 @@
   },
   "Notifications": {
     "emptyTitle": "Bildirim yok",
-    "emptyDesc": "Yeni istekler, eşleşmeler ve doğrulama güncellemelerini burada bildiririz — gürültüsüz."
+    "emptyDesc": "Yeni istekler, eşleşmeler ve doğrulama güncellemelerini burada bildiririz — gürültüsüz.",
+    "title": "Bildirimler",
+    "markAllRead": "Tümünü okundu işaretle",
+    "previewNote": "Örnek verilerle önizleme",
+    "errorTitle": "Bildirimler yüklenemedi",
+    "errorBody": "Bir hata oluştu. Lütfen tekrar deneyin."
   },
   "Verification": {
     "title": "Kimlik doğrulama",
@@ -403,7 +408,9 @@
   },
   "Settings": {
     "title": "Ayarlar",
-    "note": "Hesap, gizlilik, dil ve engelleme yönetimi. Seçenekler kendi onaylı biriminde geliştirilir."
+    "note": "Hesap, gizlilik, dil ve engelleme yönetimi. Seçenekler kendi onaylı biriminde geliştirilir.",
+    "blockedLink": "Engellenenler",
+    "blockedHint": "Engellediğin üyeleri yönet."
   },
   "Admin": {
     "nav": {
@@ -469,5 +476,51 @@
     "compatibilityTitle": "Uyum yanıtları",
     "requestComingSoon": "İstek gönderme bir sonraki birimde başlıyor",
     "requestNote": "İletişim yazılı bir istekle başlar — kabul öncesi doğrudan mesaj yok."
+  },
+  "NotificationCatalog": {
+    "requestReceived": {
+      "title": "Yeni bağlantı isteği",
+      "body": "{name} sana bir bağlantı isteği gönderdi."
+    },
+    "requestAccepted": {
+      "title": "İsteğin kabul edildi",
+      "body": "{name} isteğini kabul etti — artık bağlanabilirsiniz."
+    },
+    "requestDeclined": {
+      "title": "İstek kabul edilmedi",
+      "body": "İsteğin bu sefer kabul edilmedi."
+    },
+    "requestWithdrawn": {
+      "title": "Bir istek geri çekildi",
+      "body": "{name} bağlantı isteğini geri çekti."
+    },
+    "verificationApproved": {
+      "title": "Hesabın doğrulandı",
+      "body": "Kimlik kontrolün tamamlandı — artık bağlanabilirsin."
+    },
+    "verificationRejected": {
+      "title": "Yeniden doğrulama gerekli",
+      "body": "Doğrulaman kabul edilmedi. Tekrar deneyebilirsin."
+    },
+    "matchClosed": {
+      "title": "Bir eşleşme kapandı",
+      "body": "Eşleşmelerinden biri kapandı."
+    }
+  },
+  "Blocked": {
+    "back": "← Ayarlar",
+    "title": "Engellenenler",
+    "subtitle": "Engellenen üyeler seni göremez, sana ulaşamaz ve sen de onları görmezsin.",
+    "previewNote": "Örnek verilerle önizleme",
+    "emptyTitle": "Kimse engelli değil",
+    "emptyBody": "Henüz kimseyi engellemedin.",
+    "errorTitle": "Yüklenemedi",
+    "errorBody": "Bir hata oluştu. Lütfen tekrar deneyin.",
+    "aMember": "Bir üye",
+    "unblock": "Engeli kaldır",
+    "blockCta": "Bu üyeyi engelle",
+    "confirmBlock": "Engellemeyi onayla",
+    "cancel": "İptal",
+    "doneNote": "Üye engellendi."
   }
 }

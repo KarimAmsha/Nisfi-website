@@ -150,3 +150,11 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U35-002 | Transitions are executed only by CF7 callables (accept/decline/withdraw) via the Admin SDK; `matches/{pairKey}` creation on accept is atomic inside that transaction (Unit 4.1). Client `connectionRequests` writes remain denied by rules. | Implemented (SDK wiring deferred, O-001) | Master spec F5/12: state, counters, and match creation must be transactional and unforgeable. |
 | U35-003 | Expiry (`isRequestExpired`, 14 days) is a pure helper the scheduled function (CF14) uses; no client role. | Implemented (scheduler deferred, O-001) | Keeps the expiry boundary unit-tested now. |
 | U35-004 | The request center resolves counterparty display names from the discovery preview in preview mode and shows a neutral "verified member" label otherwise; a lightweight per-counterparty public-profile fetch can be added when the backend is wired. | Implemented under owner-authorized scope | Demonstrable UX now without an N+1 profile fetch; honest placeholder in configured mode until wiring. |
+
+### Unit 3.6 additions (closes Phase 3 / gate G3)
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U36-001 | Blocks are stored at `blocks/{uid}/blocked/{targetUid}` and are **read-only to the owner**; block/unblock go through CF10 callables (Admin SDK), which also close any active match. Discovery already excludes blocked members both directions via the viewer's pre-unioned `blockedUids`. | Implemented (SDK wiring deferred, O-001) | Master spec F6/11.4: instant, unilateral, silent; unforgeable; consistent with the discovery eligibility from Unit 3.1. |
+| U36-002 | Notifications are created only by Cloud Functions; the owner reads and may flip only `read`. Copy is carried as i18n `titleKey`/`bodyKey` + `params` and resolved client-side against a `NotificationCatalog` namespace. | Implemented under owner-authorized scope | Localized, server-agnostic copy (Section 13/10.8); the rule already existed and is now covered by tests. |
+| U36-003 | The unread badge is derived on the client from the notifications list (`unreadCount`); a dedicated counter/denormalized field can be added if read cost warrants it during wiring. | Implemented under owner-authorized scope | Simple and correct for launch volumes; avoids a premature counter. |

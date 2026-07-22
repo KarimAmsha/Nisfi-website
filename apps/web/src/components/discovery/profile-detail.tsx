@@ -12,6 +12,7 @@ import { LockIcon, ShieldCheckIcon, CompassIcon } from "@/components/ui/icon";
 import { Link } from "@/i18n/navigation";
 import { useCandidateProfile } from "@/lib/use-candidate-profile";
 import { RequestComposer } from "@/components/discovery/request-composer";
+import { BlockButton } from "@/components/discovery/block-button";
 
 const MARITAL_KEY = {
   single: "maritalSingle",
@@ -199,6 +200,7 @@ export function ProfileDetail({ uid }: { uid: string }) {
           {c("sendRequest")}
         </Button>
         <p className="text-center text-xs text-ink-600">{t("requestNote")}</p>
+        <BlockButton targetUid={uid} />
       </div>
 
       {composerOpen ? (

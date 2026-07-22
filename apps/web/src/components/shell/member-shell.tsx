@@ -13,6 +13,7 @@ import {
   ShieldCheckIcon,
 } from "@/components/ui/icon";
 import { ProfileCompletionBanner } from "@/components/profile/completion-banner";
+import { useNotifications } from "@/lib/use-notifications";
 
 type NavItem = {
   href: string;
@@ -48,6 +49,7 @@ function BrandMark() {
 export function MemberShell({ title, children }: { title?: string; children: ReactNode }) {
   const t = useTranslations("Nav");
   const pathname = usePathname();
+  const { unread } = useNotifications();
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
@@ -70,9 +72,14 @@ export function MemberShell({ title, children }: { title?: string; children: Rea
           <Link
             href="/app/notifications"
             aria-label={t("notifications")}
-            className="ms-auto grid size-10 place-items-center rounded-full text-ink-600 hover:bg-primary-50 hover:text-primary-700"
+            className="relative ms-auto grid size-10 place-items-center rounded-full text-ink-600 hover:bg-primary-50 hover:text-primary-700"
           >
             <BellIcon />
+            {unread > 0 ? (
+              <span className="absolute end-1.5 top-1.5 grid min-w-4 place-items-center rounded-full bg-primary px-1 text-[0.62rem] font-bold text-white tabular-nums">
+                {unread > 9 ? "9+" : unread}
+              </span>
+            ) : null}
           </Link>
         </div>
       </header>

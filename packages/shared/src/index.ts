@@ -100,3 +100,12 @@ export {
   type TransitionContext,
   type TransitionDecision,
 } from "./connection-request";
+
+export {
+  NOTIFICATION_TYPES,
+  unreadCount,
+  type NotificationType,
+  type AppNotification,
+} from "./notification";
+
+export { canBlock, type Block, type BlockDecision } from "./block";

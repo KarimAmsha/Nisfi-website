@@ -1,14 +1,13 @@
-import { useTranslations } from "next-intl";
-import { EmptyState } from "@/components/ui/empty-state";
-import { BellIcon } from "@/components/ui/icon";
+import type { Locale } from "@nisfi/shared";
+import { setRequestLocale } from "next-intl/server";
+import { NotificationCenter } from "@/components/notifications/notification-center";
 
-export default function NotificationsPage() {
-  const t = useTranslations("Notifications");
-  return (
-    <EmptyState
-      icon={<BellIcon size={22} />}
-      title={t("emptyTitle")}
-      description={t("emptyDesc")}
-    />
-  );
+export default async function NotificationsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale as Locale);
+  return <NotificationCenter />;
 }

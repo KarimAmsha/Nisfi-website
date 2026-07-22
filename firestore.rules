@@ -126,6 +126,15 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    // blocks/{uid}/blocked/{targetUid}: owner reads their own block list; ALL
+    // writes are server-only (CF10 blockUser/unblockUser via the Admin SDK,
+    // which also closes any active match). Instant, unilateral, silent — the
+    // target is never told (master spec Sections F6, 11.4).
+    match /blocks/{u}/blocked/{targetUid} {
+      allow read: if isSelf(u);
+      allow write: if false;
+    }
+
     // notifications: owner reads; owner may only flip `read`; no create/delete.
     match /notifications/{u}/items/{id} {
       allow read: if isSelf(u);

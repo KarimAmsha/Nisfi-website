@@ -8,13 +8,25 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 
 | Field | Value |
 |---|---|
-| Current phase | Phase 3 — Discovery and intentional connection requests |
-| Current unit | Unit 3.5 — received/sent request center; accept/decline/withdraw/expire (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 3 on emulators/mocks; next is Unit 3.6 (blocking foundation + in-app notifications) which closes Phase 3 / gate G3. Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current phase | Phase 3 — Discovery and intentional connection requests (complete; gate G3 met pending deferred wiring) |
+| Current unit | Unit 3.6 — blocking foundation and in-app notifications (delivered to `main`) |
+| Implementation state | Delivered to `main`. Phase 3 complete on emulators/mocks; next is Phase 4 (matches, chat, photo reveal, push). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 3.6 — completed (delivered to `main`; closes Phase 3 / gate G3, pending deferred wiring)
+
+The block foundation (instant, unilateral, silent) and the in-app notifications surface.
+
+- **Shared:** `block.ts` (`Block`, `canBlock` — no self-block) and `notification.ts` (`AppNotification` with i18n `titleKey`/`bodyKey`/`params`, `NOTIFICATION_TYPES`, `unreadCount`). **3 unit tests** (shared suite now **55**).
+- **Server cores:** `functions/src/blocks.ts` `evaluateBlock` (CF10 core — the callable atomically writes `blocks/{actor}/blocked/{target}` and closes any active match with `closedReason:"block"`). Functions suite now **7**.
+- **Ports + adapters:** `BlockRepository` (block/unblock via CF10 callables; owner-only `listBlocked`) and `NotificationService` (`list`; `markRead` flips only `read`). `blocks`/`notifications` reads are Firestore; writes stay server-only.
+- **Rules:** `blocks/{uid}/blocked/{targetUid}` owner-read, writes denied; notifications owner-read + owner may flip only `read`. **8 emulator tests** (block read/deny/create-deny; notification read/deny, flip-read allowed, other-field deny, create deny) — rules suite now **42**.
+- **UI:** `/app/notifications` center (unread dots, mark-all-read, localized catalog copy, deep links) with an **unread badge on the shell bell**; `/app/settings/blocked` list with unblock (+ a Settings entry); a **block affordance** on the profile detail (confirm → CF10). Preview seeds make all of it demonstrable.
+- **Discovery integration:** blocked members are already excluded both directions via the viewer's pre-unioned `blockedUids` in `isEligibleCandidate` (Unit 3.1).
+- **Verified:** `pnpm check` + `next build` (73 routes) + `pnpm test:rules` (42) green; RTL notifications + blocked-list screenshots.
 
 ## Unit 3.5 — completed (delivered to `main`; CF7 callables deployed in the wiring step, O-001)
 
@@ -261,7 +273,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 3 / Unit 3.6: blocking foundation and in-app notifications** — the block relationship (instant, unilateral, silent) that removes both directions from discovery and prevents/closes applicable interaction, managed in `/app/settings/blocked`, plus the in-app notifications surface for request events. Closes Phase 3 / gate G3.
+**Phase 4 / Unit 4.1: accepted-request transaction and match list** — the accept transaction that atomically creates `matches/{pairKey}` (clients can never create matches; idempotency + pair-membership enforced), and the member match list at `/app/matches`. Backed by a `MatchRepository` port, `matches/{pairKey}` rules, and transaction/idempotency tests.
 
 ### Deferred to the final "production wiring" step (O-001)
 

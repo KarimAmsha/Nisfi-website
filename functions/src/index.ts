@@ -22,3 +22,6 @@ export {
   type SendRequestReadState,
   type TransitionReadState,
 } from "./connection-requests";
+
+// CF10 block enforcement core (SDK wiring deferred, O-001).
+export { evaluateBlock } from "./blocks";
