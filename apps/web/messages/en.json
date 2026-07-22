@@ -438,7 +438,10 @@
       "plans": "Plans",
       "audit": "Audit log",
       "exports": "Exports",
-      "health": "Health"
+      "health": "Health",
+      "menu": "Menu",
+      "close": "Close",
+      "skip": "Skip to content"
     },
     "dashboard": {
       "title": "Admin dashboard",

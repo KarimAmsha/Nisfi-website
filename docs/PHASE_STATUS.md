@@ -8,13 +8,24 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 
 | Field | Value |
 |---|---|
-| Current phase | Phase 6 — Complete control panel |
-| Current unit | Unit 6.5 — audit explorer, exports & health (delivered to `main`) |
-| Implementation state | Delivered to `main`. Phase 6 functional modules complete; next is Unit 6.6 (admin responsiveness / keyboard / RTL-LTR QA polish). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current phase | Phase 7 — Settings, privacy rights, hardening & launch |
+| Current unit | Unit 6.6 — admin responsiveness & QA polish (delivered to `main`) — closes Phase 6 |
+| Implementation state | Delivered to `main`. Phase 6 (control panel) complete; next is Phase 7 / Unit 7.1 (member settings & account controls). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 6.6 — completed (delivered to `main`) — closes Phase 6
+
+Admin console responsiveness, keyboard access, and RTL/LTR QA (master spec Section 6.6 / Gate G6).
+
+- **Responsive nav:** the admin shell now has a proper mobile treatment — a top bar with a hamburger that opens an accessible overlay **drawer** (was a crowded 12-item horizontal scroll). The desktop sidebar (`md+`) is unchanged. The nav list is shared between the two so labels, badges, and active state stay consistent.
+- **Accessibility / keyboard:** a **skip-to-content** link (focus-revealed), the drawer toggle carries `aria-expanded` + `aria-controls`, opening the drawer moves focus to its close button, **Escape** closes it, a backdrop click closes it, and it auto-closes on navigation. Focus-visible rings on nav links, the toggle, and the close button; `<main>` is focusable (`tabIndex=-1`, `id="admin-main"`) as the skip target.
+- **RTL/LTR:** the drawer anchors to the inline-start (right in RTL) with logical `start-*` / `inset-y-*` utilities, verified at 390px in Arabic — the panel slides from the right and the console list/detail grids collapse to a single column cleanly.
+- **i18n:** `Admin.nav.menu` / `close` / `skip` across ar/en/tr.
+- **No** shared/functions/rules changes (pure UI/QA polish) — all suites unchanged (shared 130, functions 51, rules 80).
+- **Verified:** `pnpm check` + `next build` (98 routes) green; RTL screenshots at 390px (drawer open + closed, single-column console) and desktop (sidebar intact).
 
 ## Unit 6.5 — completed (delivered to `main`)
 
@@ -444,7 +455,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 6 / Unit 6.6: admin responsiveness & QA polish** — tablet/mobile-safe access, keyboard triage, table/state consistency across the console, and RTL/LTR design QA (master spec Section 6.6 / Gate G6). This closes Phase 6 and the control panel.
+**Phase 7 / Unit 7.1: member settings & account controls** — the member-facing settings surface: profile visibility, locale, notification preferences, and account controls (sign-out, and the entry points for data export / account deletion that Unit 7.2 fleshes out), on the member shell with rules + tests (master spec Section 7 / Phase 7).
 
 ### Deferred to the final "production wiring" step (O-001)
 

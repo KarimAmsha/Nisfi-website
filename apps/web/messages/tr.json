@@ -438,7 +438,10 @@
       "plans": "Planlar",
       "audit": "Denetim",
       "exports": "Dışa aktarma",
-      "health": "Sağlık"
+      "health": "Sağlık",
+      "menu": "Menü",
+      "close": "Kapat",
+      "skip": "İçeriğe geç"
     },
     "dashboard": {
       "title": "Yönetim paneli",
