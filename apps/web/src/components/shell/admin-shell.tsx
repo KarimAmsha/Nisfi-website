@@ -7,10 +7,12 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 import {
   BellIcon,
+  CompassIcon,
   FlagIcon,
   GaugeIcon,
   InboxIcon,
   LockIcon,
+  SearchIcon,
   SettingsIcon,
   ShieldCheckIcon,
   SparkIcon,
@@ -30,7 +32,10 @@ type AdminNav = {
     | "questions"
     | "config"
     | "broadcasts"
-    | "plans";
+    | "plans"
+    | "audit"
+    | "exports"
+    | "health";
   Icon: ComponentType<{ size?: number }>;
   countKey?: keyof AdminQueueCounts;
   minRole: Role;
@@ -64,6 +69,9 @@ const NAV: AdminNav[] = [
   { href: "/admin/broadcasts", key: "broadcasts", Icon: BellIcon, minRole: "admin" },
   { href: "/admin/plans", key: "plans", Icon: InboxIcon, minRole: "admin" },
   { href: "/admin/config", key: "config", Icon: SettingsIcon, minRole: "admin" },
+  { href: "/admin/exports", key: "exports", Icon: CompassIcon, minRole: "admin" },
+  { href: "/admin/health", key: "health", Icon: GaugeIcon, minRole: "moderator" },
+  { href: "/admin/audit", key: "audit", Icon: SearchIcon, minRole: "superAdmin" },
 ];
 
 export function AdminShell({ title, children }: { title: string; children: ReactNode }) {

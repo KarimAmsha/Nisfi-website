@@ -435,7 +435,10 @@
       "questions": "Sorular",
       "config": "Yapılandırma",
       "broadcasts": "Yayınlar",
-      "plans": "Planlar"
+      "plans": "Planlar",
+      "audit": "Denetim",
+      "exports": "Dışa aktarma",
+      "health": "Sağlık"
     },
     "dashboard": {
       "title": "Yönetim paneli",
@@ -717,6 +720,56 @@
       "subscriptionsOnNote": "Abonelikler açıkken manuel verme kullanılamaz; faturalandırma halleder.",
       "manageLocked": "Hak verme yalnızca süper yöneticiye özeldir.",
       "auditNote": "Her hak değişikliği değiştirilemez bir denetim günlüğüne yazılır."
+    },
+    "audit": {
+      "title": "Denetim günlüğü",
+      "heading": "Olaylar",
+      "previewNote": "Önizleme verisi",
+      "action": "İşlem",
+      "allActions": "Tüm işlemler",
+      "actor": "Aktör",
+      "actorPlaceholder": "Aktör kimliği",
+      "target": "Hedef",
+      "metadata": "Üstveri",
+      "redactNote": "Hassas değerler otomatik olarak gizlenir; günlük değiştirilemez — düzenleme veya silme yok.",
+      "selectHint": "Ayrıntı için bir olay seçin.",
+      "emptyTitle": "Eşleşen olay yok",
+      "emptyDesc": "Mevcut filtrenizle eşleşen bir şey yok."
+    },
+    "exports": {
+      "title": "Veri dışa aktarma",
+      "heading": "Bir operasyonel tabloyu dışa aktar",
+      "previewNote": "Önizleme verisi",
+      "table": "Tablo",
+      "tables": {
+        "reports": "Raporlar",
+        "verifications": "Doğrulama istekleri",
+        "broadcasts": "Yayınlar"
+      },
+      "includedColumns": "Dahil edilen sütunlar",
+      "excludedColumns": "Hariç tutulan (hassas) sütunlar",
+      "rowLimit": "Satır sınırı",
+      "exportCsv": "CSV dışa aktar",
+      "doneNote": "{count} satır dışa aktarıldı.",
+      "errorNote": "Dışa aktarma başarısız veya izin yok.",
+      "privacyNote": "Dışa aktarmalar sunucuda izin denetimlidir, satır sınırlıdır, hassas sütunları varsayılan olarak hariç tutar ve denetlenir."
+    },
+    "health": {
+      "title": "Operasyonel sağlık",
+      "heading": "Sistem durumu",
+      "previewNote": "Önizleme verisi",
+      "environment": "Ortam",
+      "release": "Sürüm",
+      "updatedAt": "Güncellendi",
+      "checks": "Kontroller",
+      "status": {
+        "healthy": "Sağlıklı",
+        "degraded": "Bozulmuş",
+        "down": "Kapalı"
+      },
+      "secretsNote": "Sırlar veya kişisel veri içermeyen temizlenmiş özet; sağlayıcı izlemesinin yerini tutmaz.",
+      "emptyTitle": "Sağlık verisi yok",
+      "emptyDesc": "Henüz bir sağlık özeti yazılmadı."
     }
   },
   "ProfileDetail": {

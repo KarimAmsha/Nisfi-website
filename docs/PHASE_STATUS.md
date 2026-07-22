@@ -9,12 +9,24 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 6 — Complete control panel |
-| Current unit | Unit 6.4 — plans & entitlements read model (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 6 on emulators/mocks; next is Unit 6.5 (audit explorer, exports, health). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 6.5 — audit explorer, exports & health (delivered to `main`) |
+| Implementation state | Delivered to `main`. Phase 6 functional modules complete; next is Unit 6.6 (admin responsiveness / keyboard / RTL-LTR QA polish). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 6.5 — completed (delivered to `main`)
+
+The three operations surfaces: the immutable audit-log explorer, privacy-safe exports, and the health view (master spec Sections 6.5, 10.11).
+
+- **Shared:** `audit.ts` (`AUDIT_ACTIONS`, `canViewAudit` superAdmin, `matchesAuditFilter`, `redactAuditMetadata` — recursively redacts sensitive keys to `[redacted]`), `export.ts` (`EXPORTABLE_TABLES` with per-table sensitive columns, `EXPORT_ROW_LIMIT`, `canExport` admin+, `validateExportRequest` — allow-list + row/column limits, `csvField`/`toCsv` RFC-4180 CSV), `health.ts` (`SystemHealth`, `overallHealth` = worst check, `canViewHealth` moderator+). New tests (shared suite now **130**).
+- **Server core:** `functions/src/ops.ts` — `evaluateExport` (CF18: role/table/row/column checked, returns safe columns + a redacted audit record) and `buildHealthSummary` (CF20: keeps only env/release/check status+note, derives overall — no secrets). Functions suite now **51**.
+- **Rules:** `auditLogs/{id}` — superAdmin-only read, immutable (no client write/delete); `systemHealth/{doc}` — staff read, Functions-only write. New `ops.rules.test.ts`. Rules suite now **80**.
+- **Port + adapter:** `OpsRepository.listAudit(filter)` (superAdmin, action-indexed + in-memory filter), `exportTable` (CF callable), `getHealth`.
+- **UI:** `/admin/audit` (superAdmin — action/actor filter, event list, detail drawer with **redacted** metadata + "immutable, no edit/delete" note), `/admin/exports` (admin — table select showing included/excluded columns + row limit, CSV download, privacy note), `/admin/health` (moderator — env/release/overall status + per-check statuses/notes + "no secrets" note). New **Audit** (superAdmin), **Exports** (admin), **Health** (moderator) nav items. Preview seeds for all three.
+- **Deferred (O-001):** the `exportAdminTable` (CF18) and `refreshSystemHealth` (CF20) callables and the audit-append on every staff mutation are wired at the final production step; the consoles run on preview seeds until then.
+- **Verified:** `pnpm check` (shared 130, functions 51) + `next build` (98 routes) + `pnpm test:rules` (80) green; RTL audit (with redacted email), health, and export screenshots.
 
 ## Unit 6.4 — completed (delivered to `main`)
 
@@ -432,7 +444,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 6 / Unit 6.5: audit explorer, exports & health** — a read-only immutable audit-log explorer (permission-gated), privacy-safe bounded exports (limits + redaction, no secrets), and an operational health view (master spec Section 6.5).
+**Phase 6 / Unit 6.6: admin responsiveness & QA polish** — tablet/mobile-safe access, keyboard triage, table/state consistency across the console, and RTL/LTR design QA (master spec Section 6.6 / Gate G6). This closes Phase 6 and the control panel.
 
 ### Deferred to the final "production wiring" step (O-001)
 

@@ -435,7 +435,10 @@
       "questions": "Questions",
       "config": "Configuration",
       "broadcasts": "Broadcasts",
-      "plans": "Plans"
+      "plans": "Plans",
+      "audit": "Audit log",
+      "exports": "Exports",
+      "health": "Health"
     },
     "dashboard": {
       "title": "Admin dashboard",
@@ -717,6 +720,56 @@
       "subscriptionsOnNote": "Manual grants are unavailable while subscriptions are on; billing handles it.",
       "manageLocked": "Granting entitlements is superAdmin-only.",
       "auditNote": "Every entitlement change is written to an immutable audit log."
+    },
+    "audit": {
+      "title": "Audit log",
+      "heading": "Events",
+      "previewNote": "Preview data",
+      "action": "Action",
+      "allActions": "All actions",
+      "actor": "Actor",
+      "actorPlaceholder": "Actor uid",
+      "target": "Target",
+      "metadata": "Metadata",
+      "redactNote": "Sensitive values are redacted automatically; the log is immutable — no edit or delete.",
+      "selectHint": "Select an event to see its detail.",
+      "emptyTitle": "No matching events",
+      "emptyDesc": "Nothing matches your current filter."
+    },
+    "exports": {
+      "title": "Data export",
+      "heading": "Export an operational table",
+      "previewNote": "Preview data",
+      "table": "Table",
+      "tables": {
+        "reports": "Reports",
+        "verifications": "Verification requests",
+        "broadcasts": "Broadcasts"
+      },
+      "includedColumns": "Included columns",
+      "excludedColumns": "Excluded (sensitive) columns",
+      "rowLimit": "Row limit",
+      "exportCsv": "Export CSV",
+      "doneNote": "Exported {count} rows.",
+      "errorNote": "Export failed or not permitted.",
+      "privacyNote": "Exports are permission-checked server-side, row-limited, exclude sensitive columns by default, and are audited."
+    },
+    "health": {
+      "title": "Operational health",
+      "heading": "System status",
+      "previewNote": "Preview data",
+      "environment": "Environment",
+      "release": "Release",
+      "updatedAt": "Updated",
+      "checks": "Checks",
+      "status": {
+        "healthy": "Healthy",
+        "degraded": "Degraded",
+        "down": "Down"
+      },
+      "secretsNote": "Sanitized summary with no secrets or personal data; not a substitute for provider monitoring.",
+      "emptyTitle": "No health data",
+      "emptyDesc": "No health summary has been written yet."
     }
   },
   "ProfileDetail": {

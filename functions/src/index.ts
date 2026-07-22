@@ -96,3 +96,7 @@ export {
 // Plans/entitlements core: superAdmin manual grant (subscriptions-off guard;
 // Admin SDK + audit wiring deferred, O-001).
 export { evaluateEntitlementGrant, type EntitlementGrantResult } from "./plans";
+
+// Ops cores: privacy-safe export (CF18: role/table/row/column limits + audit)
+// and sanitized health summary (CF20). Admin SDK wiring deferred (O-001).
+export { evaluateExport, buildHealthSummary, type ExportResult } from "./ops";

@@ -113,6 +113,37 @@ export {
 } from "./plans";
 
 export {
+  AUDIT_ACTIONS,
+  REDACTED,
+  canViewAudit,
+  matchesAuditFilter,
+  redactAuditMetadata,
+  type AuditAction,
+  type AuditLogEntry,
+  type AuditFilter,
+} from "./audit";
+
+export {
+  EXPORT_ROW_LIMIT,
+  EXPORTABLE_TABLES,
+  canExport,
+  validateExportRequest,
+  csvField,
+  toCsv,
+  type ExportTable,
+  type ExportValidation,
+} from "./export";
+
+export {
+  HEALTH_STATUSES,
+  canViewHealth,
+  overallHealth,
+  type HealthStatus,
+  type HealthCheck,
+  type SystemHealth,
+} from "./health";
+
+export {
   PHOTO_MODERATION,
   PHOTO_DECISIONS,
   MAX_PHOTOS,

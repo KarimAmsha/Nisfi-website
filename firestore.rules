@@ -171,6 +171,20 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // auditLogs/{id}: superAdmin-only read; immutable, Functions-only append —
+    // no client write or delete ever. Master spec Sections 6.5, 10.11, 11.4.
+    match /auditLogs/{id} {
+      allow read: if isSuper();
+      allow write: if false;
+    }
+
+    // systemHealth/{doc}: staff-readable sanitized health summary; written only
+    // by Functions (no secrets/PII). Master spec Sections 6.5, 10.11.
+    match /systemHealth/{doc} {
+      allow read: if isStaff();
+      allow write: if false;
+    }
+
     // connectionRequests: the two participants + staff may read; ALL writes are
     // server-only (CF6 sendConnectionRequest / CF7 respond/withdraw via the Admin
     // SDK, which bypasses these rules). Clients never create or transition a
