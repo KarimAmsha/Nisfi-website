@@ -430,7 +430,8 @@
       "dashboard": "اللوحة",
       "verifications": "التوثيق",
       "users": "الأعضاء",
-      "reports": "البلاغات"
+      "reports": "البلاغات",
+      "photos": "الصور"
     },
     "dashboard": {
       "title": "لوحة الإدارة",
@@ -503,6 +504,21 @@
       "moderator": "مشرف",
       "admin": "مدير",
       "superAdmin": "مدير أعلى"
+    },
+    "photos": {
+      "title": "طابور الصور",
+      "heading": "صور بانتظار المراجعة",
+      "note": "الموافقة تنشر النسخة المموّهة فقط؛ الأصل يبقى خاصًّا ولا يُخزَّن لدى الطاقم.",
+      "previewNote": "بيانات تجريبية",
+      "approve": "قبول",
+      "reject": "رفض",
+      "confirmReject": "تأكيد",
+      "cancel": "إلغاء",
+      "reasonPlaceholder": "سبب الرفض…",
+      "emptyTitle": "لا صور معلّقة",
+      "emptyBody": "لا توجد صور بانتظار الإشراف.",
+      "errorTitle": "تعذّر التحميل",
+      "errorBody": "حدث خطأ. حاول مرة أخرى."
     }
   },
   "ProfileDetail": {

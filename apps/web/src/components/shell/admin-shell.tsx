@@ -5,13 +5,13 @@ import { useTranslations } from "next-intl";
 import { roleAtLeast, type Role } from "@nisfi/shared";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
-import { FlagIcon, GaugeIcon, ShieldCheckIcon, UsersIcon } from "@/components/ui/icon";
+import { FlagIcon, GaugeIcon, LockIcon, ShieldCheckIcon, UsersIcon } from "@/components/ui/icon";
 import type { AdminQueueCounts } from "@/core/ports/admin";
 import { useAdmin } from "@/lib/use-admin";
 
 type AdminNav = {
   href: string;
-  key: "dashboard" | "verifications" | "users" | "reports";
+  key: "dashboard" | "verifications" | "photos" | "users" | "reports";
   Icon: ComponentType<{ size?: number }>;
   countKey?: keyof AdminQueueCounts;
   minRole: Role;
@@ -24,6 +24,13 @@ const NAV: AdminNav[] = [
     key: "verifications",
     Icon: ShieldCheckIcon,
     countKey: "pendingVerifications",
+    minRole: "moderator",
+  },
+  {
+    href: "/admin/photos",
+    key: "photos",
+    Icon: LockIcon,
+    countKey: "pendingPhotos",
     minRole: "moderator",
   },
   { href: "/admin/users", key: "users", Icon: UsersIcon, minRole: "admin" },

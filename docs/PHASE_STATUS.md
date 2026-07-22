@@ -9,12 +9,23 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 5 — Operations & moderation console |
-| Current unit | Unit 5.2 — verification review queue and decisions (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 5 on emulators/mocks; next is Unit 5.3 (photo moderation queue). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 5.3 — photo moderation queue (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 5 on emulators/mocks; next is Unit 5.4 (reports queue + sanctions). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 5.3 — completed (delivered to `main`)
+
+The moderator photo-moderation queue and the approve/reject decision path.
+
+- **Shared:** `canDecidePhoto` (staff + pending; notStaff / notPending), `photoModerationOutcome` (decision → moderation state), `PHOTO_DECISIONS`. New photo-decision tests (shared suite now **82**).
+- **Server core:** `functions/src/photos.ts` `evaluatePhotoDecision` (CF `decidePhoto`) — validates staff+pending, emits the moderation state + reason + `decidedBy`, and `publishBlurred` (true only on approve, so the blurred variant is published; a rejected photo is never published). Functions suite now **26**.
+- **Port + adapter:** `AdminRepository.listPhotoQueue` (staff collection-group read of pending photos across members, oldest-first) and `decidePhoto` via the CF callable.
+- **UI:** `/admin/photos` — a grid of pending photos (blurred/locked placeholders labelled by owner uid) with Approve / Reject (reason) per photo, and the "approval publishes only the blurred variant; originals never staff-cached" note. New **Photos** nav item (badge = pending count), moderator+. Loading/empty/error + preview states.
+- **Deferred (O-002):** the photos metadata collection + collection-group index + Cloudinary blurred-variant delivery; the queue reads empty when configured until then, and the seed keeps the console reviewable in preview.
+- **Verified:** `pnpm check` + `next build` (77 routes) + `pnpm test:rules` (56) green; RTL photo-queue screenshot.
 
 ## Unit 5.2 — completed (delivered to `main`)
 
@@ -349,7 +360,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 5 / Unit 5.3: photo moderation queue** — the moderator photo queue at `/admin/photos` (each pending photo approve/reject with a reason), backed by a `decidePhoto` callable that flips the photo's moderation state server-side and only then makes the blurred variant publicly readable per the storage rules. Staff-scoped reads + audited decisions; queue/permission tests. (Cloudinary media deferred O-002.)
+**Phase 5 / Unit 5.4: reports queue and sanctions** — the moderator reports queue at `/admin/reports` (open → in_review → resolved|dismissed), the `reports/{id}` create rule (active reporter, exact `open` shape) + staff reads, and the sanction actions (dismiss/warn/unpublish/suspend/ban) via callables that write `users.status` + audit logs. Report create + transition/permission tests.
 
 ### Deferred to the final "production wiring" step (O-001)
 

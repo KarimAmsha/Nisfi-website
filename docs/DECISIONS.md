@@ -217,3 +217,10 @@ This is the durable decision register required by `NISFI_MASTER_SPEC.md`. It dis
 | U52-001 | The verification decision authority (`canDecideVerification` + `verificationOutcome`) lives in `@nisfi/shared` and is consumed by the CF5 core (`evaluateVerificationDecision`); the console calls the `decideVerification` callable. Client writes to `verificationRequests` decisions stay denied by rules. | Implemented (Admin SDK + audit wiring deferred, O-001) | Master spec F3/12: decisions are server-only, transactional, mirrored to the profile, notified, and audited. |
 | U52-002 | Selfie/ID evidence is shown as a private placeholder in the console; the real image loads via a short-lived staff-authorized URL, never stored in Firestore or made public. | Implemented (Cloudinary staff-URL signing deferred, O-002) | Master spec F3: verification media is sensitive and never member-visible. |
 | U52-003 | The queue lists only pending requests (oldest-first via the existing index) and decisions optimistically remove the item; a demo seed keeps the console reviewable in preview. | Implemented under owner-authorized scope | Focused, audit-safe reviewer workflow. |
+
+### Unit 5.3 additions
+
+| ID | Decision | Status | Rationale |
+|---|---|---|---|
+| U53-001 | Photo decisions use a shared authority (`canDecidePhoto` + `photoModerationOutcome`); the CF `decidePhoto` core (`evaluatePhotoDecision`) sets the moderation state and, only on approve, `publishBlurred: true`. A rejected photo is never published; originals are never staff-cached. | Implemented (Cloudinary/SDK wiring deferred, O-001/O-002) | Master spec F8/F7: the blurred variant becomes readable only after approval; originals stay private. |
+| U53-002 | The queue is a staff collection-group read of pending photos under `profiles/{uid}/photos`; it reads empty when configured until the photo-metadata collection + index + Cloudinary land (O-002), with a preview seed keeping the console reviewable. | Implemented (photo metadata deferred, O-002) | Honest, audit-safe reads consistent with the deferred media stack. |

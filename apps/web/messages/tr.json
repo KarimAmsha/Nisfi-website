@@ -430,7 +430,8 @@
       "dashboard": "Panel",
       "verifications": "Doğrulama",
       "users": "Üyeler",
-      "reports": "Raporlar"
+      "reports": "Raporlar",
+      "photos": "Fotoğraflar"
     },
     "dashboard": {
       "title": "Yönetim paneli",
@@ -503,6 +504,21 @@
       "moderator": "Moderatör",
       "admin": "Yönetici",
       "superAdmin": "Süper yönetici"
+    },
+    "photos": {
+      "title": "Fotoğraf kuyruğu",
+      "heading": "İnceleme bekleyen fotoğraflar",
+      "note": "Onay yalnızca bulanık sürümü yayımlar; orijinal gizli kalır ve personelde saklanmaz.",
+      "previewNote": "Örnek veri",
+      "approve": "Onayla",
+      "reject": "Reddet",
+      "confirmReject": "Onayla",
+      "cancel": "İptal",
+      "reasonPlaceholder": "Ret nedeni…",
+      "emptyTitle": "Bekleyen fotoğraf yok",
+      "emptyBody": "Moderasyon bekleyen fotoğraf yok.",
+      "errorTitle": "Yüklenemedi",
+      "errorBody": "Bir hata oluştu. Lütfen tekrar deneyin."
     }
   },
   "ProfileDetail": {

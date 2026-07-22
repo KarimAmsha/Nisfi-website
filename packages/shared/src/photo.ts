@@ -34,3 +34,24 @@ export function validatePhotoFile(
   if (file.size > MAX_PHOTO_BYTES) return "size";
   return null;
 }
+
+/** Staff decisions on a pending photo (master spec F8). On approve the blurred
+ * variant becomes publicly readable; on reject it is never published. */
+export const PHOTO_DECISIONS = ["approve", "reject"] as const;
+export type PhotoDecision = (typeof PHOTO_DECISIONS)[number];
+
+export type PhotoDecisionCheck = { ok: true } | { ok: false; reason: "notStaff" | "notPending" };
+
+export function canDecidePhoto(
+  photo: Pick<Photo, "moderation">,
+  actorIsStaff: boolean,
+): PhotoDecisionCheck {
+  if (!actorIsStaff) return { ok: false, reason: "notStaff" };
+  if (photo.moderation !== "pending") return { ok: false, reason: "notPending" };
+  return { ok: true };
+}
+
+/** The moderation state a decision produces. */
+export function photoModerationOutcome(decision: PhotoDecision): PhotoModeration {
+  return decision === "approve" ? "approved" : "rejected";
+}

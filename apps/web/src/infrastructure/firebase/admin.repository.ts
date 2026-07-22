@@ -1,5 +1,6 @@
 import {
   collection,
+  collectionGroup,
   getCountFromServer,
   getDocs,
   orderBy,
@@ -10,12 +11,14 @@ import {
 } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import type {
+  PhotoDecision,
+  PhotoModeration,
   VerificationDecision,
   VerificationRequest,
   VerificationRequestStatus,
   VerificationType,
 } from "@nisfi/shared";
-import type { AdminQueueCounts, AdminRepository } from "@/core/ports/admin";
+import type { AdminQueueCounts, AdminRepository, PhotoQueueItem } from "@/core/ports/admin";
 import { firebaseFirestore, firebaseFunctions } from "./client";
 
 function tsToIso(value: unknown): string {
@@ -76,6 +79,45 @@ class FirestoreAdminRepository implements AdminRepository {
       void
     >(firebaseFunctions(), "decideVerification");
     await callable(reason !== undefined ? { id, decision, reason } : { id, decision });
+  }
+
+  async listPhotoQueue(): Promise<PhotoQueueItem[]> {
+    // Photos live under `profiles/{uid}/photos/{id}`; a collection-group query
+    // gathers pending photos across members (needs a `photos` collection-group
+    // index + storage rules, wired with Cloudinary — O-002).
+    const snap = await getDocs(
+      query(
+        collectionGroup(firebaseFirestore(), "photos"),
+        where("moderation", "==", "pending"),
+        orderBy("createdAt", "asc"),
+      ),
+    );
+    return snap.docs.map((d) => {
+      const data = d.data();
+      return {
+        id: d.id,
+        uid: d.ref.parent.parent?.id ?? "",
+        order: (data.order as number | undefined) ?? 0,
+        moderation: (data.moderation as PhotoModeration | undefined) ?? "pending",
+        ownerPreviewUrl: null,
+        createdAt: tsToIso(data.createdAt),
+      };
+    });
+  }
+
+  async decidePhoto(
+    uid: string,
+    photoId: string,
+    decision: PhotoDecision,
+    reason?: string,
+  ): Promise<void> {
+    const callable = httpsCallable<
+      { uid: string; photoId: string; decision: PhotoDecision; reason?: string },
+      void
+    >(firebaseFunctions(), "decidePhoto");
+    await callable(
+      reason !== undefined ? { uid, photoId, decision, reason } : { uid, photoId, decision },
+    );
   }
 }
 

@@ -60,13 +60,18 @@ export {
 
 export {
   PHOTO_MODERATION,
+  PHOTO_DECISIONS,
   MAX_PHOTOS,
   MAX_PHOTO_BYTES,
   ACCEPTED_IMAGE_TYPES,
   validatePhotoFile,
+  canDecidePhoto,
+  photoModerationOutcome,
   type Photo,
   type PhotoModeration,
   type PhotoValidationError,
+  type PhotoDecision,
+  type PhotoDecisionCheck,
 } from "./photo";
 
 export {

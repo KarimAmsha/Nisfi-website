@@ -430,7 +430,8 @@
       "dashboard": "Dashboard",
       "verifications": "Verification",
       "users": "Members",
-      "reports": "Reports"
+      "reports": "Reports",
+      "photos": "Photos"
     },
     "dashboard": {
       "title": "Admin dashboard",
@@ -503,6 +504,21 @@
       "moderator": "Moderator",
       "admin": "Admin",
       "superAdmin": "Super admin"
+    },
+    "photos": {
+      "title": "Photo queue",
+      "heading": "Photos awaiting review",
+      "note": "Approval publishes only the blurred variant; the original stays private and is never staff-cached.",
+      "previewNote": "Sample data",
+      "approve": "Approve",
+      "reject": "Reject",
+      "confirmReject": "Confirm",
+      "cancel": "Cancel",
+      "reasonPlaceholder": "Reason for rejection…",
+      "emptyTitle": "No pending photos",
+      "emptyBody": "No photos are waiting for moderation.",
+      "errorTitle": "Couldn't load",
+      "errorBody": "Something went wrong. Please try again."
     }
   },
   "ProfileDetail": {
