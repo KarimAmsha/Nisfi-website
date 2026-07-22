@@ -432,7 +432,8 @@
       "users": "Members",
       "reports": "Reports",
       "photos": "Photos",
-      "questions": "Questions"
+      "questions": "Questions",
+      "config": "Configuration"
     },
     "dashboard": {
       "title": "Admin dashboard",
@@ -622,6 +623,35 @@
       "errorBody": "Something went wrong fetching the question bank. Try again.",
       "activate": "Activate",
       "archive": "Archive"
+    },
+    "config": {
+      "title": "App configuration",
+      "previewNote": "Preview data",
+      "flagsTitle": "Feature flags",
+      "flagsHint": "Turn platform features on/off at runtime.",
+      "limitsTitle": "Tunable limits",
+      "limitsHint": "Numeric values within allow-listed bounds; out-of-range values are rejected.",
+      "contentTitle": "Content blocks",
+      "contentHint": "Localized text the app renders (leave empty to hide).",
+      "range": "Range {min}–{max}",
+      "rangeError": "Out of range",
+      "save": "Save",
+      "saved": "Saved",
+      "auditNote": "Every config change is written with its old and new value to an immutable audit log.",
+      "flags": {
+        "signupsEnabled": "Signups enabled",
+        "discoveryEnabled": "Discovery enabled",
+        "chatEnabled": "Chat enabled"
+      },
+      "limits": {
+        "maxPendingSent": "Max pending sent requests",
+        "dailySends": "Daily sends",
+        "declineCooldownDays": "Decline cooldown (days)"
+      },
+      "content": {
+        "announcement": "Announcement banner",
+        "onboardingIntro": "Onboarding intro"
+      }
     }
   },
   "ProfileDetail": {

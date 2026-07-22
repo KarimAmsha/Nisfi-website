@@ -9,12 +9,24 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 | Field | Value |
 |---|---|
 | Current phase | Phase 6 — Complete control panel |
-| Current unit | Unit 6.1 — compatibility question management (delivered to `main`) |
-| Implementation state | Delivered to `main`. Building Phase 6 on emulators/mocks; next is Unit 6.2 (runtime content/localization + app configuration). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current unit | Unit 6.2 — runtime content & app configuration (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 6 on emulators/mocks; next is Unit 6.3 (broadcast composer). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 6.2 — completed (delivered to `main`)
+
+The runtime app-configuration console: allow-listed feature flags, bounded numeric tunables, and editable localized content blocks, with an old→new audit on every change (master spec Section 6.2).
+
+- **Shared:** `app-config.ts` — `CONFIG_FLAGS` (signups/discovery/chat), `CONFIG_LIMITS` (each with min/max/default bounds), `CONTENT_BLOCKS` (announcement/onboardingIntro, `CONTENT_MAX` 600), `AppConfig` + `DEFAULT_APP_CONFIG` (fallback so the app never depends on the doc existing), `canManageConfig` (admin+), and `validateConfigChange` (allow-list + integer bounds + localized-content validation; reasons unknownKey/outOfRange/invalidValue). New `app-config.test.ts` (shared suite now **108**).
+- **Server core:** `functions/src/config.ts` — `evaluateConfigChange` (CF `updateConfig`; admin-gated, validated, returns the dotted `path` + `before`/`after` for the immutable audit). Functions suite now **42**.
+- **Rules:** `appConfig/{doc}` — any signed-in member reads (the app reads config at runtime); all writes are server-only (admin via the content CF + audit). New `config.rules.test.ts` (member read, unauth denied, admin client write denied). Rules suite now **70**.
+- **Port + adapter:** `ConfigRepository.getConfig` (reads `appConfig/platform`, merged over defaults) and `updateConfig` via the CF callable.
+- **UI:** `/admin/config` — feature-flag toggles, numeric limit fields with their allow-listed range shown (out-of-range values are rejected and reverted with an inline error), and localized (ar RTL / en·tr LTR) content-block editors with per-block save. New **Configuration** nav item (admin+). Preview seed with an example announcement.
+- **Deferred (O-001):** the `updateConfig` callable (transactional write + old→new audit) is wired at the final production step; the console reads defaults when configured until the doc is seeded, with the preview seed keeping it reviewable.
+- **Verified:** `pnpm check` (shared 108, functions 42) + `next build` (83 routes) + `pnpm test:rules` (70) green; RTL config-console screenshot.
 
 ## Unit 6.1 — completed (delivered to `main`)
 
@@ -396,7 +408,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 6 / Unit 6.2: runtime content & app configuration** — an allow-listed platform-config surface (feature flags / tunables the app reads at runtime) plus editable localized content blocks, on a staff-writable / member-readable collection with rules + tests, an old→new audit on every change, and rejection of unsafe/out-of-allow-list values (master spec Section 6.2).
+**Phase 6 / Unit 6.3: broadcast composer** — a staff broadcast composer with a localized message, an audience dry-run (who would receive it) before sending, batched server-side sending with idempotency, and a delivery summary — with authorization, localization, and failure-path handling (master spec Section 6.3).
 
 ### Deferred to the final "production wiring" step (O-001)
 

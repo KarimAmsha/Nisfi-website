@@ -80,3 +80,7 @@ export {
   type QuestionWriteResult,
   type QuestionReorderResult,
 } from "./questions";
+
+// App-config core: allow-listed flag/limit/content change with old→new audit
+// (admin-only; Admin SDK + audit wiring deferred, O-001).
+export { evaluateConfigChange, type ConfigWriteResult } from "./config";

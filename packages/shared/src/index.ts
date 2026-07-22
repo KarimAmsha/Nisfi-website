@@ -69,6 +69,23 @@ export {
 } from "./question-admin";
 
 export {
+  CONFIG_FLAGS,
+  CONFIG_LIMITS,
+  CONTENT_BLOCKS,
+  CONTENT_MAX,
+  DEFAULT_APP_CONFIG,
+  canManageConfig,
+  validateConfigChange,
+  type AppConfig,
+  type ConfigFlag,
+  type ConfigLimitKey,
+  type ContentBlockKey,
+  type LimitSpec,
+  type ConfigChange,
+  type ConfigChangeResult,
+} from "./app-config";
+
+export {
   PHOTO_MODERATION,
   PHOTO_DECISIONS,
   MAX_PHOTOS,

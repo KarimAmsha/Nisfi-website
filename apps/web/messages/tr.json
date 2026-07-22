@@ -432,7 +432,8 @@
       "users": "Üyeler",
       "reports": "Raporlar",
       "photos": "Fotoğraflar",
-      "questions": "Sorular"
+      "questions": "Sorular",
+      "config": "Yapılandırma"
     },
     "dashboard": {
       "title": "Yönetim paneli",
@@ -622,6 +623,35 @@
       "errorBody": "Soru bankası alınırken bir sorun oluştu. Tekrar deneyin.",
       "activate": "Etkinleştir",
       "archive": "Arşivle"
+    },
+    "config": {
+      "title": "Uygulama yapılandırması",
+      "previewNote": "Önizleme verisi",
+      "flagsTitle": "Özellik bayrakları",
+      "flagsHint": "Platform özelliklerini çalışma anında aç/kapat.",
+      "limitsTitle": "Ayarlanabilir sınırlar",
+      "limitsHint": "İzin listesindeki sınırlar içinde sayısal değerler; aralık dışı değerler reddedilir.",
+      "contentTitle": "İçerik blokları",
+      "contentHint": "Uygulamanın gösterdiği yerelleştirilmiş metin (gizlemek için boş bırakın).",
+      "range": "Aralık {min}–{max}",
+      "rangeError": "Aralık dışı",
+      "save": "Kaydet",
+      "saved": "Kaydedildi",
+      "auditNote": "Her yapılandırma değişikliği eski ve yeni değeriyle değiştirilemez bir denetim günlüğüne yazılır.",
+      "flags": {
+        "signupsEnabled": "Kayıtlar açık",
+        "discoveryEnabled": "Keşfet açık",
+        "chatEnabled": "Sohbet açık"
+      },
+      "limits": {
+        "maxPendingSent": "Maks. bekleyen gönderilen istek",
+        "dailySends": "Günlük gönderim",
+        "declineCooldownDays": "Ret bekleme süresi (gün)"
+      },
+      "content": {
+        "announcement": "Duyuru afişi",
+        "onboardingIntro": "Kayıt girişi"
+      }
     }
   },
   "ProfileDetail": {

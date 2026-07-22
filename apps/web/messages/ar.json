@@ -432,7 +432,8 @@
       "users": "الأعضاء",
       "reports": "البلاغات",
       "photos": "الصور",
-      "questions": "الأسئلة"
+      "questions": "الأسئلة",
+      "config": "الإعدادات"
     },
     "dashboard": {
       "title": "لوحة الإدارة",
@@ -622,6 +623,35 @@
       "errorBody": "حدث خطأ أثناء جلب بنك الأسئلة. حاول مجدداً.",
       "activate": "تفعيل",
       "archive": "أرشفة"
+    },
+    "config": {
+      "title": "إعدادات التطبيق",
+      "previewNote": "بيانات تجريبية",
+      "flagsTitle": "أعلام الميزات",
+      "flagsHint": "تشغيل/إيقاف ميزات المنصة أثناء التشغيل.",
+      "limitsTitle": "الحدود القابلة للضبط",
+      "limitsHint": "قيم رقمية ضمن حدود مسموح بها؛ تُرفض القيم خارج المدى.",
+      "contentTitle": "كتل المحتوى",
+      "contentHint": "نصوص مترجمة يعرضها التطبيق (اتركها فارغة للإخفاء).",
+      "range": "المدى {min}–{max}",
+      "rangeError": "خارج المدى",
+      "save": "حفظ",
+      "saved": "تم الحفظ",
+      "auditNote": "كل تغيير في الإعدادات يُسجَّل مع القيمة القديمة والجديدة في سجلّ تدقيق غير قابل للتعديل.",
+      "flags": {
+        "signupsEnabled": "تفعيل التسجيلات",
+        "discoveryEnabled": "تفعيل الاستكشاف",
+        "chatEnabled": "تفعيل المحادثة"
+      },
+      "limits": {
+        "maxPendingSent": "أقصى طلبات معلّقة مُرسَلة",
+        "dailySends": "الإرسال اليومي",
+        "declineCooldownDays": "مهلة بعد الرفض (أيام)"
+      },
+      "content": {
+        "announcement": "شريط الإعلان",
+        "onboardingIntro": "مقدمة التسجيل"
+      }
     }
   },
   "ProfileDetail": {

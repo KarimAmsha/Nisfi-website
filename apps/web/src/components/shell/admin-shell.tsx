@@ -9,6 +9,7 @@ import {
   FlagIcon,
   GaugeIcon,
   LockIcon,
+  SettingsIcon,
   ShieldCheckIcon,
   SparkIcon,
   UsersIcon,
@@ -18,7 +19,7 @@ import { useAdmin } from "@/lib/use-admin";
 
 type AdminNav = {
   href: string;
-  key: "dashboard" | "verifications" | "photos" | "users" | "reports" | "questions";
+  key: "dashboard" | "verifications" | "photos" | "users" | "reports" | "questions" | "config";
   Icon: ComponentType<{ size?: number }>;
   countKey?: keyof AdminQueueCounts;
   minRole: Role;
@@ -49,6 +50,7 @@ const NAV: AdminNav[] = [
     minRole: "moderator",
   },
   { href: "/admin/questions", key: "questions", Icon: SparkIcon, minRole: "admin" },
+  { href: "/admin/config", key: "config", Icon: SettingsIcon, minRole: "admin" },
 ];
 
 export function AdminShell({ title, children }: { title: string; children: ReactNode }) {

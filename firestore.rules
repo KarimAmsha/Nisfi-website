@@ -144,6 +144,15 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // appConfig/{doc}: allow-listed runtime config (flags, tunables, content)
+    // the app reads. Any signed-in member reads; ALL writes are server-only
+    // (admin via the content CF, which validates the allow-list/bounds and
+    // appends an old→new audit; clients never write config). Master spec 6.2.
+    match /appConfig/{doc} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
     // connectionRequests: the two participants + staff may read; ALL writes are
     // server-only (CF6 sendConnectionRequest / CF7 respond/withdraw via the Admin
     // SDK, which bypasses these rules). Clients never create or transition a
