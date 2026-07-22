@@ -431,7 +431,8 @@
       "verifications": "Verification",
       "users": "Members",
       "reports": "Reports",
-      "photos": "Photos"
+      "photos": "Photos",
+      "questions": "Questions"
     },
     "dashboard": {
       "title": "Admin dashboard",
@@ -591,6 +592,36 @@
       "emptyBody": "No photos are waiting for moderation.",
       "errorTitle": "Couldn't load",
       "errorBody": "Something went wrong. Please try again."
+    },
+    "questions": {
+      "title": "Compatibility questions",
+      "heading": "Question bank",
+      "previewNote": "Preview data",
+      "newQuestion": "New question",
+      "newTitle": "New question",
+      "editTitle": "Edit question",
+      "questionText": "Question text",
+      "options": "Options",
+      "optionLabel": "Option text",
+      "optionsCount": "options",
+      "addOption": "Add option",
+      "removeOption": "Remove",
+      "activeLabel": "Active",
+      "active": "Active",
+      "archived": "Archived",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "breakingWarning": "This change (removing an option or archiving the question) may orphan existing member answers. Proceed with care.",
+      "invalid": "Fill the question text and every option in all three languages, with at least two options.",
+      "save": "Save",
+      "cancel": "Cancel",
+      "selectHint": "Select a question to edit, or create a new one.",
+      "emptyTitle": "No questions yet",
+      "emptyDesc": "Create the first compatibility question to show it in onboarding.",
+      "errorTitle": "Couldn’t load questions",
+      "errorBody": "Something went wrong fetching the question bank. Try again.",
+      "activate": "Activate",
+      "archive": "Archive"
     }
   },
   "ProfileDetail": {

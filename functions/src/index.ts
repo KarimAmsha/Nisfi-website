@@ -71,3 +71,12 @@ export {
   type RoleAssignmentResult,
   type StatusChangeResult,
 } from "./users";
+
+// Content cores: compatibility-question write (validation + existing-answer
+// impact) and reorder (admin-only; Admin SDK + audit wiring deferred, O-001).
+export {
+  evaluateQuestionWrite,
+  evaluateQuestionReorder,
+  type QuestionWriteResult,
+  type QuestionReorderResult,
+} from "./questions";

@@ -8,13 +8,25 @@ This file is the official record for resuming work, alongside `NISFI_MASTER_SPEC
 
 | Field | Value |
 |---|---|
-| Current phase | Phase 5 — Operations & moderation console |
-| Current unit | Unit 5.5 — user operations and role assignment (delivered to `main`) |
-| Implementation state | Delivered to `main`. Phase 5 moderation console complete; next is Phase 6 (Unit 6.1 — compatibility question management). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
+| Current phase | Phase 6 — Complete control panel |
+| Current unit | Unit 6.1 — compatibility question management (delivered to `main`) |
+| Implementation state | Delivered to `main`. Building Phase 6 on emulators/mocks; next is Unit 6.2 (runtime content/localization + app configuration). Real Cloudinary + Firebase wiring deferred to the final production step (O-001/O-002). |
 | Delivery note | Owner directed that all work land on `main`; each completed unit is fast-forwarded to `main`. |
 | Design decision | Direction A «وَقار» selected by the owner on 2026-07-21 (D-001 resolved); recorded in `docs/DESIGN_SYSTEM.md`. |
 | Previous units | Unit 0.0 (docs, approved 2026-07-20), Unit 0.1 (scaffold), Unit 0.2 (locale routing/RTL), Unit 0.3 (two directions) — all delivered to `main`. |
 | Reference | `NISFI_MASTER_SPEC.md`, Sections 4, 5, 9, 13, 14, 15, and 16 |
+
+## Unit 6.1 — completed (delivered to `main`)
+
+The admin console for compatibility questions: create/edit with a localized three-language editor, reorder, activate/archive, and an "affects existing answers" warning on breaking edits (master spec Section 6.1).
+
+- **Shared:** `question-admin.ts` — `canManageQuestions` (admin+), `questionInputSchema` (localized text + labels required in ar/en/tr, 2+ options), `reorderQuestions` (swap + 1-based order normalize; edge no-op), `removedOptionIds`, `isBreakingQuestionChange` (option removed or active→archived). New `question-admin.test.ts` (shared suite now **102**).
+- **Server core:** `functions/src/questions.ts` — `evaluateQuestionWrite` (CF `saveQuestion`; admin-only + schema-validated, returns `isNew` + `affectsExistingAnswers`) and `evaluateQuestionReorder` (CF `reorderQuestion`). Functions suite now **38**.
+- **Rules:** `questionBank/{id}` — any signed-in member reads (onboarding renders the set); all writes are server-only (admin via the content CF + audit). New `question.rules.test.ts` (member read, unauth denied, admin client write denied). Rules suite now **67**.
+- **Port + adapter:** `QuestionRepository.listQuestions` (ordered read incl. archived), `saveQuestion`, `reorderQuestion`, `setQuestionActive` via callables.
+- **UI:** `/admin/questions` — a question-bank list (localized text in the active locale, options count, active/archived badge that toggles, up/down reorder) and an editor with the three-language text + option label inputs (Arabic RTL, English/Turkish LTR), add/remove option, active toggle, the breaking-change warning banner, and validation. New **Questions** nav item (admin+). Preview seed = starter set + one archived example.
+- **Deferred (O-001):** the `saveQuestion` / `reorderQuestion` / `setQuestionActive` callables (transactional writes + audit) are wired at the final production step; the console reads empty when configured until the bank is seeded, with the preview seed keeping it reviewable.
+- **Verified:** `pnpm check` (shared 102, functions 38) + `next build` (80 routes) + `pnpm test:rules` (67) green; RTL list + editor screenshots.
 
 ## Unit 5.5 — completed (delivered to `main`)
 
@@ -384,7 +396,7 @@ Premium localized landing page and shared public navigation/footer on the Waqār
 
 ## Next proposed unit
 
-**Phase 6 / Unit 6.1: compatibility question management** — the admin-managed compatibility questions the profile/onboarding reads (localized prompts + options, ordering/reorder, active/archived), on a staff-writable / member-readable collection with rules + tests, plus the localized preview and an "affects existing answers" warning on edits (master spec F10 / Section 6.1). Phase 5's moderation console is complete; Phase 6 builds out the rest of the control panel.
+**Phase 6 / Unit 6.2: runtime content & app configuration** — an allow-listed platform-config surface (feature flags / tunables the app reads at runtime) plus editable localized content blocks, on a staff-writable / member-readable collection with rules + tests, an old→new audit on every change, and rejection of unsafe/out-of-allow-list values (master spec Section 6.2).
 
 ### Deferred to the final "production wiring" step (O-001)
 

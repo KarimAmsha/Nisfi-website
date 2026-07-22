@@ -135,6 +135,15 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // questionBank/{id}: admin-managed compatibility questions the onboarding
+    // wizard renders. Any signed-in member reads (they need the questions to
+    // build a profile); ALL writes are server-only (admin via the content CF +
+    // audit; clients never write content). Master spec Sections 6.1, 10.9, 11.4.
+    match /questionBank/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
     // connectionRequests: the two participants + staff may read; ALL writes are
     // server-only (CF6 sendConnectionRequest / CF7 respond/withdraw via the Admin
     // SDK, which bypasses these rules). Clients never create or transition a

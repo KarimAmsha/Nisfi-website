@@ -431,7 +431,8 @@
       "verifications": "التوثيق",
       "users": "الأعضاء",
       "reports": "البلاغات",
-      "photos": "الصور"
+      "photos": "الصور",
+      "questions": "الأسئلة"
     },
     "dashboard": {
       "title": "لوحة الإدارة",
@@ -591,6 +592,36 @@
       "emptyBody": "لا توجد صور بانتظار الإشراف.",
       "errorTitle": "تعذّر التحميل",
       "errorBody": "حدث خطأ. حاول مرة أخرى."
+    },
+    "questions": {
+      "title": "أسئلة التوافق",
+      "heading": "بنك الأسئلة",
+      "previewNote": "بيانات تجريبية",
+      "newQuestion": "سؤال جديد",
+      "newTitle": "سؤال جديد",
+      "editTitle": "تعديل السؤال",
+      "questionText": "نص السؤال",
+      "options": "الخيارات",
+      "optionLabel": "نص الخيار",
+      "optionsCount": "خيارات",
+      "addOption": "إضافة خيار",
+      "removeOption": "حذف",
+      "activeLabel": "مُفعّل",
+      "active": "مُفعّل",
+      "archived": "مؤرشف",
+      "moveUp": "نقل لأعلى",
+      "moveDown": "نقل لأسفل",
+      "breakingWarning": "هذا التعديل (حذف خيار أو أرشفة السؤال) قد يُبطل إجابات أعضاء موجودة. تابع بحذر.",
+      "invalid": "أكمل نص السؤال وكل الخيارات في اللغات الثلاث، مع خيارين على الأقل.",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "selectHint": "اختر سؤالاً لتعديله أو أنشئ سؤالاً جديداً.",
+      "emptyTitle": "لا أسئلة بعد",
+      "emptyDesc": "أنشئ أول سؤال توافق ليظهر في التسجيل.",
+      "errorTitle": "تعذّر تحميل الأسئلة",
+      "errorBody": "حدث خطأ أثناء جلب بنك الأسئلة. حاول مجدداً.",
+      "activate": "تفعيل",
+      "archive": "أرشفة"
     }
   },
   "ProfileDetail": {

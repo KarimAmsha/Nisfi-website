@@ -431,7 +431,8 @@
       "verifications": "Doğrulama",
       "users": "Üyeler",
       "reports": "Raporlar",
-      "photos": "Fotoğraflar"
+      "photos": "Fotoğraflar",
+      "questions": "Sorular"
     },
     "dashboard": {
       "title": "Yönetim paneli",
@@ -591,6 +592,36 @@
       "emptyBody": "Moderasyon bekleyen fotoğraf yok.",
       "errorTitle": "Yüklenemedi",
       "errorBody": "Bir hata oluştu. Lütfen tekrar deneyin."
+    },
+    "questions": {
+      "title": "Uyumluluk soruları",
+      "heading": "Soru bankası",
+      "previewNote": "Önizleme verisi",
+      "newQuestion": "Yeni soru",
+      "newTitle": "Yeni soru",
+      "editTitle": "Soruyu düzenle",
+      "questionText": "Soru metni",
+      "options": "Seçenekler",
+      "optionLabel": "Seçenek metni",
+      "optionsCount": "seçenek",
+      "addOption": "Seçenek ekle",
+      "removeOption": "Kaldır",
+      "activeLabel": "Etkin",
+      "active": "Etkin",
+      "archived": "Arşivlenmiş",
+      "moveUp": "Yukarı taşı",
+      "moveDown": "Aşağı taşı",
+      "breakingWarning": "Bu değişiklik (bir seçeneği kaldırmak veya soruyu arşivlemek) mevcut üye yanıtlarını geçersiz kılabilir. Dikkatli ilerleyin.",
+      "invalid": "Soru metnini ve her seçeneği üç dilde de doldurun; en az iki seçenek olmalı.",
+      "save": "Kaydet",
+      "cancel": "İptal",
+      "selectHint": "Düzenlemek için bir soru seçin veya yeni bir tane oluşturun.",
+      "emptyTitle": "Henüz soru yok",
+      "emptyDesc": "Kayıt akışında görünmesi için ilk uyumluluk sorusunu oluşturun.",
+      "errorTitle": "Sorular yüklenemedi",
+      "errorBody": "Soru bankası alınırken bir sorun oluştu. Tekrar deneyin.",
+      "activate": "Etkinleştir",
+      "archive": "Arşivle"
     }
   },
   "ProfileDetail": {

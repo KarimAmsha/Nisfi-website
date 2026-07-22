@@ -59,6 +59,16 @@ export {
 } from "./compatibility";
 
 export {
+  canManageQuestions,
+  questionOptionInputSchema,
+  questionInputSchema,
+  reorderQuestions,
+  removedOptionIds,
+  isBreakingQuestionChange,
+  type QuestionInput,
+} from "./question-admin";
+
+export {
   PHOTO_MODERATION,
   PHOTO_DECISIONS,
   MAX_PHOTOS,

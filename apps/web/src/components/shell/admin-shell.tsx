@@ -5,13 +5,20 @@ import { useTranslations } from "next-intl";
 import { roleAtLeast, type Role } from "@nisfi/shared";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
-import { FlagIcon, GaugeIcon, LockIcon, ShieldCheckIcon, UsersIcon } from "@/components/ui/icon";
+import {
+  FlagIcon,
+  GaugeIcon,
+  LockIcon,
+  ShieldCheckIcon,
+  SparkIcon,
+  UsersIcon,
+} from "@/components/ui/icon";
 import type { AdminQueueCounts } from "@/core/ports/admin";
 import { useAdmin } from "@/lib/use-admin";
 
 type AdminNav = {
   href: string;
-  key: "dashboard" | "verifications" | "photos" | "users" | "reports";
+  key: "dashboard" | "verifications" | "photos" | "users" | "reports" | "questions";
   Icon: ComponentType<{ size?: number }>;
   countKey?: keyof AdminQueueCounts;
   minRole: Role;
@@ -41,6 +48,7 @@ const NAV: AdminNav[] = [
     countKey: "openReports",
     minRole: "moderator",
   },
+  { href: "/admin/questions", key: "questions", Icon: SparkIcon, minRole: "admin" },
 ];
 
 export function AdminShell({ title, children }: { title: string; children: ReactNode }) {
